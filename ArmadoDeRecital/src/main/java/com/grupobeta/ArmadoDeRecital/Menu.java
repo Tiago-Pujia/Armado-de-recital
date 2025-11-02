@@ -29,4 +29,6 @@ public class Menu {
 		System.out.println("|| " + "\t\t\t\t\t\t\t\t\t" + "||");
 		System.out.println("==========================================================================");
 	}
+	
+	// faltan los métodos para manejar las opciones, aunque cómo lo hacemos sin spamear ifs o un switch ??
 }
