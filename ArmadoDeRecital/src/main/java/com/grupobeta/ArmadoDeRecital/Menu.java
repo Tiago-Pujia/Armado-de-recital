@@ -125,8 +125,7 @@ public class Menu {
 		this.estaCorriendo = false;
 		scanner.close();
 		System.out.println("\nGuardando estado antes de salir...");
-		ManejadorSalida manejador = new ManejadorSalida();
-		manejador.guardarEstado(this.recital);
+		//ManejadorSalida manejador = new ManejadorSalida();
+		//manejador.guardarEstado(this.recital);
 	}
-	// faltan los métodos para manejar las opciones, aunque cómo lo hacemos sin spamear ifs o un switch ??
 }
