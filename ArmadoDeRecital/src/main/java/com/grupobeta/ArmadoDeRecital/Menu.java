@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 
 public class Menu {
 	
+	//colores para decorar el texto de la interfaz
 	public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_RED = "\u001B[31m";
@@ -18,18 +19,27 @@ public class Menu {
     public static final int MIN_ACEPTADO = 1;
     
     private HashMap<Integer, Consumer<Scanner>> opciones;
+    private CargadorDeArchivos cargadorDeArchivos = null;
+    
     private Recital recital = null;
     private Scanner scanner = null;
     private boolean estaCorriendo = true;
     
     public Menu() {
+    	
     	this.scanner = new Scanner(System.in);
     	opciones = new HashMap<Integer, Consumer<Scanner>>();
     	this.configurarOpciones();
-    	this.recital = new Recital();
+    	
+    	this.cargadorDeArchivos = new CargadorDeArchivos();
+    	this.crearRecital();
     }
     
-    private void configurarOpciones() {
+    private void crearRecital() {
+    	this.recital = new Recital(this.cargadorDeArchivos.cargarArchivoRecital(), this.cargadorDeArchivos.cargarArchivoArtistas(), this.cargadorDeArchivos.cargarArchivoArtistasBase());
+	}
+
+	private void configurarOpciones() {
     	opciones.put(1, this::obtenerRolesFaltantesParaCancion);
     	opciones.put(2, this::obtenerRolesFaltantesAll);
     	opciones.put(3, this::contratarArtistasParaCancion);
@@ -44,6 +54,8 @@ public class Menu {
     public void iniciar() {
     	
     	int eleccion;
+    	
+    	this.crearRecital();
     	
     	while(this.estaCorriendo) {
     		this.mostrarMenu();

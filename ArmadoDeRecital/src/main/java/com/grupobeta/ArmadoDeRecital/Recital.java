@@ -7,9 +7,12 @@ public class Recital {
 	ArrayList<Cancion> canciones = null; 
 	ArrayList<Contratacion> contrataciones = null;
 	ArrayList<Artista> repertorio = null;
-		
-	public Recital() {
-		this.contrataciones = new ArrayList<Contratacion>();
+	ArrayList<String> artistasBase = null;
+	
+	public Recital(ArrayList<Cancion> c, ArrayList<Artista> r, ArrayList<String> ab) {
+		this.canciones = c;
+		this.repertorio = r;
+		this.artistasBase = ab;
 	}
 	
 	///punto 1

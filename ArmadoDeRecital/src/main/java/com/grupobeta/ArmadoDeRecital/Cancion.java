@@ -36,4 +36,9 @@ public class Cancion {
 		Cancion other = (Cancion) obj;
 		return Objects.equals(rolesRequeridos, other.rolesRequeridos) && Objects.equals(titulo, other.titulo);
 	}
+
+	@Override
+	public String toString() {
+		return "Cancion [titulo=" + titulo + ", rolesRequeridos=" + rolesRequeridos + "]";
+	}
 }
