@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,9 +43,10 @@ public class CargadorDeArchivos {
 				
 				JSONArray rolesJSON = (JSONArray) cancionJSON.get(CLAVE_CANCION_ROLES);
 				
-				ArrayList<String> roles = new ArrayList<String>();
+				HashMap<String, Integer> roles = new HashMap<String, Integer>();
 				for(int j = 0 ; j < rolesJSON.length() ; j++) {
-					roles.add(rolesJSON.getString(j));
+					String rol = rolesJSON.getString(j);
+					roles.put(rol, roles.getOrDefault(rol, 0) + 1); // roles.add(rolesJSON.getString(j));
 				}
 				
 				canciones.add(new Cancion(titulo,roles));
@@ -102,7 +104,7 @@ public class CargadorDeArchivos {
 			
 			JSONArray artistasArray = this.parsearJSONArray(ARCHIVO_ARTISTAS_BASE);
 			
-			for(int i = 0; i < artistasArray.length(); i++) {			
+			for(int i = 0; i < artistasArray.length(); i++) {
 				nombresArtistasBase.add((String)artistasArray.get(i));
 			}
 			

@@ -58,13 +58,19 @@ public class Menu {
     	this.crearRecital();
     	
     	while(this.estaCorriendo) {
+    		
     		this.mostrarMenu();
     		do {
     			eleccion = this.procesarEleccion();
     		}while(eleccion < MIN_ACEPTADO || eleccion > opciones.size());
     		
     		this.ejecutarOpcion(eleccion);
+    		   		
+    		scanner.nextLine();
+    		String esperaSigEntrada = scanner.next(); //¿hay otra forma de hacerlo esperar a la siguiente input sin hacer esto? me da toc el warning 
     	}
+    	
+    	this.scanner.close();
     }
     
 	public void mostrarMenu() {
@@ -126,7 +132,17 @@ public class Menu {
 	
 	///punto 7
 	public void listarCanciones(Scanner scanner) {
-		
+		int i = 1;
+		System.out.println("Listado de " + ANSI_YELLOW + "canciones" + ANSI_RESET + " del recital. Se muestra para cada una de ellas los roles aún no cubiertos.\n");
+		for(Cancion c : this.recital.getCanciones()) {
+			if(c.getRolesRequeridos().isEmpty()) {
+				System.out.println(i + ". " + ANSI_PURPLE + c.getTitulo() + ANSI_CYAN + "\nNo quedan roles por cubrir !\n");
+			}
+			else {
+				System.out.println(i + ". " + ANSI_PURPLE + c.getTitulo() + ANSI_RESET + "\nRoles faltantes por cubrir:\n" + ANSI_RED + c.getRolesRequeridos() + ANSI_RESET + "\n");
+			}
+			i++;
+		}
 	}
 	
 	public void prolog(Scanner scanner) {
@@ -135,7 +151,6 @@ public class Menu {
 
 	public void salir(Scanner scanner) {
 		this.estaCorriendo = false;
-		scanner.close();
 		System.out.println("\nGuardando estado antes de salir...");
 		//ManejadorSalida manejador = new ManejadorSalida();
 		//manejador.guardarEstado(this.recital);

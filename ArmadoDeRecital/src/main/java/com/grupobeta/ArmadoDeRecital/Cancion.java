@@ -1,19 +1,19 @@
 package com.grupobeta.ArmadoDeRecital;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class Cancion {
 	
 	private String titulo;
-	private ArrayList<String> rolesRequeridos = null;
+	private HashMap<String, Integer> rolesRequeridos = null;
 	
-	public Cancion(String nombre, ArrayList<String>rr) {
+	public Cancion(String nombre, HashMap<String, Integer>rr) {
 		this.titulo = nombre;
 		this.rolesRequeridos = rr;
 	}
 	
-	public ArrayList<String> getRolesRequeridos() {
+	public HashMap<String, Integer> getRolesRequeridos() {
 		return this.rolesRequeridos;
 	}
 	public String getTitulo() {

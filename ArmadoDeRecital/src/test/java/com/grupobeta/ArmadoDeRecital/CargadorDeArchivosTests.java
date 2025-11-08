@@ -62,13 +62,4 @@ class CargadorDeArchivosTests {
 			System.out.println(s);
 		}
 	}
-	
-//	@Test
-//	void creacionDeRecital() throws IOException {
-//		
-//		Recital recital = new Recital();
-//		
-//	}
-	
-
 }
