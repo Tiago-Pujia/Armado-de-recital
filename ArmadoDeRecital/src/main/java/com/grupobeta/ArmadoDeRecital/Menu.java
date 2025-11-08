@@ -36,11 +36,13 @@ public class Menu {
     }
     
     private void crearRecital() {
-    	this.recital = new Recital(this.cargadorDeArchivos.cargarArchivoRecital(), this.cargadorDeArchivos.cargarArchivoArtistas(), this.cargadorDeArchivos.cargarArchivoArtistasBase());
+    	this.recital = new Recital(this.cargadorDeArchivos.cargarArchivoRecital(),
+					    			this.cargadorDeArchivos.cargarArchivoArtistas(),
+					    			this.cargadorDeArchivos.cargarArchivoArtistasBase());
 	}
 
 	private void configurarOpciones() {
-    	opciones.put(1, this::obtenerRolesFaltantesParaCancion);
+    	opciones.put(1, this::consultarRolesFaltantesParaCancion);
     	opciones.put(2, this::obtenerRolesFaltantesAll);
     	opciones.put(3, this::contratarArtistasParaCancion);
     	opciones.put(4, this::contratarArtistasAll);
@@ -55,19 +57,17 @@ public class Menu {
     	
     	int eleccion;
     	
-    	this.crearRecital();
-    	
     	while(this.estaCorriendo) {
     		
     		this.mostrarMenu();
     		do {
-    			eleccion = this.procesarEleccion();
+    			eleccion = this.scanner.nextInt();
     		}while(eleccion < MIN_ACEPTADO || eleccion > opciones.size());
     		
     		this.ejecutarOpcion(eleccion);
     		   		
     		scanner.nextLine();
-    		String esperaSigEntrada = scanner.next(); //¿hay otra forma de hacerlo esperar a la siguiente input sin hacer esto? me da toc el warning 
+    		String esperaSigEntrada = this.scanner.next(); //¿hay otra forma de hacerlo esperar a la siguiente input sin hacer esto? me da toc el warning 
     	}
     	
     	this.scanner.close();
@@ -91,23 +91,49 @@ public class Menu {
 		System.out.println("==========================================================================");
 	}
 	
-	public int procesarEleccion() {
-		return this.scanner.nextInt();
-	}
-	
 	public void ejecutarOpcion(int opcion){
 		Consumer<Scanner> accion = this.opciones.get(opcion);
         accion.accept(this.scanner);		
 	}
 	
 	///punto 1
-	public void obtenerRolesFaltantesParaCancion(Scanner scanner) {
+	public void consultarRolesFaltantesParaCancion(Scanner scanner) {
 		
+		System.out.printf("Ingrese el nombre de la canción: ");
+		scanner.nextLine();
+		String nombre = scanner.nextLine();
+		HashMap<String, Integer> rolesFaltantes = this.recital.consultarRolesFaltantesParaCancion(nombre);
+		
+		if(rolesFaltantes == null) {
+			System.out.println("El nombre ingresado" + ANSI_RED + " no coincide " + ANSI_RESET + "con ninguna canción registrada para el recital. Intente nuevamente.");
+			return;
+		}
+		if(rolesFaltantes.isEmpty()) {
+			System.out.println("La canción ingresada tiene todos sus roles" + ANSI_GREEN + "cubiertos");
+			return;
+		}
+		System.out.println(ANSI_PURPLE + nombre + ANSI_RESET + "\nRoles faltantes por cubrir:\n" + ANSI_RED + rolesFaltantes + ANSI_RESET + "\n");		
 	}
+	
+	public Cancion buscarCancion(String ncanc) {
+		
+		return recital.buscarCancion(ncanc);
+	}
+	
 	
 	///punto 2
 	public void obtenerRolesFaltantesAll(Scanner scanner) {
-		
+		int i = 1;
+		System.out.println("Listado de " + ANSI_YELLOW + "canciones" + ANSI_RESET + " del recital. Se muestra para cada una de ellas los roles aún no cubiertos.\n");
+		for(Cancion cancion : this.recital.getCanciones()) {
+			if(cancion.getRolesRequeridos().isEmpty()) {
+				System.out.println(i + ". " + ANSI_PURPLE + cancion.getTitulo() + ANSI_CYAN + "\nNo quedan roles por cubrir !\n");
+			}
+			else {
+				System.out.println(i + ". " + ANSI_PURPLE + cancion.getTitulo() + ANSI_RESET + "\nRoles faltantes por cubrir:\n" + ANSI_RED + cancion.getRolesRequeridos() + ANSI_RESET + "\n");
+			}
+			i++;
+		}
 	}
 	
 	///punto 3
@@ -131,18 +157,10 @@ public class Menu {
 	}
 	
 	///punto 7
+	// me di cuenta de que hice lo del punto 2 acá XDDDD es más o menos parecido, pero hay que recorrer las canciones,
+	// obtener el costo total por cancion y el costo total del recital usando recital.getCostoTotalPorCancion y getCostoTotal (names may vary)
 	public void listarCanciones(Scanner scanner) {
-		int i = 1;
-		System.out.println("Listado de " + ANSI_YELLOW + "canciones" + ANSI_RESET + " del recital. Se muestra para cada una de ellas los roles aún no cubiertos.\n");
-		for(Cancion c : this.recital.getCanciones()) {
-			if(c.getRolesRequeridos().isEmpty()) {
-				System.out.println(i + ". " + ANSI_PURPLE + c.getTitulo() + ANSI_CYAN + "\nNo quedan roles por cubrir !\n");
-			}
-			else {
-				System.out.println(i + ". " + ANSI_PURPLE + c.getTitulo() + ANSI_RESET + "\nRoles faltantes por cubrir:\n" + ANSI_RED + c.getRolesRequeridos() + ANSI_RESET + "\n");
-			}
-			i++;
-		}
+		
 	}
 	
 	public void prolog(Scanner scanner) {

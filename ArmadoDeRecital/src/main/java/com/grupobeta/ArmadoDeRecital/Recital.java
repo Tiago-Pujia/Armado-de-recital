@@ -1,6 +1,7 @@
 package com.grupobeta.ArmadoDeRecital;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Recital {
 	
@@ -16,8 +17,18 @@ public class Recital {
 	}
 	
 	///punto 1
-	public void obtenerRolesFaltantesParaCancion(String ncancion) {
+	public HashMap<String, Integer> consultarRolesFaltantesParaCancion(String nombre) {
 	
+		Cancion cancion = this.buscarCancion(nombre);
+		
+		if(cancion == null){
+			return null;
+		}
+		
+		return cancion.getRolesRequeridos();
+				
+		
+		
 		///rescatado de la version anterior de Contratacion (donde tenia un hashmap de artista-rol)
 //		public ArrayList<String> getRolesFaltantes() {
 //			
@@ -31,8 +42,6 @@ public class Recital {
 //			diferencia.removeAll(rolesCubiertos);
 //			return diferencia;
 //		}
-		
-		
 	}
 	
 	///punto 2
@@ -72,7 +81,7 @@ public class Recital {
 		double costoCancion = 0;;
 		
 		for(Contratacion con : contrataciones) {
-			if(con.cancion.getTitulo().equals(nombreCancion)) {
+			if(con.cancion.getTitulo().toLowerCase().equals(nombreCancion.toLowerCase())) {
 				costoCancion += con.getCosto();
 			}
 		}
@@ -89,5 +98,14 @@ public class Recital {
 		}
 		
 		return costoTotal;
+	}
+
+	public Cancion buscarCancion(String ncanc) {
+		for(Cancion c : this.canciones) {
+			if(c.getTitulo().toLowerCase().equals(ncanc.toLowerCase())) {
+				return c;
+			}
+		}
+		return null;
 	}
 }
