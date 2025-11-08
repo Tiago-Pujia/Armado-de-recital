@@ -6,9 +6,11 @@ import java.util.Objects;
 
 public class Artista {
 	
-	private String nombre;
-	private HashSet<String> roles = null;
+	public static double AUMENTO_POR_ENTRENAMIENTO = 1.5;
+	public static double DESCUENTO_POR_COMPARTIR_BANDA = 0.5;
 	
+	private String nombre;	
+	private HashSet<String> roles = null;
 	private double costoContratacion;
 	private int maxCanciones;
 	private int cantidadContratos;
@@ -25,17 +27,32 @@ public class Artista {
 	
 	public void entrenar(String rol) {
 		this.roles.add(rol);
-		this.costoContratacion *= 1.5;
+		this.aumentarCostoContratacion();
 	}
 	
 	public boolean esContratable() {
 		return cantidadContratos < maxCanciones;
 	}
 	
+	public void contratar() {
+		this.cantidadContratos++;
+	}
+	
 	public boolean compartioBandaCon(Artista otro) {
 		HashSet<String> interseccion = new HashSet<String>(bandasHistoricas);
 		interseccion.retainAll(otro.bandasHistoricas);
 		return !interseccion.isEmpty();
+	}
+	
+	public void reducirCostoContratacion() {
+		this.costoContratacion = this.costoContratacion * DESCUENTO_POR_COMPARTIR_BANDA;
+	}
+	public void aumentarCostoContratacion() {
+		this.costoContratacion = this.costoContratacion * AUMENTO_POR_ENTRENAMIENTO;
+	}
+	
+	public String getNombre() {
+		return nombre;
 	}
 	
 	public double getCosto() {

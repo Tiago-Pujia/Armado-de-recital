@@ -4,9 +4,9 @@ import java.util.Objects;
 
 public class Contratacion {
 	
-	Cancion cancion;
-	Artista artista; /// 1 contrato contempla 1 artista con 1 cancion en 1 rol
-	String rol;
+	private Cancion cancion;
+	private Artista artista; /// 1 contrato contempla 1 artista con 1 cancion en 1 rol
+	private String rol;
 	private double costo = 0;
 	
 	private Contratacion(Cancion c, Artista a, String r) {
@@ -26,6 +26,18 @@ public class Contratacion {
 	
 	public double getCosto() {
 		return this.costo;
+	}
+	
+	public Cancion getCancion() {
+		return cancion;
+	}
+
+	public Artista getArtista() {
+		return artista;
+	}
+
+	public String getRol() {
+		return rol;
 	}
 	
 	@Override

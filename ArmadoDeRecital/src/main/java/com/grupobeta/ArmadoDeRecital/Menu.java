@@ -25,7 +25,7 @@ public class Menu {
     private Scanner scanner = null;
     private boolean estaCorriendo = true;
     
-    public Menu() {
+    public Menu() throws Exception {
     	
     	this.scanner = new Scanner(System.in);
     	opciones = new HashMap<Integer, Consumer<Scanner>>();
@@ -35,7 +35,7 @@ public class Menu {
     	this.crearRecital();
     }
     
-    private void crearRecital() {
+    private void crearRecital() throws Exception {
     	this.recital = new Recital(this.cargadorDeArchivos.cargarArchivoRecital(),
 					    			this.cargadorDeArchivos.cargarArchivoArtistas(),
 					    			this.cargadorDeArchivos.cargarArchivoArtistasBase());
@@ -136,7 +136,7 @@ public class Menu {
 		}
 	}
 	
-	///punto 3
+	///punto 3 <L>-------------ACÁ ME QUEDÉ ANOCHE ----------<\L>
 	public void contratarArtistasParaCancion(Scanner scanner) {
 		
 	}

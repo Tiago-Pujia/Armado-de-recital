@@ -16,6 +16,17 @@ public class Cancion {
 	public HashMap<String, Integer> getRolesRequeridos() {
 		return this.rolesRequeridos;
 	}
+	
+	public void removerUnRol(String rol) {
+		if(this.rolesRequeridos.containsKey(rol)) {
+			this.rolesRequeridos.put(rol, this.rolesRequeridos.getOrDefault(rol, 0) -1);
+			if(this.rolesRequeridos.get(rol)==0) {
+				this.rolesRequeridos.remove(rol);
+			}
+		}
+		
+	}
+	
 	public String getTitulo() {
 		return this.titulo;
 	}
