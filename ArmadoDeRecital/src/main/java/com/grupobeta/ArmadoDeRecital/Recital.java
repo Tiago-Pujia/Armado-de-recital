@@ -7,14 +7,32 @@ public class Recital {
 	ArrayList<Cancion> canciones = null; 
 	ArrayList<Contratacion> contrataciones = null;
 	ArrayList<Artista> repertorio = null;
-		
-	public Recital() {
-		this.contrataciones = new ArrayList<Contratacion>();
+	ArrayList<String> artistasBase = null;
+	
+	public Recital(ArrayList<Cancion> c, ArrayList<Artista> r, ArrayList<String> ab) {
+		this.canciones = c;
+		this.repertorio = r;
+		this.artistasBase = ab;
 	}
 	
 	///punto 1
 	public void obtenerRolesFaltantesParaCancion(String ncancion) {
 	
+		///rescatado de la version anterior de Contratacion (donde tenia un hashmap de artista-rol)
+//		public ArrayList<String> getRolesFaltantes() {
+//			
+//			ArrayList<String> rolesCubiertos = new ArrayList<String>();
+//			
+//			for(String rol : this.contratos.values()) {
+//				rolesCubiertos.add(rol);
+//			}
+//			
+//			ArrayList<String> diferencia = new ArrayList<String>(cancion.getRolesRequeridos());
+//			diferencia.removeAll(rolesCubiertos);
+//			return diferencia;
+//		}
+		
+		
 	}
 	
 	///punto 2
@@ -23,8 +41,10 @@ public class Recital {
 	}
 	
 	///punto 3
-	public void contratarArtistasParaCancion() {
+	public void contratarArtistaParaCancion() {
 		
+		
+		///se elimina de la lista de roles requeridos del array de canciones el rol especifico con el que se contrató a un artista
 	}
 	
 	///punto 4
@@ -43,7 +63,31 @@ public class Recital {
 	}
 	
 	///punto 7
-	public void listarCanciones() {
+	public ArrayList<Cancion> getCanciones() {
+		return this.canciones;		
+	}
+	
+	public double obtenerCostoContratacionesCancion(String nombreCancion) {
 		
+		double costoCancion = 0;;
+		
+		for(Contratacion con : contrataciones) {
+			if(con.cancion.getTitulo().equals(nombreCancion)) {
+				costoCancion += con.getCosto();
+			}
+		}
+		
+		return costoCancion;
+	}
+	
+	public double obtenerCostoTotal() {
+		
+		double costoTotal = 0;
+		
+		for(Contratacion con : contrataciones) {
+			costoTotal += con.getCosto();
+		}
+		
+		return costoTotal;
 	}
 }

@@ -8,6 +8,7 @@ public class Artista {
 	
 	private String nombre;
 	private HashSet<String> roles = null;
+	
 	private double costoContratacion;
 	private int maxCanciones;
 	private int cantidadContratos;
@@ -27,14 +28,22 @@ public class Artista {
 		this.costoContratacion *= 1.5;
 	}
 	
-	public double getCosto() {
-		return this.costoContratacion;
+	public boolean esContratable() {
+		return cantidadContratos < maxCanciones;
 	}
 	
 	public boolean compartioBandaCon(Artista otro) {
 		HashSet<String> interseccion = new HashSet<String>(bandasHistoricas);
 		interseccion.retainAll(otro.bandasHistoricas);
 		return !interseccion.isEmpty();
+	}
+	
+	public double getCosto() {
+		return this.costoContratacion;
+	}
+	
+	public HashSet<String> getRoles() {
+		return roles;
 	}
 	
 	@Override
@@ -57,5 +66,11 @@ public class Artista {
 				&& Objects.equals(roles, other.roles);
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "Artista [nombre=" + nombre + ", roles=" + roles + ", costoContratacion=" + costoContratacion
+				+ ", maxCanciones=" + maxCanciones + ", cantidadContratos=" + cantidadContratos + ", bandasHistoricas="
+				+ bandasHistoricas + "]";
+	}
+
 }

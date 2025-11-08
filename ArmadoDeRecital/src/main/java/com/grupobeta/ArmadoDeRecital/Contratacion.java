@@ -1,51 +1,36 @@
 package com.grupobeta.ArmadoDeRecital;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Objects;
 
 public class Contratacion {
 	
 	Cancion cancion;
-	HashMap<Artista, String> contratos; /// clave-valor: artista-rol
+	Artista artista; /// 1 contrato contempla 1 artista con 1 cancion en 1 rol
+	String rol;
+	private double costo = 0;
 	
-	public Contratacion(Cancion c) {
+	private Contratacion(Cancion c, Artista a, String r) {
 		this.cancion = c;
-		contratos = new HashMap<Artista, String>();
+		this.artista = a;
+		this.rol = r;
+		this.costo = a.getCosto();
 	}
 	
-	//completar ¿?: que se fije que el artista tenga el rol ¿?
-	public void contratarArtistaRol(Artista art, String rol) {
-		this.contratos.put(art, rol);
-	}
-	
-	public double getCostoTotal() {
+	public static Contratacion contratarArtistaRol(Cancion cancion, Artista artista, String rol) throws Exception {
 		
-		double total = 0;
-		
-		for(Artista art : contratos.keySet()) {
-			total += art.getCosto();
+		if(!artista.getRoles().contains(rol)) {
+			throw new Exception("El artista no cuenta con el rol que estás intentando asignarle");
 		}
-		
-		return total;
+		return new Contratacion(cancion, artista, rol);
 	}
 	
-	public ArrayList<String> getRolesFaltantes() {
-		
-		ArrayList<String> rolesCubiertos = new ArrayList<String>();
-		
-		for(String rol : this.contratos.values()) {
-			rolesCubiertos.add(rol);
-		}
-		
-		ArrayList<String> diferencia = new ArrayList<String>(cancion.getRolesRequeridos());
-		diferencia.removeAll(rolesCubiertos);
-		return diferencia;
+	public double getCosto() {
+		return this.costo;
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(cancion, contratos);
+		return Objects.hash(artista, cancion, rol);
 	}
 
 	@Override
@@ -57,6 +42,7 @@ public class Contratacion {
 		if (getClass() != obj.getClass())
 			return false;
 		Contratacion other = (Contratacion) obj;
-		return Objects.equals(cancion, other.cancion) && Objects.equals(contratos, other.contratos);
+		return Objects.equals(artista, other.artista) && Objects.equals(cancion, other.cancion)
+				&& Objects.equals(rol, other.rol);
 	}
 }
