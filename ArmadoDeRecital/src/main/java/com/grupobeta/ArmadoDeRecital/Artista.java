@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
-public class Artista {
+public class Artista implements Comparable<Artista> {
 	
 	public static double AUMENTO_POR_ENTRENAMIENTO = 1.5;
 	public static double DESCUENTO_POR_COMPARTIR_BANDA = 0.5;
@@ -90,4 +90,8 @@ public class Artista {
 				+ bandasHistoricas + "]";
 	}
 
+	@Override
+	public int compareTo(Artista o) {
+		return this.nombre.compareTo(o.getNombre());
+	}
 }

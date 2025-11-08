@@ -90,8 +90,9 @@ public class Recital {
 	}
 	
 	///punto 6
-	public void listarArtistasContratados() {
-		
+	public ArrayList<Contratacion> listarArtistasContratados() {
+		this.contrataciones.sort(null);
+		return this.contrataciones;
 	}
 	
 	public double obtenerCostoContratacionesCancion(String nombreCancion) {

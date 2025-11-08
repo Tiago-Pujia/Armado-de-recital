@@ -2,7 +2,7 @@ package com.grupobeta.ArmadoDeRecital;
 
 import java.util.Objects;
 
-public class Contratacion {
+public class Contratacion implements Comparable<Contratacion>{
 	
 	private Cancion cancion;
 	private Artista artista; /// 1 contrato contempla 1 artista con 1 cancion en 1 rol
@@ -56,5 +56,10 @@ public class Contratacion {
 		Contratacion other = (Contratacion) obj;
 		return Objects.equals(artista, other.artista) && Objects.equals(cancion, other.cancion)
 				&& Objects.equals(rol, other.rol);
+	}
+
+	@Override
+	public int compareTo(Contratacion o) {
+		return this.artista.compareTo(o.getArtista());
 	}
 }

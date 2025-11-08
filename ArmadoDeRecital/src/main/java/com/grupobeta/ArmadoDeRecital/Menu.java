@@ -1,5 +1,6 @@
 package com.grupobeta.ArmadoDeRecital;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.function.Consumer;
@@ -57,6 +58,8 @@ public class Menu {
     	
     	int eleccion;
     	
+    	// desea cargar un estado previo ? Y/NO -> manejadorDeArchivosDeEntrada.cargarEstado()
+    	
     	while(this.estaCorriendo) {
     		
     		this.mostrarMenu();
@@ -65,7 +68,8 @@ public class Menu {
     		}while(eleccion < MIN_ACEPTADO || eleccion > opciones.size());
     		
     		this.ejecutarOpcion(eleccion);
-    		   		
+    		
+    		System.out.println("Presione cualquier número/letra y luego enter");
     		scanner.nextLine();
     		String esperaSigEntrada = this.scanner.next(); //¿hay otra forma de hacerlo esperar a la siguiente input sin hacer esto? me da toc el warning 
     	}
@@ -109,7 +113,7 @@ public class Menu {
 			return;
 		}
 		if(rolesFaltantes.isEmpty()) {
-			System.out.println("La canción ingresada tiene todos sus roles" + ANSI_GREEN + "cubiertos");
+			System.out.println("La canción ingresada tiene todos sus roles" + ANSI_GREEN + "cubiertos" + ANSI_RESET);
 			return;
 		}
 		System.out.println(ANSI_PURPLE + nombre + ANSI_RESET + "\nRoles faltantes por cubrir:\n" + ANSI_RED + rolesFaltantes + ANSI_RESET + "\n");		
@@ -127,7 +131,7 @@ public class Menu {
 		System.out.println("Listado de " + ANSI_YELLOW + "canciones" + ANSI_RESET + " del recital. Se muestra para cada una de ellas los roles aún no cubiertos.\n");
 		for(Cancion cancion : this.recital.getCanciones()) {
 			if(cancion.getRolesRequeridos().isEmpty()) {
-				System.out.println(i + ". " + ANSI_PURPLE + cancion.getTitulo() + ANSI_CYAN + "\nNo quedan roles por cubrir !\n");
+				System.out.println(i + ". " + ANSI_PURPLE + cancion.getTitulo() + ANSI_CYAN + "\nNo quedan roles por cubrir !\n" + ANSI_RESET);
 			}
 			else {
 				System.out.println(i + ". " + ANSI_PURPLE + cancion.getTitulo() + ANSI_RESET + "\nRoles faltantes por cubrir:\n" + ANSI_RED + cancion.getRolesRequeridos() + ANSI_RESET + "\n");
@@ -153,7 +157,11 @@ public class Menu {
 	
 	///punto 6
 	public void listarArtistasContratados(Scanner scanner) {
-		
+		ArrayList<Contratacion> contratos = this.recital.listarArtistasContratados();
+		System.out.println("Listado de " + ANSI_CYAN + "artistas" + ANSI_RESET + " contratados\n");
+		for(Contratacion contrato : contratos) {
+			System.out.println(ANSI_CYAN + contrato.getArtista().getNombre() + ANSI_RESET + " - " + ANSI_YELLOW + contrato.getCancion().getTitulo() + ANSI_RESET);
+		}
 	}
 	
 	///punto 7
