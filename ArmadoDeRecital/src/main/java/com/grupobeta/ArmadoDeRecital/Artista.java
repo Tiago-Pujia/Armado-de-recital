@@ -1,55 +1,36 @@
 package com.grupobeta.ArmadoDeRecital;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
-public class Artista implements Comparable<Artista> {
+public abstract class Artista implements Comparable<Artista> {
 	
-	public static double AUMENTO_POR_ENTRENAMIENTO = 1.5;
 	public static double DESCUENTO_POR_COMPARTIR_BANDA = 0.5;
 	
-	private String nombre;	
-	private HashSet<String> roles = null;
-	private double costoContratacion;
-	private int maxCanciones;
-	private int cantidadContratos;
-	private HashSet<String> bandasHistoricas = null;
+	protected String nombre;	
+	protected HashSet<String> roles = null;
+	protected HashSet<String> bandasHistoricas = null;
+	protected int cantContratos = 0;
+	protected double costoContratacion;
 	
-	public Artista(String name, List<String>roles, double costCont, int maxCanc, List<String>historial) {
+	public Artista(String name, Set<String>roles, Set<String>historial, double costo) {
 		this.nombre = name;
 		this.roles = new HashSet<String>(roles);
-		this.costoContratacion = costCont;
-		this.maxCanciones = maxCanc;
-		this.cantidadContratos = 0;
 		this.bandasHistoricas = new HashSet<String>(historial);		
 	}
-	
-	public void entrenar(String rol) {
-		this.roles.add(rol);
-		this.aumentarCostoContratacion();
-	}
-	
-	public boolean esContratable() {
-		return cantidadContratos < maxCanciones;
-	}
-	
-	public void contratar() {
-		this.cantidadContratos++;
-	}
-	
+				
 	public boolean compartioBandaCon(Artista otro) {
 		HashSet<String> interseccion = new HashSet<String>(bandasHistoricas);
 		interseccion.retainAll(otro.bandasHistoricas);
 		return !interseccion.isEmpty();
 	}
 	
-	public void reducirCostoContratacion() {
-		this.costoContratacion = this.costoContratacion * DESCUENTO_POR_COMPARTIR_BANDA;
+	public void contratar() {
+		this.cantContratos++;
 	}
-	public void aumentarCostoContratacion() {
-		this.costoContratacion = this.costoContratacion * AUMENTO_POR_ENTRENAMIENTO;
-	}
+	
+	public abstract boolean esContratable();
 	
 	public String getNombre() {
 		return nombre;
@@ -63,9 +44,17 @@ public class Artista implements Comparable<Artista> {
 		return roles;
 	}
 	
+	public int getCantContratos() {
+		return this.cantContratos;
+	}
+	
+	public HashSet<String> getHistorial() {
+		return this.bandasHistoricas;
+	}
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(bandasHistoricas, cantidadContratos, costoContratacion, maxCanciones, nombre, roles);
+		return Objects.hash(bandasHistoricas, nombre, roles);
 	}
 
 	@Override
@@ -77,17 +66,14 @@ public class Artista implements Comparable<Artista> {
 		if (getClass() != obj.getClass())
 			return false;
 		Artista other = (Artista) obj;
-		return Objects.equals(bandasHistoricas, other.bandasHistoricas) && cantidadContratos == other.cantidadContratos
-				&& Double.doubleToLongBits(costoContratacion) == Double.doubleToLongBits(other.costoContratacion)
-				&& maxCanciones == other.maxCanciones && Objects.equals(nombre, other.nombre)
+		return Objects.equals(bandasHistoricas, other.bandasHistoricas)
+				&& Objects.equals(nombre, other.nombre)
 				&& Objects.equals(roles, other.roles);
 	}
 	
 	@Override
 	public String toString() {
-		return "Artista [nombre=" + nombre + ", roles=" + roles + ", costoContratacion=" + costoContratacion
-				+ ", maxCanciones=" + maxCanciones + ", cantidadContratos=" + cantidadContratos + ", bandasHistoricas="
-				+ bandasHistoricas + "]";
+		return "Artista [nombre=" + nombre + ", roles=" + roles + " bandasHistoricas=" + bandasHistoricas + "]";
 	}
 
 	@Override

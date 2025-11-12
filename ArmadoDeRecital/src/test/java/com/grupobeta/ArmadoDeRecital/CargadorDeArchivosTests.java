@@ -19,47 +19,48 @@ class CargadorDeArchivosTests {
 	public static final String CLAVE_ARTISTA_MAX = "maxCanciones";
 	public static final String CLAVE_ARTISTA_BANDAS = "bandas";
 	
-	@Test
-	void pasarArchivosAJSONArray() throws IOException {
-		CargadorDeArchivos cargador = new CargadorDeArchivos();
-		JSONArray arrayRecitales = cargador.parsearJSONArray(ARCHIVO_RECITAL);
-		JSONArray arrayArtistas = cargador.parsearJSONArray(ARCHIVO_ARTISTAS);
-		JSONArray arrayArtistasBase = cargador.parsearJSONArray(ARCHIVO_ARTISTAS_BASE);
-		System.out.println(arrayRecitales.toString());
-		System.out.println(arrayArtistas.toString());
-		System.out.println(arrayArtistasBase.toString());
-	}
-	
-	@Test
-	void cargadoDeArchivoArtistas() {
-			
-		CargadorDeArchivos cargador = new CargadorDeArchivos();
-		ArrayList<Artista> repertorio = cargador.cargarArchivoArtistas();
-		
-		for(Artista a : repertorio) {
-			System.out.println(a.toString());
-		}
-	}
-	
-	@Test
-	void cargadoDeArchivoRecital() {
-		
-		CargadorDeArchivos cargador = new CargadorDeArchivos();
-		ArrayList<Cancion> canciones = cargador.cargarArchivoRecital();
-		
-		for(Cancion c : canciones) {
-			System.out.println(c.toString());
-		}
-	}
+//	@Test
+//	void pasarArchivosAJSONArray() throws IOException {
+//		CargadorDeArchivos cargador = new CargadorDeArchivos();
+//		JSONArray arrayCanciones = cargador.parsearJSONArray(ARCHIVO_RECITAL);
+//		JSONArray arrayArtistas = cargador.parsearJSONArray(ARCHIVO_ARTISTAS);
+//		JSONArray arrayArtistasBase = cargador.parsearJSONArray(ARCHIVO_ARTISTAS_BASE);
+//		System.out.println(arrayCanciones.toString());
+//		System.out.println(arrayArtistas.toString());
+//		System.out.println(arrayArtistasBase.toString());
+//	}
+//	
+//	@Test
+//	void cargadoDeArchivoArtistas() {
+//			
+//		CargadorDeArchivos cargador = new CargadorDeArchivos();
+//		ArrayList<ArtistaContratado> repertorio = cargador.cargarArchivoArtistas();
+//		
+//		for(Artista a : repertorio) {
+//			System.out.println(a.toString());
+//		}
+//	}
+//	
+//	@Test
+//	void cargadoDeArchivoRecital() {
+//		
+//		CargadorDeArchivos cargador = new CargadorDeArchivos();
+//		ArrayList<Cancion> canciones = cargador.cargarArchivoRecital();
+//		
+//		for(Cancion c : canciones) {
+//			System.out.println(c.toString());
+//		}
+//	}
 	
 	@Test()
-	void cargadoDeNombresArtistasBase() {
+	void cargadoDeArtistasBase() {
 		
 		CargadorDeArchivos cargador = new CargadorDeArchivos();
-		ArrayList<String> artBase = cargador.cargarArchivoArtistasBase();
+		ArrayList<ArtistaContratado> repertorio = cargador.cargarArchivoArtistas();
+		ArrayList<ArtistaBase> artBase = cargador.cargarArchivoArtistasBase(repertorio);
 		
-		for(String s : artBase) {
-			System.out.println(s);
+		for(ArtistaBase ab : artBase) {
+			System.out.println(ab);
 		}
 	}
 }

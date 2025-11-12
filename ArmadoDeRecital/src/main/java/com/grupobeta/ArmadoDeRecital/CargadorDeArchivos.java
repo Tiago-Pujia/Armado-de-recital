@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -59,9 +60,9 @@ public class CargadorDeArchivos {
 		return canciones;
 	}
 	
-	public ArrayList<Artista> cargarArchivoArtistas() {
+	public ArrayList<ArtistaContratado> cargarArchivoArtistas() {
 		
-			ArrayList<Artista> repertorio = new ArrayList<Artista>();
+			ArrayList<ArtistaContratado> repertorio = new ArrayList<ArtistaContratado>();
 			
 			try {
 				JSONArray artistasArray = this.parsearJSONArray(ARCHIVO_ARTISTAS);
@@ -76,17 +77,17 @@ public class CargadorDeArchivos {
 					JSONArray rolesJSON = (JSONArray) artistaJSON.get(CLAVE_ARTISTA_ROLES);
 					JSONArray historicoJSON = (JSONArray) artistaJSON.get(CLAVE_ARTISTA_BANDAS);
 					
-					ArrayList<String> roles = new ArrayList<String>();
+					HashSet<String> roles = new HashSet<String>();
 					for(int j = 0 ; j < rolesJSON.length() ; j++) {
 						roles.add(rolesJSON.getString(j));
 					}
 					
-					ArrayList<String> historicoBandas = new ArrayList<String>();
+					HashSet<String> historicoBandas = new HashSet<String>();
 					for(int j = 0 ; j < historicoJSON.length() ; j++) {
 						historicoBandas.add(historicoJSON.getString(j));
 					}
 					
-					repertorio.add(new Artista(nombre, roles, costo, maxCanc, historicoBandas));
+					repertorio.add(new ArtistaContratado(nombre, roles, historicoBandas, maxCanc, costo));
 				}
 				
 			} catch (IOException e) {
@@ -95,9 +96,10 @@ public class CargadorDeArchivos {
 			return repertorio;
 		}
 	
-	public ArrayList<String> cargarArchivoArtistasBase(){
+	public ArrayList<ArtistaBase> cargarArchivoArtistasBase(ArrayList<ArtistaContratado> repertorio){
 		
 		ArrayList<String> nombresArtistasBase = new ArrayList<String>();
+		ArrayList<ArtistaBase> artistasBase = new ArrayList<ArtistaBase>();		
 		//ArrayList<Artista> artistasBase = new ArrayList<Artista>();
 		
 		try {
@@ -108,12 +110,20 @@ public class CargadorDeArchivos {
 				nombresArtistasBase.add((String)artistasArray.get(i));
 			}
 			
-			//ArrayList<Artista> repertorio = this.cargarArchivoArtistas();
+			///si lo hago con foreach, al hacer remove tenemos problemas de concurrencia
+			for(int i = 0; i < repertorio.size() ; i++) {
+				ArtistaContratado art = repertorio.get(i);
+				if(nombresArtistasBase.contains(art.getNombre())) {
+					artistasBase.add(new ArtistaBase(art.getNombre(),art.getRoles(),art.getHistorial()));
+					repertorio.remove(art);
+					i--;
+				}
+			}
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		
 		
-		return nombresArtistasBase;		
+		return artistasBase;		
 	}
 }

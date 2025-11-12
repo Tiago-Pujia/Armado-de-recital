@@ -1,10 +1,10 @@
 [
   {
-    "titulo": "Somebody to Love",
+    "titulo": "Love Will Tear Us Apart",
     "rolesRequeridos": ["voz principal", "guitarra eléctrica", "bajo", "batería", "piano"]
   },
   {
-    "titulo": "We Will Rock You",
+    "titulo": "I Wanna Be Sedated",
     "rolesRequeridos": ["voz principal", "guitarra eléctrica", "bajo", "batería"]
   },
   {
@@ -12,23 +12,75 @@
     "rolesRequeridos": ["voz principal", "guitarra eléctrica", "bajo", "batería"]
   },
   {
-    "titulo": "Under Pressure",
-    "rolesRequeridos": ["voz principal", "voz principal", "guitarra eléctrica", "bajo", "batería"]
+    "titulo": "Lucretia My Reflection",
+    "rolesRequeridos": ["voz principal", "coros", "guitarra eléctrica", "bajo", "batería"]
   },
   {
-    "titulo": "Bohemian Rhapsody",
-    "rolesRequeridos": ["voz principal", "coros", "coros", "guitarra eléctrica", "piano", "bajo", "batería"]
+    "titulo": "Heaven Knows I'm Miserable Now",
+    "rolesRequeridos": ["voz principal", "guitarra eléctrica", "piano", "bajo", "batería"]
   },
   {
-    "titulo": "Piano Man",
-    "rolesRequeridos": ["voz principal", "piano", "bajo", "guitarra acústica"]
+    "titulo": "I Don't Wanna Be Me",
+    "rolesRequeridos": ["voz principal", "piano", "bajo", "guitarra acústica", "batería"]
   },
   {
-    "titulo": "Heroes",
+    "titulo": "Falling Away from Me",
     "rolesRequeridos": ["voz principal", "guitarra eléctrica", "guitarra acústica", "bajo", "batería", "sintetizador"]
   },
   {
-    "titulo": "Sunday Bloody Sunday",
+    "titulo": "Heart-Shaped Box",
+    "rolesRequeridos": ["voz principal", "guitarra eléctrica", "bajo", "batería"]
+  },
+  {
+    "titulo": "Welcome To The Black Parade",
+    "rolesRequeridos": ["voz principal", "guitarra eléctrica", "bajo", "batería"]
+  },
+  {
+    "titulo": "Last Caress",
+    "rolesRequeridos": ["voz principal", "guitarra eléctrica", "bajo", "batería"]
+  },
+  {
+    "titulo": "Friday I'm In Love",
     "rolesRequeridos": ["voz principal", "guitarra eléctrica", "bajo", "batería", "teclados"]
+  },
+  {
+    "titulo": "21st Century Schizoid Man",
+    "rolesRequeridos": ["voz principal", "guitarra eléctrica", "bajo", "batería", "teclados"]
+  },
+  {
+    "titulo": "Man In The Box",
+    "rolesRequeridos": ["voz principal", "guitarra eléctrica", "guitarra eléctrica", "bajo", "batería"]
+  },
+  {
+    "titulo": "Paranoid",
+    "rolesRequeridos": ["voz principal", "guitarra eléctrica", "guitarra eléctrica", "bajo", "batería"]
+  },
+  {
+    "titulo": "Cities in Dust",
+    "rolesRequeridos": ["voz principal", "guitarra eléctrica", "bajo", "batería"]
+  },
+  {
+    "titulo": "In The End",
+    "rolesRequeridos": ["voz principal", "voz secundaria", "guitarra eléctrica", "bajo", "batería"]
+  },
+  {
+    "titulo": "Cherry Waves",
+    "rolesRequeridos": ["voz principal", "guitarra eléctrica", "bajo", "batería"]
+  },
+  {
+    "titulo": "Toxicity",
+    "rolesRequeridos": ["voz principal", "voz secundaria", "guitarra eléctrica", "bajo", "batería"]
+  },
+  {
+    "titulo": "We Don't Believe What's on TV",
+    "rolesRequeridos": ["voz principal", "guitarra eléctrica", "bajo", "teclado"]
+  },
+  {
+    "titulo": "Even Flow",
+    "rolesRequeridos": ["voz principal", "guitarra eléctrica", "bajo", "batería"]
+  },
+  {
+    "titulo": "Around the World",
+    "rolesRequeridos": ["voz principal", "bajo", "teclado", "sintetizador"]
   }
 ]

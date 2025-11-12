@@ -7,14 +7,14 @@ public class Recital {
 	
 	ArrayList<Cancion> canciones = null; 
 	ArrayList<Contratacion> contrataciones = null;
-	ArrayList<Artista> repertorio = null;
-	ArrayList<String> artistasBase = null;
+	ArrayList<ArtistaContratado> repertorioContratables = null;
+	ArrayList<ArtistaBase> artistasBase = null;
 	Contratador contratador = null;
 	
-	public Recital(ArrayList<Cancion> c, ArrayList<Artista> r, ArrayList<String> ab) throws Exception {
-		this.canciones = c;
-		this.repertorio = r;
-		this.artistasBase = ab;
+	public Recital(CargadorDeArchivos cargador) throws Exception {
+		this.canciones = cargador.cargarArchivoRecital();
+		this.repertorioContratables = cargador.cargarArchivoArtistas();
+		this.artistasBase = cargador.cargarArchivoArtistasBase(repertorioContratables);
 		this.contrataciones = new ArrayList<Contratacion>();
 		this.contratador = new Contratador();
 		this.agregarArtistasBase();
@@ -32,27 +32,28 @@ public class Recital {
 						//sigo con otro rol 
 					//no lo tiene? sigo con otro artista
 	
-	private void agregarArtistasBase() throws Exception { //contratar all es basicamente esto pero contratando a mansalva a todos sin chequear que sea base o no, simplemente contrata
+	private void agregarArtistasBase() { //contratar all es basicamente esto pero contratando a mansalva a todos sin chequear que sea base o no, simplemente contrata
 		
 		//se me ocurre remover temporalmente al artista ya contratado del repertorio para que no pregunte 
 		//por él varias veces para una misma canción. Después lo agregamos otra vez al finalizar
-		ArrayList<Artista> artistasContratadosParaCancionTemp = new ArrayList<Artista>(); 
+		ArrayList<ArtistaBase> artistasContratadosParaCancionTemp = new ArrayList<ArtistaBase>(); 
 		
 		for(Cancion cancion : canciones) { 
 			
-			for(int i = 0; i < repertorio.size() ; i++) {
-				
-				Artista artista = repertorio.get(i);
-				if(artistasBase.contains(artista.getNombre())  && contratador.artistaEsContratableParaCancion(this.contrataciones, artista, cancion)) {
+			///si lo hago con foreach, al hacer remove tenemos problemas de concurrencia
+			for(int i = 0; i< artistasBase.size() ; i++) {
+				ArtistaBase artista = artistasBase.get(i);
+				if(contratador.artistaEsContratableParaCancion(this.contrataciones, artista, cancion)) {
 					this.contrataciones.add(this.contratador.contratarArtistaParaUnRolEnCancion(artista, cancion));
 					artistasContratadosParaCancionTemp.add(artista);
-					this.repertorio.remove(artista);
+					this.artistasBase.remove(artista);
+					i--;
 				}
 							
 			}
 			
 		}
-		this.repertorio.addAll(artistasContratadosParaCancionTemp); 
+		this.artistasBase.addAll(artistasContratadosParaCancionTemp); 
 	}
 	
 	///punto 1

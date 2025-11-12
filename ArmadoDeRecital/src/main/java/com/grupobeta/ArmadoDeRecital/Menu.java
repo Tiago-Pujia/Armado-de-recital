@@ -37,9 +37,7 @@ public class Menu {
     }
     
     private void crearRecital() throws Exception {
-    	this.recital = new Recital(this.cargadorDeArchivos.cargarArchivoRecital(),
-					    			this.cargadorDeArchivos.cargarArchivoArtistas(),
-					    			this.cargadorDeArchivos.cargarArchivoArtistasBase());
+    	this.recital = new Recital(this.cargadorDeArchivos);
 	}
 
 	private void configurarOpciones() {
@@ -113,7 +111,7 @@ public class Menu {
 			return;
 		}
 		if(rolesFaltantes.isEmpty()) {
-			System.out.println("La canción ingresada tiene todos sus roles" + ANSI_GREEN + "cubiertos" + ANSI_RESET);
+			System.out.println("La canción ingresada tiene todos sus roles" + ANSI_GREEN + " cubiertos" + ANSI_RESET);
 			return;
 		}
 		System.out.println(ANSI_PURPLE + nombre + ANSI_RESET + "\nRoles faltantes por cubrir:\n" + ANSI_RED + rolesFaltantes + ANSI_RESET + "\n");		
@@ -140,7 +138,7 @@ public class Menu {
 		}
 	}
 	
-	///punto 3 <L>-------------ACÁ ME QUEDÉ ANOCHE ----------<\L>
+	///punto 3 <L>---------ACÁ ME QUEDÉ ANOCHE ----------<\L>
 	public void contratarArtistasParaCancion(Scanner scanner) {
 		
 	}

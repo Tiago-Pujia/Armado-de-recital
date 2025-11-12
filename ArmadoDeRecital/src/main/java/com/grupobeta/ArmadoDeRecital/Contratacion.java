@@ -16,10 +16,10 @@ public class Contratacion implements Comparable<Contratacion>{
 		this.costo = a.getCosto();
 	}
 	
-	public static Contratacion contratarArtistaRol(Cancion cancion, Artista artista, String rol) throws Exception {
+	public static Contratacion contratarArtistaRol(Cancion cancion, Artista artista, String rol) {
 		
 		if(!artista.getRoles().contains(rol)) {
-			throw new Exception("El artista no cuenta con el rol que estás intentando asignarle");
+			throw new IllegalArgumentException("El artista no cuenta con el rol que estás intentando asignarle");
 		}
 		return new Contratacion(cancion, artista, rol);
 	}

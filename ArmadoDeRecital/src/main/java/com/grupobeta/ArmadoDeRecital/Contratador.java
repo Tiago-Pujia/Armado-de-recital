@@ -6,13 +6,13 @@ import java.util.HashSet;
 public class Contratador {
 	
 	//extraemos el primer rol que tengan en comun artista.roles y cancion.roles
-	public Contratacion contratarArtistaParaUnRolEnCancion(Artista artista, Cancion cancion) throws Exception {
+	public Contratacion contratarArtistaParaUnRolEnCancion(Artista artista, Cancion cancion) {
 		
 		return this.crearContrato(artista, cancion, this.rolesQuePuedeTomarArtistaParaCancion(artista, cancion).iterator().next()); 
 	}
 	
 	/// crea el contrato y lo devuelve, no sin antes quitarle a la cancion 1 unidad de ese rol de sus roles faltantes por cubrir
-	public Contratacion crearContrato(Artista artista, Cancion cancion, String rol) throws Exception {
+	public Contratacion crearContrato(Artista artista, Cancion cancion, String rol) {
 		
 		//aplicarDescuentos(artista,contrataciones,cancion); //chequea que haya algún artista base contratado y le 
 		
@@ -62,7 +62,4 @@ public class Contratador {
 		interseccion.retainAll(cancion.getRolesRequeridos().keySet());
 		return interseccion;
 	}
-
-
-	
 }
