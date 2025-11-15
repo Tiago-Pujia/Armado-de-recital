@@ -34,7 +34,7 @@ class CargadorDeArchivosTests {
 	void cargadoDeArchivoArtistas() {
 			
 		CargadorDeArchivos cargador = new CargadorDeArchivos();
-		ArrayList<ArtistaContratado> repertorio = cargador.cargarArchivoArtistas();
+		ArrayList<ArtistaContratable> repertorio = cargador.cargarArchivoArtistas();
 		
 		for(Artista a : repertorio) {
 			System.out.println(a.toString());
@@ -56,7 +56,7 @@ class CargadorDeArchivosTests {
 	void cargadoDeArtistasBase() {
 		
 		CargadorDeArchivos cargador = new CargadorDeArchivos();
-		ArrayList<ArtistaContratado> repertorio = cargador.cargarArchivoArtistas();
+		ArrayList<ArtistaContratable> repertorio = cargador.cargarArchivoArtistas();
 		ArrayList<ArtistaBase> artBase = cargador.cargarArchivoArtistasBase(repertorio);
 		
 		for(ArtistaBase ab : artBase) {

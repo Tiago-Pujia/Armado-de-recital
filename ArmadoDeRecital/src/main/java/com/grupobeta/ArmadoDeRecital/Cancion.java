@@ -24,13 +24,16 @@ public class Cancion {
 				this.rolesRequeridos.remove(rol);
 			}
 		}
-		
 	}
 	
 	public String getTitulo() {
 		return this.titulo;
 	}
-
+	
+	public void setRolesRequeridos(HashMap<String, Integer> roles) {
+		this.rolesRequeridos = roles;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(rolesRequeridos, titulo);

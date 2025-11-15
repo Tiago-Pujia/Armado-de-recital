@@ -17,7 +17,8 @@ public abstract class Artista implements Comparable<Artista> {
 	public Artista(String name, Set<String>roles, Set<String>historial, double costo) {
 		this.nombre = name;
 		this.roles = new HashSet<String>(roles);
-		this.bandasHistoricas = new HashSet<String>(historial);		
+		this.bandasHistoricas = new HashSet<String>(historial);
+		this.costoContratacion = costo;
 	}
 				
 	public boolean compartioBandaCon(Artista otro) {

@@ -66,9 +66,9 @@ public class Menu {
     		
     		this.ejecutarOpcion(eleccion);
     		
-    		System.out.println("Presione cualquier número/letra y luego enter");
     		scanner.nextLine();
-    		String esperaSigEntrada = this.scanner.next(); //¿hay otra forma de hacerlo esperar a la siguiente input sin hacer esto? me da toc el warning 
+    		System.out.println("Presione enter");
+    		scanner.nextLine();
     	}
     	
     	this.scanner.close();
@@ -141,17 +141,14 @@ public class Menu {
 		String nombreCancion = scanner.nextLine();
 		Cancion cancion = recital.buscarCancion(nombreCancion);
 		
-		try {
-			
-			if(recital.contratarArtistasParaCancion(cancion) == CodigoDeRetorno.NO_SE_PUEDEN_CUBRIR_TODOS_LOS_ROLES) {
-				System.out.println("NO SE PUEDEN CUBRIR TODOS LOS ROLES");
-			}
-		}
-		catch(IllegalArgumentException e) {
+		if(cancion == null) {
 			System.out.println("La canción ingresada es inválida");
 		}
-	
 		
+		if(recital.contratarArtistasParaCancion(cancion) == CodigoDeRetorno.NO_SE_PUEDEN_CUBRIR_TODOS_LOS_ROLES) {
+			System.out.println("NO SE PUEDEN CUBRIR TODOS LOS ROLES");
+		}
+	
 	}
 	
 	///punto 4
@@ -162,6 +159,17 @@ public class Menu {
 	///punto 5
 	public void entrenarArtista(Scanner scanner) {
 		
+		System.out.printf("Ingrese el nombre del artista: ");
+		scanner.nextLine();
+		String nombre = scanner.nextLine();
+		ArtistaContratable artista = recital.buscarArtistaContratable(nombre);
+		
+		System.out.printf("Ingrese el rol que quieres darle: ");
+		scanner.nextLine();
+		String rol = scanner.nextLine();
+	
+		recital.entrenarArtista(artista, rol);
+		System.out.printf("El Artista" + nombre + "ha sido entrenado");
 	}
 	
 	///punto 6
@@ -174,10 +182,20 @@ public class Menu {
 	}
 	
 	///punto 7
-	// me di cuenta de que hice lo del punto 2 acá XDDDD es más o menos parecido, pero hay que recorrer las canciones,
-	// obtener el costo total por cancion y el costo total del recital usando recital.getCostoTotalPorCancion y getCostoTotal (names may vary)
 	public void listarCanciones(Scanner scanner) {
 		
+		int i = 1;
+		
+		for(Cancion cancion : recital.getCanciones()) {
+			System.out.println(ANSI_YELLOW + i + ". " + ANSI_PURPLE + cancion.getTitulo() + ANSI_GREEN + " - Costo: $" + recital.obtenerCostoContratacionesCancion(cancion) + ANSI_RESET);
+			i++;
+			if(cancion.getRolesRequeridos().isEmpty()) {
+				System.out.println(ANSI_CYAN + "No quedan roles por cubrir !\n" + ANSI_RESET);
+			}
+			else {
+				System.out.println("Roles faltantes por cubrir:\n" + ANSI_RED + cancion.getRolesRequeridos() + ANSI_RESET + "\n");		
+			}
+		}
 	}
 	
 	public void prolog(Scanner scanner) {

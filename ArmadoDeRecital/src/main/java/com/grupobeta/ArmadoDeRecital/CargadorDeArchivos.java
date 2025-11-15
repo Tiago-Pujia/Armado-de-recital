@@ -60,9 +60,9 @@ public class CargadorDeArchivos {
 		return canciones;
 	}
 	
-	public ArrayList<ArtistaContratado> cargarArchivoArtistas() {
+	public ArrayList<ArtistaContratable> cargarArchivoArtistas() {
 		
-			ArrayList<ArtistaContratado> repertorio = new ArrayList<ArtistaContratado>();
+			ArrayList<ArtistaContratable> repertorio = new ArrayList<ArtistaContratable>();
 			
 			try {
 				JSONArray artistasArray = this.parsearJSONArray(ARCHIVO_ARTISTAS);
@@ -71,7 +71,7 @@ public class CargadorDeArchivos {
 					
 					JSONObject artistaJSON = (JSONObject) artistasArray.get(i);
 					String nombre = (String)artistaJSON.get(CLAVE_ARTISTA_NOMBRE);
-					double costo = (double)artistaJSON.get(CLAVE_ARTISTA_COSTO);
+					double costo = artistaJSON.getDouble(CLAVE_ARTISTA_COSTO);
 					int maxCanc = artistaJSON.getInt(CLAVE_ARTISTA_MAX);
 										
 					JSONArray rolesJSON = (JSONArray) artistaJSON.get(CLAVE_ARTISTA_ROLES);
@@ -87,7 +87,7 @@ public class CargadorDeArchivos {
 						historicoBandas.add(historicoJSON.getString(j));
 					}
 					
-					repertorio.add(new ArtistaContratado(nombre, roles, historicoBandas, maxCanc, costo));
+					repertorio.add(new ArtistaContratable(nombre, roles, historicoBandas, maxCanc, costo));
 				}
 				
 			} catch (IOException e) {
@@ -96,7 +96,7 @@ public class CargadorDeArchivos {
 			return repertorio;
 	}
 	
-	public ArrayList<ArtistaBase> cargarArchivoArtistasBase(ArrayList<ArtistaContratado> repertorio){
+	public ArrayList<ArtistaBase> cargarArchivoArtistasBase(ArrayList<ArtistaContratable> repertorio){
 		
 		ArrayList<String> nombresArtistasBase = new ArrayList<String>();
 		ArrayList<ArtistaBase> artistasBase = new ArrayList<ArtistaBase>();		
@@ -111,7 +111,7 @@ public class CargadorDeArchivos {
 			
 			///si lo hago con foreach, al hacer remove tenemos problemas de concurrencia
 			for(int i = 0; i < repertorio.size() ; i++) {
-				ArtistaContratado art = repertorio.get(i);
+				ArtistaContratable art = repertorio.get(i);
 				if(nombresArtistasBase.contains(art.getNombre())) {
 					artistasBase.add(new ArtistaBase(art.getNombre(),art.getRoles(),art.getHistorial()));
 					repertorio.remove(art);
