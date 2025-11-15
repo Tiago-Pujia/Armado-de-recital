@@ -33,6 +33,6 @@ public class ArtistaContratado extends Artista{
 	
 	@Override
 	public boolean esContratable() {
-		return cantContratos > maxCanciones;
+		return cantContratos < maxCanciones;
 	}
 }

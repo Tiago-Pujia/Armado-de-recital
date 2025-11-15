@@ -26,17 +26,16 @@ public class Menu {
     private Scanner scanner = null;
     private boolean estaCorriendo = true;
     
-    public Menu() throws Exception {
+    public Menu() {
     	
     	this.scanner = new Scanner(System.in);
     	opciones = new HashMap<Integer, Consumer<Scanner>>();
     	this.configurarOpciones();
-    	
     	this.cargadorDeArchivos = new CargadorDeArchivos();
     	this.crearRecital();
     }
     
-    private void crearRecital() throws Exception {
+    private void crearRecital() {
     	this.recital = new Recital(this.cargadorDeArchivos);
 	}
 
@@ -103,8 +102,9 @@ public class Menu {
 		
 		System.out.printf("Ingrese el nombre de la canción: ");
 		scanner.nextLine();
-		String nombre = scanner.nextLine();
-		HashMap<String, Integer> rolesFaltantes = this.recital.consultarRolesFaltantesParaCancion(nombre);
+		String nombreCancion = scanner.nextLine();
+		Cancion cancion = recital.buscarCancion(nombreCancion);
+		HashMap<String, Integer> rolesFaltantes = this.recital.consultarRolesFaltantesParaCancion(cancion);
 		
 		if(rolesFaltantes == null) {
 			System.out.println("El nombre ingresado" + ANSI_RED + " no coincide " + ANSI_RESET + "con ninguna canción registrada para el recital. Intente nuevamente.");
@@ -114,14 +114,8 @@ public class Menu {
 			System.out.println("La canción ingresada tiene todos sus roles" + ANSI_GREEN + " cubiertos" + ANSI_RESET);
 			return;
 		}
-		System.out.println(ANSI_PURPLE + nombre + ANSI_RESET + "\nRoles faltantes por cubrir:\n" + ANSI_RED + rolesFaltantes + ANSI_RESET + "\n");		
+		System.out.println(ANSI_PURPLE + nombreCancion + ANSI_RESET + "\nRoles faltantes por cubrir:\n" + ANSI_RED + rolesFaltantes + ANSI_RESET + "\n");		
 	}
-	
-	public Cancion buscarCancion(String ncanc) {
-		
-		return recital.buscarCancion(ncanc);
-	}
-	
 	
 	///punto 2
 	public void obtenerRolesFaltantesAll(Scanner scanner) {
@@ -138,8 +132,25 @@ public class Menu {
 		}
 	}
 	
-	///punto 3 <L>---------ACÁ ME QUEDÉ ANOCHE ----------<\L>
+	///punto 3 <L>---------ACÁ ESTOY HOY 13/11 ----------<\L>
+
 	public void contratarArtistasParaCancion(Scanner scanner) {
+		
+		System.out.printf("Ingrese el nombre de la canción: ");
+		scanner.nextLine();
+		String nombreCancion = scanner.nextLine();
+		Cancion cancion = recital.buscarCancion(nombreCancion);
+		
+		try {
+			
+			if(recital.contratarArtistasParaCancion(cancion) == CodigoDeRetorno.NO_SE_PUEDEN_CUBRIR_TODOS_LOS_ROLES) {
+				System.out.println("NO SE PUEDEN CUBRIR TODOS LOS ROLES");
+			}
+		}
+		catch(IllegalArgumentException e) {
+			System.out.println("La canción ingresada es inválida");
+		}
+	
 		
 	}
 	

@@ -30,6 +30,10 @@ public abstract class Artista implements Comparable<Artista> {
 		this.cantContratos++;
 	}
 	
+	public boolean tieneRol(String rol) {
+		return this.roles.contains(rol);
+	}
+	
 	public abstract boolean esContratable();
 	
 	public String getNombre() {

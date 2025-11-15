@@ -7,17 +7,18 @@ public class Recital {
 	
 	ArrayList<Cancion> canciones = null; 
 	ArrayList<Contratacion> contrataciones = null;
-	ArrayList<ArtistaContratado> repertorioContratables = null;
+	ArrayList<ArtistaContratado> artistasContratables = null;
 	ArrayList<ArtistaBase> artistasBase = null;
 	Contratador contratador = null;
 	
-	public Recital(CargadorDeArchivos cargador) throws Exception {
+	public Recital(CargadorDeArchivos cargador) {
 		this.canciones = cargador.cargarArchivoRecital();
-		this.repertorioContratables = cargador.cargarArchivoArtistas();
-		this.artistasBase = cargador.cargarArchivoArtistasBase(repertorioContratables);
+		this.artistasContratables = cargador.cargarArchivoArtistas();
+		this.artistasBase = cargador.cargarArchivoArtistasBase(artistasContratables);
 		this.contrataciones = new ArrayList<Contratacion>();
 		this.contratador = new Contratador();
 		this.agregarArtistasBase();
+		this.aplicarDescuentos();
 	}
 	
 	///agregar artistas base
@@ -44,7 +45,7 @@ public class Recital {
 			for(int i = 0; i< artistasBase.size() ; i++) {
 				ArtistaBase artista = artistasBase.get(i);
 				if(contratador.artistaEsContratableParaCancion(this.contrataciones, artista, cancion)) {
-					this.contrataciones.add(this.contratador.contratarArtistaParaUnRolEnCancion(artista, cancion));
+					this.contrataciones.add(this.contratador.contratarArtistaParaUnRolCualquieraEnCancion(artista, cancion));
 					artistasContratadosParaCancionTemp.add(artista);
 					this.artistasBase.remove(artista);
 					i--;
@@ -56,11 +57,17 @@ public class Recital {
 		this.artistasBase.addAll(artistasContratadosParaCancionTemp); 
 	}
 	
+	private void aplicarDescuentos() {
+		for(ArtistaContratado artista : this.artistasContratables) {
+			if(this.contratador.artistaCompartioBandaConBase(artista, artistasBase)) {
+				artista.reducirCostoContratacion();
+			}
+		}
+	}
+	
 	///punto 1
-	public HashMap<String, Integer> consultarRolesFaltantesParaCancion(String nombre) {
-				
-		Cancion cancion = this.buscarCancion(nombre);
-		
+	public HashMap<String, Integer> consultarRolesFaltantesParaCancion(Cancion cancion) {
+						
 		if(cancion == null){
 			return null;
 		}
@@ -74,10 +81,69 @@ public class Recital {
 	}
 	
 	///punto 3
-	public void contratarArtistaParaCancion() {
+	///	/// 	si está, obtenemos su lista de roles faltantes ✓
+	///			si la lista está vacía, return "YA TIENE SUS ROLES CUBIERTOS" ✓
+	///			si la lista NO está vacía, empezar a iterar sobre la lista de artistas contratables. Marcamos el precio del primer artista como el mínimo. ✓
+	///			Luego, preguntamos si artista tiene ALGUN rol necesario para la canción ✓
+	///				si tiene al menos un rol, buscamos si compartió banda con algún artista base.
+	///					si compartió banda, guardamos en una variable cómo va a quedar el costo del artista con descuento (en caso de ser contratado)
+	///					si no compartió banda, guardamos en una variable su costo base
+	///					Luego, comparamos el precio con el del mínimo. 
+	///						Si es menor al mínimo, tomamos a ese artista como nuevo mínimo.  
+	///						Si es mayor al mínimo, no hacemos nada
+	///				si no tiene ningún rol, no hacemos nada
+	///			Seguimos con el siguiente artista
+	/// 	si no está, return "ERROR, la cancion ingresada no existe"
+	/// Retornamos el artista de menor costo Y LO CONTRATAMOS
+	
+	public CodigoDeRetorno contratarArtistasParaCancion(Cancion cancion) {
+		
+		boolean primeraVuelta = true, huboCambio = false;
+		Artista artistaCostoMin = null;
+		HashMap<String, Integer> roles = cancion.getRolesRequeridos();
+		ArrayList<ArtistaContratado> artistasContratadosParaCancionTemp = new ArrayList<ArtistaContratado>(); 
+		
+		if(roles.isEmpty()) {
+			return CodigoDeRetorno.YA_TIENE_LOS_ROLES_CUBIERTOS; // ya tiene los roles cubiertos
+		}
+		
+		///falta un bucle externo donde iteramos por cada rol y lo llenamos (de ser posible) usando el for este de acá abajo
+		
+		for( String rol : cancion.getRolesRequeridos().keySet() ) {
+			
+			for(int i = 0; i < this.artistasContratables.size() ; i++) {
+				
+				Artista artista = this.artistasContratables.get(i);
+				
+				if(this.contratador.artistaEsContratableParaCancionRol(contrataciones, artista, cancion, rol)) {
+					
+					if(primeraVuelta) {
+						artistaCostoMin = artista;
+						primeraVuelta = false;
+					}
+					if(artista.getCosto() < artistaCostoMin.getCosto()) {
+						artistaCostoMin = artista;
+						huboCambio = true;
+					}
+				}
+			}
+						
+			if(huboCambio) {
+				huboCambio = false;
+				primeraVuelta = true;
+				contratador.contratarArtistaParaUnRolEnCancion(artistaCostoMin, cancion, rol);
+				this.artistasContratables.remove(artistaCostoMin);
+			}
+		}
 		
 		
-		///se elimina de la lista de roles requeridos del array de canciones el rol especifico con el que se contrató a un artista
+		this.artistasContratables.addAll(artistasContratadosParaCancionTemp);
+		
+		if(!cancion.getRolesRequeridos().isEmpty()) {
+			return CodigoDeRetorno.NO_SE_PUEDEN_CUBRIR_TODOS_LOS_ROLES;
+		}
+		
+		return CodigoDeRetorno.ARTISTA_CONTRATADO;
 	}
 	
 	///punto 4

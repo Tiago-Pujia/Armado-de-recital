@@ -47,7 +47,7 @@ public class CargadorDeArchivos {
 				HashMap<String, Integer> roles = new HashMap<String, Integer>();
 				for(int j = 0 ; j < rolesJSON.length() ; j++) {
 					String rol = rolesJSON.getString(j);
-					roles.put(rol, roles.getOrDefault(rol, 0) + 1); // roles.add(rolesJSON.getString(j));
+					roles.put(rol, roles.getOrDefault(rol, 0) + 1);
 				}
 				
 				canciones.add(new Cancion(titulo,roles));
@@ -71,7 +71,7 @@ public class CargadorDeArchivos {
 					
 					JSONObject artistaJSON = (JSONObject) artistasArray.get(i);
 					String nombre = (String)artistaJSON.get(CLAVE_ARTISTA_NOMBRE);
-					double costo = (int)artistaJSON.get(CLAVE_ARTISTA_COSTO);
+					double costo = (double)artistaJSON.get(CLAVE_ARTISTA_COSTO);
 					int maxCanc = artistaJSON.getInt(CLAVE_ARTISTA_MAX);
 										
 					JSONArray rolesJSON = (JSONArray) artistaJSON.get(CLAVE_ARTISTA_ROLES);
@@ -94,13 +94,12 @@ public class CargadorDeArchivos {
 				e.printStackTrace();
 			}
 			return repertorio;
-		}
+	}
 	
 	public ArrayList<ArtistaBase> cargarArchivoArtistasBase(ArrayList<ArtistaContratado> repertorio){
 		
 		ArrayList<String> nombresArtistasBase = new ArrayList<String>();
 		ArrayList<ArtistaBase> artistasBase = new ArrayList<ArtistaBase>();		
-		//ArrayList<Artista> artistasBase = new ArrayList<Artista>();
 		
 		try {
 			
