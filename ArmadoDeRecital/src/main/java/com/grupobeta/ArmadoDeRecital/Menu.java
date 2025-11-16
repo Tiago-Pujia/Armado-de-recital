@@ -141,15 +141,24 @@ public class Menu {
 		String nombreCancion = scanner.nextLine();
 		Cancion cancion = recital.buscarCancion(nombreCancion);
 		
-		if(recital.contratarArtistasParaCancion(cancion) == CodigoDeRetorno.NO_SE_PUEDEN_CUBRIR_TODOS_LOS_ROLES) {
-			System.out.println("NO SE PUEDEN CUBRIR TODOS LOS ROLES");
+		if(cancion==null) {
+			System.out.println("El nombre ingresado no corresponde con ninguna canción del recital");
+			return;
 		}
-	
+		
+		CodigoDeRetorno resultado = recital.contratarArtistasParaCancion(cancion);
+		
+		if( resultado == CodigoDeRetorno.NO_SE_PUEDEN_CUBRIR_TODOS_LOS_ROLES) {
+			System.out.println("Hubo roles que no pudieron ser cubiertos, ¿Quiere entrenar a un artista?");
+		}	
+		if( resultado == CodigoDeRetorno.YA_TIENE_LOS_ROLES_CUBIERTOS) {
+			System.out.println(ANSI_CYAN + "La cancion ya tiene todos sus roles cubiertos." + ANSI_RESET);
+		}	
 	}
 	
-	///punto 4
+	///punto 4 <-------------FALTAN SOLO EL 3 Y EL 4----------------->
 	public void contratarArtistasAll(Scanner scanner) {
-		
+		recital.contratarArtistasAll();
 	}
 	
 	///punto 5
@@ -161,7 +170,6 @@ public class Menu {
 		ArtistaContratable artista = recital.buscarArtistaContratable(nombre);
 		
 		System.out.printf("Ingrese el rol que quieres darle: ");
-		scanner.nextLine();
 		String rol = scanner.nextLine();
 	
 		recital.entrenarArtista(artista, rol);
@@ -195,10 +203,13 @@ public class Menu {
 	public void listarCanciones(Scanner scanner) {
 		
 		int i = 1;
+		double costoTotal = 0, costoCancion;
 		
 		for(Cancion cancion : recital.getCanciones()) {
-			System.out.println(ANSI_YELLOW + i + ". " + ANSI_PURPLE + cancion.getTitulo() + ANSI_GREEN + " - Costo: $" + recital.obtenerCostoContratacionesCancion(cancion) + ANSI_RESET);
+			costoCancion = recital.obtenerCostoContratacionesCancion(cancion);
+			System.out.println(ANSI_YELLOW + i + ". " + ANSI_PURPLE + cancion.getTitulo() + ANSI_GREEN + " - Costo: $" + costoCancion + ANSI_RESET);
 			i++;
+			costoTotal += costoCancion;
 			if(cancion.getRolesRequeridos().isEmpty()) {
 				System.out.println(ANSI_CYAN + "No quedan roles por cubrir !\n" + ANSI_RESET);
 			}
@@ -206,6 +217,7 @@ public class Menu {
 				System.out.println("Roles faltantes por cubrir:\n" + ANSI_RED + cancion.getRolesRequeridos() + ANSI_RESET + "\n");		
 			}
 		}
+		System.out.println("Costo total del recital: " + ANSI_GREEN +costoTotal + ANSI_RESET);
 	}
 	
 	public void prolog(Scanner scanner) {

@@ -6,8 +6,6 @@ import java.util.Set;
 
 public abstract class Artista implements Comparable<Artista> {
 	
-	public static double DESCUENTO_POR_COMPARTIR_BANDA = 0.5;
-	
 	protected String nombre;	
 	protected HashSet<String> roles = null;
 	protected HashSet<String> bandasHistoricas = null;

@@ -83,15 +83,31 @@ public class Contratador {
 		return interseccion;
 	}
 
-	public boolean artistaCompartioBandaConBase(Artista artista, ArrayList<ArtistaBase> artistasBase) {
+	public Artista cancionTieneContratadoAUnBase(Cancion cancion, ArrayList<ArtistaBase> artistasBase, ArrayList<Contratacion> contrataciones) {
 			
-		for(ArtistaBase base : artistasBase) {
-			HashSet<String> interseccion = new HashSet<String>(artista.getRoles());
-			interseccion.retainAll(base.getRoles());
-			if(!interseccion.isEmpty()) {
-				return true;
+		for(Contratacion contrato : contrataciones) {
+			if(contrato.getCancion().equals(cancion) && artistasBase.contains(contrato.getArtista())) {
+				return contrato.getArtista();
 			}
 		}		
-		return false;
+		return null;
 	}	
+	
+	public boolean aplicarDescuento(ArtistaContratable artista, Cancion cancion, ArrayList<ArtistaBase> artistasBase, ArrayList<Contratacion> contrataciones ) {
+		Artista baseEnCancion = cancionTieneContratadoAUnBase(cancion, artistasBase, contrataciones);
+		if(baseEnCancion!=null) {
+			if(artista.compartioBandaCon(baseEnCancion)) {
+				artista.reducirCostoContratacion(ArtistaContratable.DESCUENTO_POR_COMPARTIR_BANDA);
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }
+
+//HashSet<String> interseccion = new HashSet<String>(artista.getRoles());
+//interseccion.retainAll(base.getRoles());
+//if(!interseccion.isEmpty()) {
+//	return true;
+//}

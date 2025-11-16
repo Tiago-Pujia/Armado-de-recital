@@ -19,7 +19,7 @@ public class Contratacion implements Comparable<Contratacion>{
 	public static Contratacion contratarArtistaRol(Cancion cancion, Artista artista, String rol) {
 		
 		if(!artista.getRoles().contains(rol)) {
-			throw new IllegalArgumentException("El artista no cuenta con el rol que estás intentando asignarle");
+			throw new IllegalArgumentException("El artista" + artista.getNombre() + " no cuenta con el rol " + rol + " que estás intentando asignarle para la cancion " + cancion.getTitulo());
 		}
 		return new Contratacion(cancion, artista, rol);
 	}

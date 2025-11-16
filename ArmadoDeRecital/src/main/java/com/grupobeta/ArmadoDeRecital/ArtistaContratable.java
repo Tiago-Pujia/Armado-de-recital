@@ -5,6 +5,8 @@ import java.util.Set;
 public class ArtistaContratable extends Artista{
 	
 	public static double AUMENTO_POR_ENTRENAMIENTO = 1.5;
+	public static double AUMENTO_ARREGLO = 1.5; //para bajarle el precio y luego subirselo tras contratar al artista
+	public static double DESCUENTO_POR_COMPARTIR_BANDA = 0.5;
 	
 	private int maxCanciones;
 	
@@ -14,17 +16,17 @@ public class ArtistaContratable extends Artista{
 		this.maxCanciones = maxCanciones;
 	}
 		
-	public void reducirCostoContratacion() {
-		this.costoContratacion = this.costoContratacion * DESCUENTO_POR_COMPARTIR_BANDA;
+	public void reducirCostoContratacion(double descuento) {
+		this.costoContratacion = this.costoContratacion * descuento;
 	}
 	
-	private void aumentarCostoContratacion() {
-		this.costoContratacion = this.costoContratacion * AUMENTO_POR_ENTRENAMIENTO;
+	public void aumentarCostoContratacion(double aumento) {
+		this.costoContratacion = this.costoContratacion * aumento;
 	}
 
 	public void entrenar(String rol) {
 		this.roles.add(rol);
-		this.aumentarCostoContratacion();
+		this.aumentarCostoContratacion(AUMENTO_POR_ENTRENAMIENTO);
 	}
 
 	public int getMaxCanciones() {

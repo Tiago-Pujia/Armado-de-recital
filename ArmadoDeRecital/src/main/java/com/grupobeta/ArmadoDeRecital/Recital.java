@@ -2,6 +2,7 @@ package com.grupobeta.ArmadoDeRecital;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Recital {
 	
@@ -18,22 +19,9 @@ public class Recital {
 		this.contrataciones = new ArrayList<Contratacion>();
 		this.contratador = new Contratador();
 		this.agregarArtistasBase();
-//		this.aplicarDescuentos();
 	}
 	
-	///agregar artistas base
-	/// recorro la lista de canciones y obtengo su lista de roles
-		///recorro la lista de roles faltantes y busco en el repertorio un artista base (me fijo que el nombre del artista esté en la lista de artistas base)
-			///si lo encuentro, me fijo si en la lista de contrataciones ya está contratado para esa misma cancion
-				///si lo está, paso al siguiente artista.
-				//si no lo está, me fijo si tiene el rol
-					//lo tiene? lo contrato
-						//creo un contrato para ese artista y ese rol, le resto 1 a la cantidad de ese rol en el hashmap de roles de la cancion y agrego el contrato a la lista de contratos
-							//si el hashmap tiene 0 para ese rol, elimino esa entrada del map
-						//sigo con otro rol 
-					//no lo tiene? sigo con otro artista
-	
-	private void agregarArtistasBase() { //contratar all es basicamente esto pero contratando a mansalva a todos sin chequear que sea base o no, simplemente contrata
+	private void agregarArtistasBase() {
 		
 		for(Cancion cancion : canciones) { 
 			
@@ -46,14 +34,6 @@ public class Recital {
 			}
 		}
 	}
-	
-//	private void aplicarDescuentos() {
-//		for(ArtistaContratado artista : this.artistasContratables) {
-//			if(this.contratador.artistaCompartioBandaConBase(artista, artistasBase)) {
-//				artista.reducirCostoContratacion();
-//			}
-//		}
-//	}
 	
 	///punto 1
 	public HashMap<String, Integer> consultarRolesFaltantesParaCancion(Cancion cancion) {
@@ -70,34 +50,63 @@ public class Recital {
 		return this.canciones;		
 	}
 	
-	///punto 3
-	///	/// 	si está, obtenemos su lista de roles faltantes ✓
-	///			si la lista está vacía, return "YA TIENE SUS ROLES CUBIERTOS" ✓
-	///			si la lista NO está vacía, empezar a iterar sobre la lista de artistas contratables. Marcamos el precio del primer artista como el mínimo. ✓
-	///			Luego, preguntamos si artista tiene ALGUN rol necesario para la canción ✓
-	///				si tiene al menos un rol, buscamos si compartió banda con algún artista base.
-	///					si compartió banda, guardamos en una variable cómo va a quedar el costo del artista con descuento (en caso de ser contratado)
-	///					si no compartió banda, guardamos en una variable su costo base
-	///					Luego, comparamos el precio con el del mínimo. 
-	///						Si es menor al mínimo, tomamos a ese artista como nuevo mínimo.  
-	///						Si es mayor al mínimo, no hacemos nada
-	///				si no tiene ningún rol, no hacemos nada
-	///			Seguimos con el siguiente artista
-	/// 	si no está, return "ERROR, la cancion ingresada no existe"
-	/// Retornamos el artista de menor costo Y LO CONTRATAMOS
-	
 	public CodigoDeRetorno contratarArtistasParaCancion(Cancion cancion) {
-				
-		if(!cancion.getRolesRequeridos().isEmpty()) {
+		
+		boolean rolVacio = true, primerContratable = true;
+		HashMap<String, Integer> copia = new HashMap<String, Integer>(cancion.getRolesRequeridos());
+		
+		if(copia.isEmpty()) {
+			return CodigoDeRetorno.YA_TIENE_LOS_ROLES_CUBIERTOS;
+		}
+		
+		for(Map.Entry<String, Integer> rol : copia.entrySet()) {
+			
+			while(rol.getValue() != 0) {
+				rolVacio = true;
+				ArtistaContratable artistaMin = artistasContratables.iterator().next();
+				for(ArtistaContratable artista : artistasContratables) {
+					
+					if(contratador.artistaEsContratableParaCancionRol(contrataciones, artista, cancion, rol.getKey())) {
+						
+						if(primerContratable) {
+							artistaMin = artista;
+							primerContratable = false;
+							rolVacio = false;
+						}
+						
+						if(artista.getCosto() < artistaMin.getCosto()) {
+							artistaMin = artista;
+							rolVacio = false;
+						}
+					}
+				}
+				if(!rolVacio) {
+					boolean huboDescuento = contratador.aplicarDescuento(artistaMin, cancion, artistasBase, contrataciones);
+					this.contrataciones.add(contratador.contratarArtistaParaUnRolEnCancion(artistaMin, cancion, rol.getKey()));
+					System.out.println("Se contrató al artista " + artistaMin.getNombre() + " para el rol: " + rol.getKey() + " en la canción: " + cancion.getTitulo());
+					rol.setValue(rol.getValue()-1);
+					if(huboDescuento) {
+						artistaMin.aumentarCostoContratacion(ArtistaContratable.AUMENTO_ARREGLO);
+					}
+				}
+				else {
+					break;
+				}
+			}
+		}
+		
+		if(rolVacio) {
 			return CodigoDeRetorno.NO_SE_PUEDEN_CUBRIR_TODOS_LOS_ROLES;
 		}
 		
 		return CodigoDeRetorno.ARTISTA_CONTRATADO;
 	}
 	
-	///punto 4
+	///punto 4 (esta es la idea, I guess)
 	public void contratarArtistasAll() {
-		
+		for(Cancion cancion : this.canciones) {
+			contratarArtistasParaCancion(cancion);
+		}
 	}
 	
 	///punto 5
@@ -107,7 +116,7 @@ public class Recital {
 			throw new IllegalArgumentException("Estas intentando ingresar un valor nulo");
 		}
 		
-		if(artista.getCantContratos() != 0 || !artista.tieneRol(nuevoRol)) {
+		if(!artista.esContratable() || artista.tieneRol(nuevoRol)) {
 			return;
 		}
 		
@@ -122,7 +131,7 @@ public class Recital {
 	
 	public double obtenerCostoContratacionesCancion(Cancion cancion) {
 		
-		double costoCancion = 0;;
+		double costoCancion = 0;
 		
 		for(Contratacion con : contrataciones) {
 			if(con.getCancion().getTitulo().toLowerCase().equals(cancion.getTitulo().toLowerCase())) {
