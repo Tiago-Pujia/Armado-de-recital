@@ -132,7 +132,7 @@ public class Menu {
 		}
 	}
 	
-	///punto 3 <L>---------ACÁ ESTOY HOY 13/11 ----------<\L>
+	///punto 3 <L>---------ACÁ sigo HOY 15/11 ----------<\L>
 
 	public void contratarArtistasParaCancion(Scanner scanner) {
 		
@@ -140,10 +140,6 @@ public class Menu {
 		scanner.nextLine();
 		String nombreCancion = scanner.nextLine();
 		Cancion cancion = recital.buscarCancion(nombreCancion);
-		
-		if(cancion == null) {
-			System.out.println("La canción ingresada es inválida");
-		}
 		
 		if(recital.contratarArtistasParaCancion(cancion) == CodigoDeRetorno.NO_SE_PUEDEN_CUBRIR_TODOS_LOS_ROLES) {
 			System.out.println("NO SE PUEDEN CUBRIR TODOS LOS ROLES");
@@ -174,10 +170,24 @@ public class Menu {
 	
 	///punto 6
 	public void listarArtistasContratados(Scanner scanner) {
-		ArrayList<Contratacion> contratos = this.recital.listarArtistasContratados();
-		System.out.println("Listado de " + ANSI_CYAN + "artistas" + ANSI_RESET + " contratados\n");
-		for(Contratacion contrato : contratos) {
-			System.out.println(ANSI_CYAN + contrato.getArtista().getNombre() + ANSI_RESET + " - " + ANSI_YELLOW + contrato.getCancion().getTitulo() + ANSI_RESET);
+		
+		ArrayList<Artista> repertorio = new ArrayList<Artista>();
+		repertorio.addAll(recital.getArtistasContratables());
+		repertorio.addAll(recital.getArtistasBase());
+		
+		System.out.println("Listado de " + ANSI_CYAN + "artistas" + ANSI_RESET + " contratados\n\n");
+		
+		for(Artista artista : repertorio) {
+			
+			ArrayList<Contratacion> contratosArtista = recital.getContratosDeArtista(artista);
+			if(!contratosArtista.isEmpty()) {
+				System.out.println(ANSI_CYAN + artista.getNombre() + ANSI_GREEN + "\nCosto: " 
+			+ artista.getCosto() + ANSI_RESET + "\nRoles: " + ANSI_RED + artista.getRoles() + ANSI_RESET + "\nContrataciones para este artista: ");
+				for(Contratacion c : contratosArtista) {
+					System.out.println(ANSI_PURPLE + c.getCancion().getTitulo() + ANSI_RESET + " - Rol: " + ANSI_RED+ c.getRol() + ANSI_RESET);
+				}
+				System.out.println();
+			}
 		}
 	}
 	

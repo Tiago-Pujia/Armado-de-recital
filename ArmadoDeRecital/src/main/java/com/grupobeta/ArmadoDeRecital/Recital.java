@@ -35,10 +35,6 @@ public class Recital {
 	
 	private void agregarArtistasBase() { //contratar all es basicamente esto pero contratando a mansalva a todos sin chequear que sea base o no, simplemente contrata
 		
-		//se me ocurre remover temporalmente al artista ya contratado del repertorio para que no pregunte 
-		//por él varias veces para una misma canción (no se puede contratar el mismo artista dos veces para una misma canción). Después lo agregamos otra vez al finalizar
-		ArrayList<ArtistaBase> artistasContratadosParaCancionTemp = new ArrayList<ArtistaBase>(); 
-		
 		for(Cancion cancion : canciones) { 
 			
 			///si lo hago con foreach, al hacer remove tenemos problemas de concurrencia
@@ -46,13 +42,8 @@ public class Recital {
 				ArtistaBase artista = artistasBase.get(i);
 				if(contratador.artistaEsContratableParaCancion(this.contrataciones, artista, cancion)) {
 					this.contrataciones.add(this.contratador.contratarArtistaParaUnRolCualquieraEnCancion(artista, cancion));
-					artistasContratadosParaCancionTemp.add(artista);
-					this.artistasBase.remove(artista);
-					i--;
 				}
-							
 			}
-			this.artistasBase.addAll(artistasContratadosParaCancionTemp); 
 		}
 	}
 	
@@ -124,7 +115,7 @@ public class Recital {
 	}
 	
 	///punto 6
-	public ArrayList<Contratacion> listarArtistasContratados() {
+	public ArrayList<Contratacion> getContrataciones() {
 		this.contrataciones.sort(null);
 		return this.contrataciones;
 	}
@@ -172,7 +163,23 @@ public class Recital {
 		return null;
 	}
 	
-	public ArrayList<Contratacion> getContrataciones(){
-		return this.contrataciones;
+	public ArrayList<Contratacion> getContratosDeArtista(Artista artista) {
+		
+		ArrayList<Contratacion>contratosArtista = new ArrayList<Contratacion>();
+		
+		for(Contratacion c : this.contrataciones) {
+			if(c.getArtista().equals(artista)) {
+				contratosArtista.add(c);
+			}
+		}
+		return contratosArtista;
 	}
+	
+	public ArrayList<ArtistaContratable> getArtistasContratables() {
+		return artistasContratables;
+	}
+
+	public ArrayList<ArtistaBase> getArtistasBase() {
+		return artistasBase;
+	}	
 }
