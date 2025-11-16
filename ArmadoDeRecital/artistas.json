@@ -78,7 +78,7 @@
   },
   {
     "nombre": "Stevie Wonder",
-    "roles": ["piano", "teclados", "voz principal", "sintetizador"],
+    "roles": ["piano", "teclado", "voz principal", "sintetizador"],
     "bandas": ["Stevie Wonder"],
     "costo": 1400.0,
     "maxCanciones": 2
@@ -127,7 +127,7 @@
   },
   {
     "nombre": "Tyler Joseph",
-    "roles": ["voz principal", "bajo", "guitarra acústica"],
+    "roles": ["voz principal", "guitarra acústica", "ukelele"],
     "bandas": ["Twenty One Pilots"],
     "costo": 1500.0,
     "maxCanciones": 3

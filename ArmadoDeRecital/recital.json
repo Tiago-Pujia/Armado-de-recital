@@ -41,11 +41,11 @@
   },
   {
     "titulo": "Friday I'm In Love",
-    "rolesRequeridos": ["voz principal", "guitarra eléctrica", "bajo", "batería", "teclados"]
+    "rolesRequeridos": ["voz principal", "guitarra eléctrica", "bajo", "batería", "teclado"]
   },
   {
     "titulo": "21st Century Schizoid Man",
-    "rolesRequeridos": ["voz principal", "guitarra eléctrica", "bajo", "batería", "teclados"]
+    "rolesRequeridos": ["voz principal", "guitarra eléctrica", "bajo", "batería", "saxofón"]
   },
   {
     "titulo": "Man In The Box",
@@ -73,7 +73,7 @@
   },
   {
     "titulo": "We Don't Believe What's on TV",
-    "rolesRequeridos": ["voz principal", "guitarra eléctrica", "bajo", "teclado"]
+    "rolesRequeridos": ["voz principal", "ukelele", "teclado", "batería", "sintetizador"]
   },
   {
     "titulo": "Even Flow",
@@ -81,6 +81,6 @@
   },
   {
     "titulo": "Around the World",
-    "rolesRequeridos": ["voz principal", "bajo", "teclado", "sintetizador"]
+    "rolesRequeridos": ["voz principal", "teclado", "sintetizador"]
   }
 ]

@@ -25,9 +25,7 @@ public class Recital {
 		
 		for(Cancion cancion : canciones) { 
 			
-			///si lo hago con foreach, al hacer remove tenemos problemas de concurrencia
-			for(int i = 0; i< artistasBase.size() ; i++) {
-				ArtistaBase artista = artistasBase.get(i);
+			for(ArtistaBase artista : artistasBase) {
 				if(contratador.artistaEsContratableParaCancion(this.contrataciones, artista, cancion)) {
 					this.contrataciones.add(this.contratador.contratarArtistaParaUnRolCualquieraEnCancion(artista, cancion));
 				}
@@ -50,13 +48,14 @@ public class Recital {
 		return this.canciones;		
 	}
 	
-	public CodigoDeRetorno contratarArtistasParaCancion(Cancion cancion) {
+	public ArrayList<Contratacion> contratarArtistasParaCancion(Cancion cancion) {
 		
 		boolean rolVacio = true, primerContratable = true;
 		HashMap<String, Integer> copia = new HashMap<String, Integer>(cancion.getRolesRequeridos());
+		ArrayList<Contratacion> contratosRealizados = new ArrayList<Contratacion>();
 		
 		if(copia.isEmpty()) {
-			return CodigoDeRetorno.YA_TIENE_LOS_ROLES_CUBIERTOS;
+			return contratosRealizados;
 		}
 		
 		for(Map.Entry<String, Integer> rol : copia.entrySet()) {
@@ -82,8 +81,9 @@ public class Recital {
 				}
 				if(!rolVacio) {
 					boolean huboDescuento = contratador.aplicarDescuento(artistaMin, cancion, artistasBase, contrataciones);
-					this.contrataciones.add(contratador.contratarArtistaParaUnRolEnCancion(artistaMin, cancion, rol.getKey()));
-					System.out.println("Se contrató al artista " + artistaMin.getNombre() + " para el rol: " + rol.getKey() + " en la canción: " + cancion.getTitulo());
+					Contratacion contratacion = contratador.contratarArtistaParaUnRolEnCancion(artistaMin, cancion, rol.getKey());
+					this.contrataciones.add(contratacion);
+					contratosRealizados.add(contratacion);
 					rol.setValue(rol.getValue()-1);
 					if(huboDescuento) {
 						artistaMin.aumentarCostoContratacion(ArtistaContratable.AUMENTO_ARREGLO);
@@ -95,18 +95,7 @@ public class Recital {
 			}
 		}
 		
-		if(rolVacio) {
-			return CodigoDeRetorno.NO_SE_PUEDEN_CUBRIR_TODOS_LOS_ROLES;
-		}
-		
-		return CodigoDeRetorno.ARTISTA_CONTRATADO;
-	}
-	
-	///punto 4 (esta es la idea, I guess)
-	public void contratarArtistasAll() {
-		for(Cancion cancion : this.canciones) {
-			contratarArtistasParaCancion(cancion);
-		}
+		return contratosRealizados;
 	}
 	
 	///punto 5
@@ -129,13 +118,14 @@ public class Recital {
 		return this.contrataciones;
 	}
 	
-	public double obtenerCostoContratacionesCancion(Cancion cancion) {
+	public double obtenerCostoContratacionesYContratosCancion(Cancion cancion, ArrayList<Contratacion> contrato) {
 		
 		double costoCancion = 0;
 		
 		for(Contratacion con : contrataciones) {
 			if(con.getCancion().getTitulo().toLowerCase().equals(cancion.getTitulo().toLowerCase())) {
 				costoCancion += con.getCosto();
+				contrato.add(con);
 			}
 		}
 		

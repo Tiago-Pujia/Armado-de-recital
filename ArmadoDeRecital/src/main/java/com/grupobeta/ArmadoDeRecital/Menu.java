@@ -1,9 +1,7 @@
 package com.grupobeta.ArmadoDeRecital;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.function.Consumer;
 
 public class Menu {
 	
@@ -19,20 +17,20 @@ public class Menu {
     public static final String ANSI_WHITE = "\u001B[37m";
     public static final int MIN_ACEPTADO = 1;
     
-    private HashMap<Integer, Consumer<Scanner>> opciones;
+    private HashMap<Integer, Comando> opciones;
     private CargadorDeArchivos cargadorDeArchivos = null;
     
     private Recital recital = null;
     private Scanner scanner = null;
     private boolean estaCorriendo = true;
     
-    public Menu() {
+   	public Menu() {
     	
     	this.scanner = new Scanner(System.in);
-    	opciones = new HashMap<Integer, Consumer<Scanner>>();
-    	this.configurarOpciones();
+    	opciones = new HashMap<>();
     	this.cargadorDeArchivos = new CargadorDeArchivos();
     	this.crearRecital();
+    	this.configurarOpciones();
     }
     
     private void crearRecital() {
@@ -40,15 +38,15 @@ public class Menu {
 	}
 
 	private void configurarOpciones() {
-    	opciones.put(1, this::consultarRolesFaltantesParaCancion);
-    	opciones.put(2, this::obtenerRolesFaltantesAll);
-    	opciones.put(3, this::contratarArtistasParaCancion);
-    	opciones.put(4, this::contratarArtistasAll);
-    	opciones.put(5, this::entrenarArtista);
-    	opciones.put(6, this::listarArtistasContratados);
-    	opciones.put(7, this::listarCanciones);
-    	opciones.put(8, this::prolog);
-    	opciones.put(9, this::salir);
+    	opciones.put(1, new ConsultarRolesFaltantesParaCancionComando(scanner, recital));
+    	opciones.put(2, new ConsultarRolesFaltantesAllComando(recital));
+    	opciones.put(3, new ContratarArtistasParaCancionComando(scanner, recital));
+    	opciones.put(4, new ContratarArtistasAllComando(recital));
+    	opciones.put(5, new EntrenarArtistaComando(scanner, recital));
+    	opciones.put(6, new ListarArtistasComando(recital));
+    	opciones.put(7, new ListarCancionesComando(recital));
+    	opciones.put(8, new PrologComando());
+    	opciones.put(9, new SalirComando(this));
     }
     
     public void iniciar() {
@@ -93,141 +91,12 @@ public class Menu {
 	}
 	
 	public void ejecutarOpcion(int opcion){
-		Consumer<Scanner> accion = this.opciones.get(opcion);
-        accion.accept(this.scanner);		
+		Comando comando = this.opciones.get(opcion);
+        comando.ejecutar();		
 	}
 	
-	///punto 1
-	public void consultarRolesFaltantesParaCancion(Scanner scanner) {
-		
-		System.out.printf("Ingrese el nombre de la canción: ");
-		scanner.nextLine();
-		String nombreCancion = scanner.nextLine();
-		Cancion cancion = recital.buscarCancion(nombreCancion);
-		HashMap<String, Integer> rolesFaltantes = this.recital.consultarRolesFaltantesParaCancion(cancion);
-		
-		if(rolesFaltantes == null) {
-			System.out.println("El nombre ingresado" + ANSI_RED + " no coincide " + ANSI_RESET + "con ninguna canción registrada para el recital. Intente nuevamente.");
-			return;
-		}
-		if(rolesFaltantes.isEmpty()) {
-			System.out.println("La canción ingresada tiene todos sus roles" + ANSI_GREEN + " cubiertos" + ANSI_RESET);
-			return;
-		}
-		System.out.println(ANSI_PURPLE + nombreCancion + ANSI_RESET + "\nRoles faltantes por cubrir:\n" + ANSI_RED + rolesFaltantes + ANSI_RESET + "\n");		
-	}
-	
-	///punto 2
-	public void obtenerRolesFaltantesAll(Scanner scanner) {
-		int i = 1;
-		System.out.println("Listado de " + ANSI_YELLOW + "canciones" + ANSI_RESET + " del recital. Se muestra para cada una de ellas los roles aún no cubiertos.\n");
-		for(Cancion cancion : this.recital.getCanciones()) {
-			if(cancion.getRolesRequeridos().isEmpty()) {
-				System.out.println(i + ". " + ANSI_PURPLE + cancion.getTitulo() + ANSI_CYAN + "\nNo quedan roles por cubrir !\n" + ANSI_RESET);
-			}
-			else {
-				System.out.println(i + ". " + ANSI_PURPLE + cancion.getTitulo() + ANSI_RESET + "\nRoles faltantes por cubrir:\n" + ANSI_RED + cancion.getRolesRequeridos() + ANSI_RESET + "\n");
-			}
-			i++;
-		}
-	}
-	
-	///punto 3 <L>---------ACÁ sigo HOY 15/11 ----------<\L>
-
-	public void contratarArtistasParaCancion(Scanner scanner) {
-		
-		System.out.printf("Ingrese el nombre de la canción: ");
-		scanner.nextLine();
-		String nombreCancion = scanner.nextLine();
-		Cancion cancion = recital.buscarCancion(nombreCancion);
-		
-		if(cancion==null) {
-			System.out.println("El nombre ingresado no corresponde con ninguna canción del recital");
-			return;
-		}
-		
-		CodigoDeRetorno resultado = recital.contratarArtistasParaCancion(cancion);
-		
-		if( resultado == CodigoDeRetorno.NO_SE_PUEDEN_CUBRIR_TODOS_LOS_ROLES) {
-			System.out.println("Hubo roles que no pudieron ser cubiertos, ¿Quiere entrenar a un artista?");
-		}	
-		if( resultado == CodigoDeRetorno.YA_TIENE_LOS_ROLES_CUBIERTOS) {
-			System.out.println(ANSI_CYAN + "La cancion ya tiene todos sus roles cubiertos." + ANSI_RESET);
-		}	
-	}
-	
-	///punto 4 <-------------FALTAN SOLO EL 3 Y EL 4----------------->
-	public void contratarArtistasAll(Scanner scanner) {
-		recital.contratarArtistasAll();
-	}
-	
-	///punto 5
-	public void entrenarArtista(Scanner scanner) {
-		
-		System.out.printf("Ingrese el nombre del artista: ");
-		scanner.nextLine();
-		String nombre = scanner.nextLine();
-		ArtistaContratable artista = recital.buscarArtistaContratable(nombre);
-		
-		System.out.printf("Ingrese el rol que quieres darle: ");
-		String rol = scanner.nextLine();
-	
-		recital.entrenarArtista(artista, rol);
-		System.out.printf("El Artista" + nombre + "ha sido entrenado");
-	}
-	
-	///punto 6
-	public void listarArtistasContratados(Scanner scanner) {
-		
-		ArrayList<Artista> repertorio = new ArrayList<Artista>();
-		repertorio.addAll(recital.getArtistasContratables());
-		repertorio.addAll(recital.getArtistasBase());
-		
-		System.out.println("Listado de " + ANSI_CYAN + "artistas" + ANSI_RESET + " contratados\n\n");
-		
-		for(Artista artista : repertorio) {
-			
-			ArrayList<Contratacion> contratosArtista = recital.getContratosDeArtista(artista);
-			if(!contratosArtista.isEmpty()) {
-				System.out.println(ANSI_CYAN + artista.getNombre() + ANSI_GREEN + "\nCosto: " 
-			+ artista.getCosto() + ANSI_RESET + "\nRoles: " + ANSI_RED + artista.getRoles() + ANSI_RESET + "\nContrataciones para este artista: ");
-				for(Contratacion c : contratosArtista) {
-					System.out.println(ANSI_PURPLE + c.getCancion().getTitulo() + ANSI_RESET + " - Rol: " + ANSI_RED+ c.getRol() + ANSI_RESET);
-				}
-				System.out.println();
-			}
-		}
-	}
-	
-	///punto 7
-	public void listarCanciones(Scanner scanner) {
-		
-		int i = 1;
-		double costoTotal = 0, costoCancion;
-		
-		for(Cancion cancion : recital.getCanciones()) {
-			costoCancion = recital.obtenerCostoContratacionesCancion(cancion);
-			System.out.println(ANSI_YELLOW + i + ". " + ANSI_PURPLE + cancion.getTitulo() + ANSI_GREEN + " - Costo: $" + costoCancion + ANSI_RESET);
-			i++;
-			costoTotal += costoCancion;
-			if(cancion.getRolesRequeridos().isEmpty()) {
-				System.out.println(ANSI_CYAN + "No quedan roles por cubrir !\n" + ANSI_RESET);
-			}
-			else {
-				System.out.println("Roles faltantes por cubrir:\n" + ANSI_RED + cancion.getRolesRequeridos() + ANSI_RESET + "\n");		
-			}
-		}
-		System.out.println("Costo total del recital: " + ANSI_GREEN +costoTotal + ANSI_RESET);
-	}
-	
-	public void prolog(Scanner scanner) {
-			
+	public void setEstaCorriendo(boolean estaCorriendo) {
+			this.estaCorriendo = estaCorriendo;
 	}
 
-	public void salir(Scanner scanner) {
-		this.estaCorriendo = false;
-		System.out.println("\nGuardando estado antes de salir...");
-		//ManejadorSalida manejador = new ManejadorSalida();
-		//manejador.guardarEstado(this.recital);
-	}
 }
