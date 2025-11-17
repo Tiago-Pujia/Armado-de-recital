@@ -95,7 +95,7 @@ public class Contratador {
 		return artistasBaseEnEsaCancion;
 	}	
 	
-	public boolean aplicarDescuento(ArtistaContratable artista, Cancion cancion, ArrayList<ArtistaBase> artistasBase, ArrayList<Contratacion> contrataciones ) {
+	public boolean aplicarDescuento(Artista artista, Cancion cancion, ArrayList<ArtistaBase> artistasBase, ArrayList<Contratacion> contrataciones ) {
 		
 		ArrayList<Artista> artistasBaseEnEsaCancion = cancionTieneContratadoArtistasBase(cancion, artistasBase, contrataciones);
 		
