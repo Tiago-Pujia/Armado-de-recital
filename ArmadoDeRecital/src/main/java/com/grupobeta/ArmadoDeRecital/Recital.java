@@ -149,6 +149,19 @@ public class Recital {
 		return contratosArtista;
 	}
 	
+public ArrayList<Contratacion> getContratosDeCancion(Cancion cancion) {
+	
+		ArrayList<Contratacion>contratosCancion = new ArrayList<Contratacion>();
+		
+		for(Contratacion c : this.contrataciones) {
+
+			if(c.getCancion().equals(cancion)) {
+				contratosCancion.add(c);
+			}
+		}
+		return contratosCancion;
+	}
+	
 	public void removerContratacion(Contratacion contrato){
 		this.contrataciones.remove(contrato);
 		contrato.getCancion().agregarRol(contrato.getRol());

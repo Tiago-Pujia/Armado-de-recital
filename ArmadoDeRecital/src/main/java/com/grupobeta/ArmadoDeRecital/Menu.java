@@ -46,7 +46,7 @@ public class Menu {
     	opciones.put(5, new EntrenarArtistaComando(scanner, recital, this));
     	opciones.put(6, new ListarArtistasComando(recital));
     	opciones.put(7, new ListarCancionesComando(recital));
-    	opciones.put(8, new PrologComando());
+    	opciones.put(8, new PrologComando(this.recital));
     	opciones.put(9, new QuitarUnArtista(this.recital, scanner));
     	opciones.put(10, new CargarEstadoPrevio(this,this.recital, this.cargadorDeArchivos));
     	opciones.put(11, new SalirComando(this,this.recital));
