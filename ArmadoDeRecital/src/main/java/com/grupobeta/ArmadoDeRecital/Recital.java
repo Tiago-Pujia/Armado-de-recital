@@ -11,6 +11,7 @@ public class Recital {
 	private ArrayList<ArtistaContratable> artistasContratables = null;
 	private ArrayList<ArtistaBase> artistasBase = null;
 	private Contratador contratador = null;
+	private double costoTotal = 0;
 	
 	public Recital(CargadorDeArchivos cargador) {
 		this.canciones = cargador.cargarArchivoRecital();
@@ -27,27 +28,20 @@ public class Recital {
 			
 			for(ArtistaBase artista : artistasBase) {
 				if(contratador.artistaEsContratableParaCancion(this.contrataciones, artista, cancion)) {
-					this.contrataciones.add(this.contratador.contratarArtistaParaUnRolCualquieraEnCancion(artista, cancion));
+					Contratacion contratacion = this.contratador.contratarArtistaParaUnRolCualquieraEnCancion(artista, cancion);
+					this.contrataciones.add(contratacion);
+					this.aumentarCostoTotal(contratacion.getCosto());
 				}
 			}
 		}
 	}
 	
 	///punto 1
-	public HashMap<String, Integer> consultarRolesFaltantesParaCancion(Cancion cancion) {
-						
-		if(cancion == null){
-			return null;
-		}
-		
+	public HashMap<String, Integer> consultarRolesFaltantesParaCancion(Cancion cancion) {		
 		return cancion.getRolesRequeridos();
 	}
 	
-	///punto 2
-	public ArrayList<Cancion> getCanciones() {
-		return this.canciones;		
-	}
-	
+	//punto 3
 	public ArrayList<Contratacion> contratarArtistasParaCancion(Cancion cancion) {
 		
 		boolean rolVacio = true, primerContratable = true;
@@ -83,6 +77,7 @@ public class Recital {
 					boolean huboDescuento = contratador.aplicarDescuento(artistaMin, cancion, artistasBase, contrataciones);
 					Contratacion contratacion = contratador.contratarArtistaParaUnRolEnCancion(artistaMin, cancion, rol.getKey());
 					this.contrataciones.add(contratacion);
+					this.aumentarCostoTotal(contratacion.getCosto());
 					contratosRealizados.add(contratacion);
 					rol.setValue(rol.getValue()-1);
 					if(huboDescuento) {
@@ -96,20 +91,6 @@ public class Recital {
 		}
 		
 		return contratosRealizados;
-	}
-	
-	///punto 5
-	public void entrenarArtista(ArtistaContratable artista, String nuevoRol) {
-		
-		if(artista == null || nuevoRol == null) {
-			throw new IllegalArgumentException("Estas intentando ingresar un valor nulo");
-		}
-		
-		if(!artista.esContratable() || artista.tieneRol(nuevoRol)) {
-			return;
-		}
-		
-		artista.entrenar(nuevoRol);		
 	}
 	
 	///punto 6
@@ -132,24 +113,18 @@ public class Recital {
 		return costoCancion;
 	}
 	
-	public double obtenerCostoTotal() {
-		
-		double costoTotal = 0;
-		
-		for(Contratacion con : contrataciones) {
-			costoTotal += con.getCosto();
-		}
-		
-		return costoTotal;
+	private void aumentarCostoTotal(double monto){
+		this.costoTotal += monto;
 	}
 
 	public Cancion buscarCancion(String ncanc) {
+		
 		for(Cancion c : this.canciones) {
 			if(c.getTitulo().toLowerCase().equals(ncanc.toLowerCase())) {
 				return c;
 			}
 		}
-		return null;
+		throw new CancionNoEncontradaException("Cancion no encontrada");
 	}
 
 	public ArtistaContratable buscarArtistaContratable(String nombre) {
@@ -159,7 +134,7 @@ public class Recital {
 				return a;
 			}
 		}
-		return null;
+		throw new ArtistaNoEncontradoException("El nombre ingresado no coincide con el de ningún artista. Intente nuevamente");
 	}
 	
 	public ArrayList<Contratacion> getContratosDeArtista(Artista artista) {
@@ -174,11 +149,16 @@ public class Recital {
 		return contratosArtista;
 	}
 	
-	public ArrayList<ArtistaContratable> getArtistasContratables() {
-		return artistasContratables;
+	public void removerContratacion(Contratacion contrato){
+		this.contrataciones.remove(contrato);
+		contrato.getCancion().agregarRol(contrato.getRol());
 	}
+	
+	public double getCostoTotal() { return costoTotal; }
+	
+	public ArrayList<ArtistaContratable> getArtistasContratables() { return artistasContratables; }
 
-	public ArrayList<ArtistaBase> getArtistasBase() {
-		return artistasBase;
-	}	
+	public ArrayList<ArtistaBase> getArtistasBase() { return artistasBase; }	
+	
+	public ArrayList<Cancion> getCanciones() { return this.canciones; }
 }

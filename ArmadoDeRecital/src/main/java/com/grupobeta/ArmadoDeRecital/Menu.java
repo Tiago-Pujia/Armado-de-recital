@@ -1,5 +1,6 @@
 package com.grupobeta.ArmadoDeRecital;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -42,11 +43,13 @@ public class Menu {
     	opciones.put(2, new ConsultarRolesFaltantesAllComando(recital));
     	opciones.put(3, new ContratarArtistasParaCancionComando(scanner, recital));
     	opciones.put(4, new ContratarArtistasAllComando(recital));
-    	opciones.put(5, new EntrenarArtistaComando(scanner, recital));
+    	opciones.put(5, new EntrenarArtistaComando(scanner, recital, this));
     	opciones.put(6, new ListarArtistasComando(recital));
     	opciones.put(7, new ListarCancionesComando(recital));
     	opciones.put(8, new PrologComando());
-    	opciones.put(9, new SalirComando(this));
+    	opciones.put(9, new QuitarUnArtista(this.recital, scanner));
+    	opciones.put(10, new CargarEstadoPrevio(this,this.recital, this.cargadorDeArchivos));
+    	opciones.put(11, new SalirComando(this,this.recital));
     }
     
     public void iniciar() {
@@ -72,6 +75,8 @@ public class Menu {
     	this.scanner.close();
     }
     
+    //modificar el menú para que se pueda printear iterando sobre la lista de opciones ?
+    
 	public void mostrarMenu() {
 		System.out.println("=============================" + ANSI_GREEN + "ARMADO DE RECITAL" + ANSI_RESET + "============================");
 		System.out.println("|| " + "\t\t\t\t\t\t\t\t\t" + "||");
@@ -83,7 +88,7 @@ public class Menu {
 		System.out.println("|| " + ANSI_CYAN + "6." + ANSI_RESET + "Listar artistas contratados, su información relevante y su costo\t" + "||");
 		System.out.println("|| " + ANSI_CYAN + "7." + ANSI_RESET + "Listar canciones con su estado\t\t\t\t\t" + "||");
 		System.out.println("|| " + ANSI_CYAN + "8." + ANSI_RESET + "[PROLOG]\t\t\t\t\t\t\t\t" + "||");
-		System.out.println("|| " + ANSI_CYAN + "9." + ANSI_RESET + "Salir\t\t\t\t\t\t\t\t" + "||");
+		System.out.println("|| " + ANSI_CYAN + "11." + ANSI_RESET + "Salir\t\t\t\t\t\t\t\t" + "||");
 		System.out.println("|| " + "\t\t\t\t\t\t\t\t\t" + "||");
 		System.out.println("|| " + "Seleccione una opcion\t\t\t\t\t\t" + "||");
 		System.out.println("|| " + "\t\t\t\t\t\t\t\t\t" + "||");
@@ -95,8 +100,24 @@ public class Menu {
         comando.ejecutar();		
 	}
 	
+	public static void mostrarContratosRealizados(ArrayList<Contratacion> contratosRealizados) {
+		for(Contratacion contrato : contratosRealizados) {
+			System.out.println("Se contrató al artista " + Menu.ANSI_CYAN + contrato.getArtista().getNombre() +
+					Menu.ANSI_RESET + " para el rol: " + Menu.ANSI_RED + contrato.getRol() + Menu.ANSI_RESET +
+					" en la canción: " + Menu.ANSI_PURPLE + contrato.getCancion().getTitulo() + Menu.ANSI_RESET);
+		}
+	}
+	
 	public void setEstaCorriendo(boolean estaCorriendo) {
 			this.estaCorriendo = estaCorriendo;
 	}
-
+	
+	public void mostrarArtistasContratables() {
+		System.out.println("Artistas que se pueden contratar o entrenar:\n");
+		for(ArtistaContratable artista : this.recital.getArtistasContratables()) {
+			if(artista.getCantContratos() < artista.getMaxCanciones()) {
+				System.out.println(ANSI_CYAN + artista.getNombre() + ANSI_RESET + " - costo actual: " + ANSI_GREEN + artista.getCosto() + ANSI_RESET);
+			}
+		}
+	}
 }

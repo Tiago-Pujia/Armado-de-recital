@@ -18,9 +18,11 @@ public class ContratarArtistasAllComando implements Comando{
 			
 			ArrayList<Contratacion> contratosRealizados = recital.contratarArtistasParaCancion(cancion);
 	
-			ContratarArtistasParaCancionComando.mostrarContratosRealizados(contratosRealizados);
+			Menu.mostrarContratosRealizados(contratosRealizados);
 			if(!cancion.getRolesRequeridos().isEmpty()) {
-				System.out.println("No se pudieron cubrir todos los roles de la cancion " + Menu.ANSI_PURPLE + cancion.getTitulo() + Menu.ANSI_RESET + " ¿Deseas entrenar a un artista?"  );
+				System.out.println("No se pudieron cubrir todos los roles de la cancion " +
+			Menu.ANSI_PURPLE + cancion.getTitulo() + Menu.ANSI_RESET +
+			". Utilice la opción \"Entrenar artista\" en el menú principal"  );
 			}
 			else {
 				if(contratosRealizados.isEmpty()) {

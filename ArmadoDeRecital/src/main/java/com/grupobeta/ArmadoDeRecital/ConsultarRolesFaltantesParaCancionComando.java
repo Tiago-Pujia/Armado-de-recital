@@ -19,18 +19,23 @@ public class ConsultarRolesFaltantesParaCancionComando implements Comando{
 		System.out.printf("Ingrese el nombre de la canción: ");
 		scanner.nextLine();
 		String nombreCancion = scanner.nextLine();
-		Cancion cancion = recital.buscarCancion(nombreCancion);
-		HashMap<String, Integer> rolesFaltantes = recital.consultarRolesFaltantesParaCancion(cancion);
 		
-		if(rolesFaltantes == null) {
-			System.out.println("El nombre ingresado" + Menu.ANSI_RED + " no coincide " + Menu.ANSI_RESET + "con ninguna canción registrada para el recital. Intente nuevamente.");
-			return;
+		try {
+			Cancion cancion = recital.buscarCancion(nombreCancion);
+			HashMap<String, Integer> rolesFaltantes = recital.consultarRolesFaltantesParaCancion(cancion);
+			
+			if(rolesFaltantes == null) {
+				System.out.println("El nombre ingresado" + Menu.ANSI_RED + " no coincide " + Menu.ANSI_RESET + "con ninguna canción registrada para el recital. Intente nuevamente.");
+				return;
+			}
+			if(rolesFaltantes.isEmpty()) {
+				System.out.println("La canción ingresada tiene todos sus roles" + Menu.ANSI_GREEN + " cubiertos" + Menu.ANSI_RESET);
+				return;
+			}
+			System.out.println(Menu.ANSI_PURPLE + nombreCancion + Menu.ANSI_RESET + "\nRoles faltantes por cubrir:\n" + Menu.ANSI_RED + rolesFaltantes + Menu.ANSI_RESET + "\n");	
+		}catch(RuntimeException e) {
+			System.out.println("El nombre ingresado no coincide con el de ninguna canción. Intente nuevamente");
 		}
-		if(rolesFaltantes.isEmpty()) {
-			System.out.println("La canción ingresada tiene todos sus roles" + Menu.ANSI_GREEN + " cubiertos" + Menu.ANSI_RESET);
-			return;
-		}
-		System.out.println(Menu.ANSI_PURPLE + nombreCancion + Menu.ANSI_RESET + "\nRoles faltantes por cubrir:\n" + Menu.ANSI_RED + rolesFaltantes + Menu.ANSI_RESET + "\n");		
+			
 	}
-
 }

@@ -25,6 +25,15 @@ public class ArtistaContratable extends Artista{
 	}
 
 	public void entrenar(String rol) {
+		
+		if(rol == null) {
+			throw new IllegalArgumentException("Estas intentando ingresar un valor nulo");
+		}
+		
+		if(this.esContratable() || this.tieneRol(rol)) {
+			return;
+		}
+		
 		this.roles.add(rol);
 		this.aumentarCostoContratacion(AUMENTO_POR_ENTRENAMIENTO);
 	}

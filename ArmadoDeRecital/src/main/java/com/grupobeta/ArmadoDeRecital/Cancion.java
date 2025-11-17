@@ -26,13 +26,13 @@ public class Cancion {
 		}
 	}
 	
-	public String getTitulo() {
-		return this.titulo;
+	public void agregarRol(String rol) {
+		this.getRolesRequeridos().put(rol, this.getRolesRequeridos().getOrDefault(this.getRolesRequeridos().get(rol), 0) + 1);
 	}
 	
-	public void setRolesRequeridos(HashMap<String, Integer> roles) {
-		this.rolesRequeridos = roles;
-	}
+	public String getTitulo() { return this.titulo;	}
+	
+	public void setRolesRequeridos(HashMap<String, Integer> roles) { this.rolesRequeridos = roles; }
 	
 	@Override
 	public int hashCode() {
