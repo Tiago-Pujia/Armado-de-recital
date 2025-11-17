@@ -87,10 +87,12 @@ public class Menu {
 		System.out.println("|| " + ANSI_CYAN + "5." + ANSI_RESET + "Entrenar artista\t\t\t\t\t\t\t" + "||");
 		System.out.println("|| " + ANSI_CYAN + "6." + ANSI_RESET + "Listar artistas contratados, su información relevante y su costo\t" + "||");
 		System.out.println("|| " + ANSI_CYAN + "7." + ANSI_RESET + "Listar canciones con su estado\t\t\t\t\t" + "||");
-		System.out.println("|| " + ANSI_CYAN + "8." + ANSI_RESET + "[PROLOG]\t\t\t\t\t\t\t\t" + "||");
+		System.out.println("|| " + ANSI_CYAN + "8." + ANSI_RESET + "¿Cuantos entrenamientos para llenar roles?\t\t\t\t" + "||");
+		System.out.println("|| " + ANSI_CYAN + "9." + ANSI_RESET + "Quitar artista\t\t\t\t\t\t\t" + "||");
+		System.out.println("|| " + ANSI_CYAN + "10." + ANSI_RESET + "Cargar estado Previo\t\t\t\t\t\t" + "||");
 		System.out.println("|| " + ANSI_CYAN + "11." + ANSI_RESET + "Salir\t\t\t\t\t\t\t\t" + "||");
 		System.out.println("|| " + "\t\t\t\t\t\t\t\t\t" + "||");
-		System.out.println("|| " + "Seleccione una opcion\t\t\t\t\t\t" + "||");
+		System.out.println("|| " + "Seleccione una opcion\t\t\t\t\t\t\t" + "||");
 		System.out.println("|| " + "\t\t\t\t\t\t\t\t\t" + "||");
 		System.out.println("==========================================================================");
 	}

@@ -1,3 +1,21 @@
+% =====  LIMPIEZA DE HECHOS   =====
+:- dynamic artista_base/1.
+:- dynamic artista_cubre/2.
+:- dynamic artista_candidato/1.
+:- dynamic max_canciones_candidato/2.
+:- dynamic cancion/2.
+:- dynamic rol_requerido/3.
+:- dynamic artista_ya_contratado/2.
+
+limpiar_base_conocimiento :-
+    retractall(artista_base(_)),
+    retractall(artista_cubre(_, _)),
+    retractall(artista_candidato(_)),
+    retractall(max_canciones_candidato(_, _)),
+    retractall(cancion(_, _)),
+    retractall(rol_requerido(_, _, _)),
+    retractall(artista_ya_contratado(_, _)).
+    
 % ===== PREDICADOS AUXILIARES =====
 
 % Obtener todos los roles únicos requeridos en todo el recital

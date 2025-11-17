@@ -1,9 +1,9 @@
 package com.grupobeta.ArmadoDeRecital;
 
-import org.jpl7.Query;
 
 import java.util.Map;
 
+import org.jpl7.Query;
 import org.jpl7.JPLException;
 import org.jpl7.Term;
 
@@ -66,6 +66,13 @@ public class PrologComando implements Comando{
 	    } else {
 	        System.err.println("Error al cargar el archivo de reglas.");
 	    }
+	    
+	    //Limpieza de hechos previos para funcionar con cambios.
+	    String limpiezaConsulta = "limpiar_base_conocimiento";
+	    new Query(limpiezaConsulta).hasSolution();
+	    System.out.printf("Hechos Limpiados\n");
+	    
+	    
 
 		int contadorCancion = 1;
 		int contadorRoles = 1;
@@ -166,4 +173,5 @@ public class PrologComando implements Comando{
 	    q.close();
 		
 	}
+	
 }
