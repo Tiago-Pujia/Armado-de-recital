@@ -21,10 +21,12 @@
         <version>5.12.2</version>
         <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>jpl</groupId>
-      <artifactId>jpl</artifactId>
-      <version>7.0.1</version>
+	<dependency>
+        <groupId>org.swiprolog</groupId>
+        <artifactId>jpl</artifactId>
+        <version>local</version>
+        <scope>system</scope>
+        <systemPath>C:/Program Files/swipl/lib/jpl.jar</systemPath>
     </dependency>
     <dependency>
     <groupId>org.json</groupId>
