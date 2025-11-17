@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 public class CargadorDeArchivos {
 	
+	public static final String NOM_ARCH_SALIDA = "recital-out.json";
 	public static final String ARCHIVO_RECITAL = "recital.json";
 	public static final String ARCHIVO_ARTISTAS = "artistas.json";
 	public static final String ARCHIVO_ARTISTAS_BASE = "artistas-base.json";
@@ -124,5 +125,21 @@ public class CargadorDeArchivos {
 		}		
 		
 		return artistasBase;		
+	}
+	
+	///lo dejo en stand-by hasta terminar "remover-contrato"
+	public ArrayList<Contratacion> cargarArchivoEstadoPrevio(){
+		
+		ArrayList<Contratacion> contratosPrevios = new ArrayList<Contratacion>();
+		
+		try {
+			
+			JSONArray contratosArray = this.parsearJSONArray(NOM_ARCH_SALIDA);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+		
+		return contratosPrevios;
 	}
 }

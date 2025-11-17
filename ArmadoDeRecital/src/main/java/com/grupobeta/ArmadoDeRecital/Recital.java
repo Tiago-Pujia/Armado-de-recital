@@ -11,6 +11,7 @@ public class Recital {
 	private ArrayList<ArtistaContratable> artistasContratables = null;
 	private ArrayList<ArtistaBase> artistasBase = null;
 	private Contratador contratador = null;
+	private double costoTotal = 0;
 	
 	public Recital(CargadorDeArchivos cargador) {
 		this.canciones = cargador.cargarArchivoRecital();
@@ -25,38 +26,30 @@ public class Recital {
 		
 		for(Cancion cancion : canciones) { 
 			
-			///si lo hago con foreach, al hacer remove tenemos problemas de concurrencia
-			for(int i = 0; i< artistasBase.size() ; i++) {
-				ArtistaBase artista = artistasBase.get(i);
+			for(ArtistaBase artista : artistasBase) {
 				if(contratador.artistaEsContratableParaCancion(this.contrataciones, artista, cancion)) {
-					this.contrataciones.add(this.contratador.contratarArtistaParaUnRolCualquieraEnCancion(artista, cancion));
+					Contratacion contratacion = this.contratador.contratarArtistaParaUnRolCualquieraEnCancion(artista, cancion);
+					this.contrataciones.add(contratacion);
+					this.aumentarCostoTotal(contratacion.getCosto());
 				}
 			}
 		}
 	}
 	
 	///punto 1
-	public HashMap<String, Integer> consultarRolesFaltantesParaCancion(Cancion cancion) {
-						
-		if(cancion == null){
-			return null;
-		}
-		
+	public HashMap<String, Integer> consultarRolesFaltantesParaCancion(Cancion cancion) {		
 		return cancion.getRolesRequeridos();
 	}
 	
-	///punto 2
-	public ArrayList<Cancion> getCanciones() {
-		return this.canciones;		
-	}
-	
-	public CodigoDeRetorno contratarArtistasParaCancion(Cancion cancion) {
+	//punto 3
+	public ArrayList<Contratacion> contratarArtistasParaCancion(Cancion cancion) {
 		
 		boolean rolVacio = true, primerContratable = true;
 		HashMap<String, Integer> copia = new HashMap<String, Integer>(cancion.getRolesRequeridos());
+		ArrayList<Contratacion> contratosRealizados = new ArrayList<Contratacion>();
 		
 		if(copia.isEmpty()) {
-			return CodigoDeRetorno.YA_TIENE_LOS_ROLES_CUBIERTOS;
+			return contratosRealizados;
 		}
 		
 		for(Map.Entry<String, Integer> rol : copia.entrySet()) {
@@ -82,8 +75,10 @@ public class Recital {
 				}
 				if(!rolVacio) {
 					boolean huboDescuento = contratador.aplicarDescuento(artistaMin, cancion, artistasBase, contrataciones);
-					this.contrataciones.add(contratador.contratarArtistaParaUnRolEnCancion(artistaMin, cancion, rol.getKey()));
-					System.out.println("Se contrató al artista " + artistaMin.getNombre() + " para el rol: " + rol.getKey() + " en la canción: " + cancion.getTitulo());
+					Contratacion contratacion = contratador.contratarArtistaParaUnRolEnCancion(artistaMin, cancion, rol.getKey());
+					this.contrataciones.add(contratacion);
+					this.aumentarCostoTotal(contratacion.getCosto());
+					contratosRealizados.add(contratacion);
 					rol.setValue(rol.getValue()-1);
 					if(huboDescuento) {
 						artistaMin.aumentarCostoContratacion(ArtistaContratable.AUMENTO_ARREGLO);
@@ -95,32 +90,7 @@ public class Recital {
 			}
 		}
 		
-		if(rolVacio) {
-			return CodigoDeRetorno.NO_SE_PUEDEN_CUBRIR_TODOS_LOS_ROLES;
-		}
-		
-		return CodigoDeRetorno.ARTISTA_CONTRATADO;
-	}
-	
-	///punto 4 (esta es la idea, I guess)
-	public void contratarArtistasAll() {
-		for(Cancion cancion : this.canciones) {
-			contratarArtistasParaCancion(cancion);
-		}
-	}
-	
-	///punto 5
-	public void entrenarArtista(ArtistaContratable artista, String nuevoRol) {
-		
-		if(artista == null || nuevoRol == null) {
-			throw new IllegalArgumentException("Estas intentando ingresar un valor nulo");
-		}
-		
-		if(!artista.esContratable() || artista.tieneRol(nuevoRol)) {
-			return;
-		}
-		
-		artista.entrenar(nuevoRol);		
+		return contratosRealizados;
 	}
 	
 	///punto 6
@@ -129,37 +99,32 @@ public class Recital {
 		return this.contrataciones;
 	}
 	
-	public double obtenerCostoContratacionesCancion(Cancion cancion) {
+	public double obtenerCostoContratacionesYContratosCancion(Cancion cancion, ArrayList<Contratacion> contrato) {
 		
 		double costoCancion = 0;
 		
 		for(Contratacion con : contrataciones) {
 			if(con.getCancion().getTitulo().toLowerCase().equals(cancion.getTitulo().toLowerCase())) {
 				costoCancion += con.getCosto();
+				contrato.add(con);
 			}
 		}
 		
 		return costoCancion;
 	}
 	
-	public double obtenerCostoTotal() {
-		
-		double costoTotal = 0;
-		
-		for(Contratacion con : contrataciones) {
-			costoTotal += con.getCosto();
-		}
-		
-		return costoTotal;
+	private void aumentarCostoTotal(double monto){
+		this.costoTotal += monto;
 	}
 
 	public Cancion buscarCancion(String ncanc) {
+		
 		for(Cancion c : this.canciones) {
 			if(c.getTitulo().toLowerCase().equals(ncanc.toLowerCase())) {
 				return c;
 			}
 		}
-		return null;
+		throw new CancionNoEncontradaException("Cancion no encontrada");
 	}
 
 	public ArtistaContratable buscarArtistaContratable(String nombre) {
@@ -169,7 +134,7 @@ public class Recital {
 				return a;
 			}
 		}
-		return null;
+		throw new ArtistaNoEncontradoException("El nombre ingresado no coincide con el de ningún artista. Intente nuevamente");
 	}
 	
 	public ArrayList<Contratacion> getContratosDeArtista(Artista artista) {
@@ -184,11 +149,12 @@ public class Recital {
 		return contratosArtista;
 	}
 	
-	public ArrayList<Contratacion> getContratosDeCancion(Cancion cancion) {
-		
+public ArrayList<Contratacion> getContratosDeCancion(Cancion cancion) {
+	
 		ArrayList<Contratacion>contratosCancion = new ArrayList<Contratacion>();
 		
 		for(Contratacion c : this.contrataciones) {
+
 			if(c.getCancion().equals(cancion)) {
 				contratosCancion.add(c);
 			}
@@ -196,12 +162,16 @@ public class Recital {
 		return contratosCancion;
 	}
 	
-	
-	public ArrayList<ArtistaContratable> getArtistasContratables() {
-		return artistasContratables;
+	public void removerContratacion(Contratacion contrato){
+		this.contrataciones.remove(contrato);
+		contrato.getCancion().agregarRol(contrato.getRol());
 	}
+	
+	public double getCostoTotal() { return costoTotal; }
+	
+	public ArrayList<ArtistaContratable> getArtistasContratables() { return artistasContratables; }
 
-	public ArrayList<ArtistaBase> getArtistasBase() {
-		return artistasBase;
-	}	
+	public ArrayList<ArtistaBase> getArtistasBase() { return artistasBase; }	
+	
+	public ArrayList<Cancion> getCanciones() { return this.canciones; }
 }
