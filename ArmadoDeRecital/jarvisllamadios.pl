@@ -1,56 +1,4 @@
-artista_base('Brian May').
-artista_base('Roger Taylor').
-artista_base('John Deacon').
-
-artista_cubre('Brian May', 'guitarra electrica').
-artista_cubre('Brian May', 'voz secundaria').
-artista_cubre('Roger Taylor', 'bateria').
-artista_cubre('John Deacon', 'bajo').
-
-max_canciones_base('Brian May', 100).
-max_canciones_base('Roger Taylor', 100).
-max_canciones_base('John Deacon', 100).
-
-artista_candidato('ArtistaE1').
-artista_candidato('ArtistaE2').
-artista_candidato('ArtistaE3').
-
-max_canciones_candidato('ArtistaE1', 3).
-max_canciones_candidato('ArtistaE2', 3).
-max_canciones_candidato('ArtistaE3', 3).
-
-cancion(1, 'Somebody to Love').
-cancion(2, 'We Will Rock You').
-cancion(3, 'These Are the Days of Our Lives').
-cancion(4, 'Under Pressure').
-
-rol_requerido(1, 1, 'voz principal').
-rol_requerido(1, 2, 'guitarra electrica').
-rol_requerido(1, 3, 'bajo').
-rol_requerido(1, 4, 'piano').
-
-% --- Set 2 (Roles r5-r8) ---
-rol_requerido(2, 5, 'voz principal').
-rol_requerido(2, 6, 'guitarra electrica').
-rol_requerido(2, 7, 'bajo').
-rol_requerido(2, 8, 'bateria').
-
-% --- Set 3 (Roles r9-r12) ---
-rol_requerido(3, 9, 'voz principal').
-rol_requerido(3, 10, 'guitarra acustica').
-rol_requerido(3, 11, 'bajo').
-rol_requerido(3, 12, 'percusion').
-
-% --- Set 4 (Roles r13-r16, completando tus dos últimos roles) ---
-rol_requerido(4, 13, 'guitarra electrica').
-rol_requerido(4, 14, 'bajo').
-rol_requerido(4, 15, 'voz secundaria'). 
-rol_requerido(4, 16, 'percusion').
-
-
 % ===== PREDICADOS AUXILIARES =====
-
-%Dios nos ayude esto fue lo mas feo que ([{-_<**"hice"**>_-}]) en mi vida.
 
 % Obtener todos los roles únicos requeridos en todo el recital
 roles_unicos_recital(RolesUnicos) :-
@@ -70,12 +18,19 @@ roles_no_cubiertos_por_bases(RolesNoCubiertos) :-
              \+ base_puede_cubrir(_, Rol)),
             RolesNoCubiertos).
 
-% Asignar roles a artistas (bases primero, luego candidatos)
-asignar_roles(Asignaciones) :-
+% Obtener roles que aún necesitan asignación
+% Todos los roles en rol_requerido/3 necesitan ser asignados
+% (las contrataciones previas solo bloquean artistas, no roles específicos)
+roles_por_asignar(RolesPorAsignar) :-
     findall([IdCancion, IdRol, TipoRol], 
             rol_requerido(IdCancion, IdRol, TipoRol), 
-            TodosRolesRequeridos),
-    asignar_roles_helper(TodosRolesRequeridos, [], Asignaciones).
+            RolesPorAsignar).
+
+% Asignar roles a artistas (bases primero, luego candidatos)
+% Las contrataciones previas bloquean artistas en canciones específicas
+asignar_roles(Asignaciones) :-
+    roles_por_asignar(RolesPorAsignar),
+    asignar_roles_helper(RolesPorAsignar, [], Asignaciones).
 
 % Caso base: no hay más roles por asignar
 asignar_roles_helper([], Asignaciones, Asignaciones).
@@ -97,8 +52,11 @@ seleccionar_artista_base(IdCancion, TipoRol, AsignacionesPrevias, Artista) :-
     \+ artista_ocupado_en_cancion(Artista, IdCancion, AsignacionesPrevias).
 
 % Verificar si un artista ya está ocupado en una canción específica
+% Ahora también considera las contrataciones previas
 artista_ocupado_en_cancion(Artista, IdCancion, Asignaciones) :-
-    member(asignacion(IdCancion, _, _, _, Artista), Asignaciones).
+    (   member(asignacion(IdCancion, _, _, _, Artista), Asignaciones)
+    ;   artista_ya_contratado(Artista, IdCancion)
+    ).
 
 % Seleccionar un candidato que no esté ocupado en esa canción
 % y que no exceda su límite de canciones
