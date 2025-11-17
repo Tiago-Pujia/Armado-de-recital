@@ -56,7 +56,7 @@ public class Recital {
 		}
 		
 		for(Map.Entry<String, Integer> rol : copia.entrySet()) {
-			
+			primerContratable = true;
 			while(rol.getValue() != 0) {
 				rolVacio = true;
 				Artista artistaMin = repertorio.iterator().next();
