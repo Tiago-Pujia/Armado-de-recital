@@ -12,4 +12,14 @@ public class ArtistaBase extends Artista{
 	public boolean esContratable() {
 		return true;
 	}
+
+	@Override
+	protected void aumentarCostoContratacion(double aUMENTO_ARREGLO) {
+		return;
+	}
+
+	@Override
+	public void reducirCostoContratacion(double dESCUENTO_POR_COMPARTIR_BANDA) {
+		return;
+	}
 }

@@ -22,13 +22,14 @@ public class QuitarUnArtista implements Comando {
 		
 		try {
 			
-			ArtistaContratable artista = recital.buscarArtistaContratable(nombre);
+			Artista artista = recital.buscarArtistaAll(nombre);
 			ArrayList<Contratacion> contratosDeArtista = new ArrayList<Contratacion>(recital.getContratosDeArtista(artista));
 			
 			for(Contratacion contrato : contratosDeArtista) {
 				recital.removerContratacion(contrato);
+				System.out.println("Se removió al artista de la canción " + Menu.ANSI_PURPLE +
+						contrato.getCancion().getTitulo() + Menu.ANSI_RESET + " y del rol " + Menu.ANSI_RED + contrato.getRol() + Menu.ANSI_RESET);
 			}
-			
 			
 		}catch(ArtistaNoEncontradoException e) {
 			System.out.println(e.getMessage());

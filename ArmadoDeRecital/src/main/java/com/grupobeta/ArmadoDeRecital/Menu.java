@@ -112,8 +112,8 @@ public class Menu {
 			this.estaCorriendo = estaCorriendo;
 	}
 	
-	public void mostrarArtistasContratables() {
-		System.out.println("Artistas que se pueden contratar o entrenar:\n");
+	public void mostrarArtistasEntrenables() {
+		System.out.println("Artistas que se pueden entrenar:\n");
 		for(ArtistaContratable artista : this.recital.getArtistasContratables()) {
 			if(artista.getCantContratos() < artista.getMaxCanciones()) {
 				System.out.println(ANSI_CYAN + artista.getNombre() + ANSI_RESET + " - costo actual: " + ANSI_GREEN + artista.getCosto() + ANSI_RESET);

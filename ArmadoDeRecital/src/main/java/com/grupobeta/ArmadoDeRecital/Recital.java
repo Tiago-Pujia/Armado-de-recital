@@ -48,6 +48,9 @@ public class Recital {
 		HashMap<String, Integer> copia = new HashMap<String, Integer>(cancion.getRolesRequeridos());
 		ArrayList<Contratacion> contratosRealizados = new ArrayList<Contratacion>();
 		
+		ArrayList<Artista> repertorio = new ArrayList<Artista>(this.getArtistasBase());
+		repertorio.addAll(artistasContratables);
+		
 		if(copia.isEmpty()) {
 			return contratosRealizados;
 		}
@@ -56,8 +59,8 @@ public class Recital {
 			
 			while(rol.getValue() != 0) {
 				rolVacio = true;
-				ArtistaContratable artistaMin = artistasContratables.iterator().next();
-				for(ArtistaContratable artista : artistasContratables) {
+				Artista artistaMin = repertorio.iterator().next();
+				for(Artista artista : repertorio) {
 					
 					if(contratador.artistaEsContratableParaCancionRol(contrataciones, artista, cancion, rol.getKey())) {
 						
@@ -165,6 +168,7 @@ public ArrayList<Contratacion> getContratosDeCancion(Cancion cancion) {
 	public void removerContratacion(Contratacion contrato){
 		this.contrataciones.remove(contrato);
 		contrato.getCancion().agregarRol(contrato.getRol());
+		this.costoTotal -= contrato.getCosto();
 	}
 	
 	public double getCostoTotal() { return costoTotal; }
@@ -174,4 +178,17 @@ public ArrayList<Contratacion> getContratosDeCancion(Cancion cancion) {
 	public ArrayList<ArtistaBase> getArtistasBase() { return artistasBase; }	
 	
 	public ArrayList<Cancion> getCanciones() { return this.canciones; }
+
+	public Artista buscarArtistaAll(String nombre) {
+		
+		ArrayList<Artista> todos = new ArrayList<Artista>(this.getArtistasBase());
+		todos.addAll(artistasContratables);
+		
+		for(Artista a : todos) {
+			if(a.getNombre().toLowerCase().equals(nombre.toLowerCase())) {
+				return a;
+			}
+		}
+		throw new ArtistaNoEncontradoException("El nombre ingresado no coincide con el de ningún artista. Intente nuevamente");
+	}
 }

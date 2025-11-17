@@ -17,7 +17,7 @@ public class EntrenarArtistaComando implements Comando{
 	//punto 5
 	@Override
 	public void ejecutar() {
-		menu.mostrarArtistasContratables();
+		menu.mostrarArtistasEntrenables();
 		
 		System.out.printf("\nIngrese el nombre del artista: ");
 		scanner.nextLine();
