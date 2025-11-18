@@ -25,19 +25,19 @@ public class PrologComando implements Comando{
 	        Query q = new Query(initCmd);
 	        
 	        if (!q.hasSolution()) {
-	            System.err.println("Error al inicializar Prolog.");
+	            System.err.println(Menu.ANSI_RED + "Error al inicializar Prolog." + Menu.ANSI_RESET);
 	            return;
 	        }
 	        
-	        System.out.println("Motor Prolog inicializado correctamente.");
+	        System.out.println(Menu.ANSI_GREEN + "Motor Prolog inicializado correctamente." + Menu.ANSI_RESET);
 	        q.close();
 	        
 	    } catch (JPLException e) {
-	        System.err.println("Error de JPL: Asegúrate de que jpl.jar y SWI-Prolog están configurados.");
+	        System.err.println(Menu.ANSI_RED + "Error de JPL: " + Menu.ANSI_RESET + "Asegurate de que jpl.jar y SWI-Prolog están configurados.");
 	        e.printStackTrace(); // Extra de porque salio mal
 	        return;
 	    } catch (UnsatisfiedLinkError ule) {
-	        System.err.println("ERROR DE ENLACE NATIVO: No se encontró la biblioteca de SWI-Prolog.");
+	        System.err.println(Menu.ANSI_RED + "ERROR DE ENLACE NATIVO: " + Menu.ANSI_RESET + "No se encontró la biblioteca de SWI-Prolog.");
 	        System.err.println("Asegúrate de que -Djava.library.path apunta a la carpeta 'bin' de SWI-Prolog.");
 	        ule.printStackTrace(); 
 	        return;
@@ -51,28 +51,22 @@ public class PrologComando implements Comando{
 
 		// 3. construimos la ruta del archivo .pl
 		String rutaArchivoProlog = directorioProyecto + "/jarvisllamadios.pl";
-		System.out.println("Consultando archivo en: " + rutaArchivoProlog); // Para depurar
+		System.out.println("Consultando archivo en: " + Menu.ANSI_CYAN + rutaArchivoProlog + Menu.ANSI_RESET); // Para depurar
 		String consultCmd = "consult('" + rutaArchivoProlog + "')";
 		Query qConsult = new Query(consultCmd);
 
-		if (qConsult.hasSolution()) {
-		    System.out.println("Archivo de reglas cargado con éxito.");
-		} else {
-		    System.err.println("Error al cargar el archivo de reglas.");
-		}
-
 	    if (qConsult.hasSolution()) {
-	        System.out.println("Archivo de reglas cargado con éxito: " + rutaArchivoProlog);
+	        System.out.println("Archivo de reglas cargado con éxito: " + Menu.ANSI_GREEN + rutaArchivoProlog + Menu.ANSI_RESET);
 	    } else {
-	        System.err.println("Error al cargar el archivo de reglas.");
+	        System.err.println(Menu.ANSI_RED + "Error al cargar el archivo de reglas." + Menu.ANSI_RED);
 	    }
 	    
 	    //Limpieza de hechos previos para funcionar con cambios.
 	    String limpiezaConsulta = "limpiar_base_conocimiento";
 	    new Query(limpiezaConsulta).hasSolution();
-	    System.out.printf("Hechos Limpiados\n");
+	    System.out.printf(Menu.ANSI_CYAN + "Hechos Limpiados\n\n" + Menu.ANSI_RESET);
 	    
-	    
+	    System.out.printf(Menu.ANSI_CYAN + "Declaracion de hechos:\n" + Menu.ANSI_RESET);
 
 		int contadorCancion = 1;
 		int contadorRoles = 1;
@@ -80,16 +74,16 @@ public class PrologComando implements Comando{
 	        String hechoBase = String.format("assertz(artista_base('%s'))", artista.getNombre());
 	        // Ejecutar la aserción
 	        if (new Query(hechoBase).hasSolution()) {
-	            System.out.printf("Asertado: artista_base('%s').\n", artista.getNombre());
+	            System.out.printf(Menu.ANSI_YELLOW + "Asertado: " + Menu.ANSI_RESET + "artista_base(" + Menu.ANSI_GREEN + "'%s'" + Menu.ANSI_RESET + ").\n", artista.getNombre());
 	        } else {
-	            System.err.printf("Error al asertar artista_base('%s').\n", artista.getNombre());
+	            System.err.printf(Menu.ANSI_RED +"Error al asertar artista_base" + Menu.ANSI_RESET + "(" + Menu.ANSI_GREEN + "'%s'" + Menu.ANSI_RESET + ").\n", artista.getNombre());
 	        }
 
 	        for(String rol: artista.getRoles()) {
 	        	String hechoCubre = String.format("assertz(artista_cubre('%s', '%s'))", artista.getNombre(), rol);
 
 	        	if(new Query(hechoCubre).hasSolution()) {
-		            System.out.printf("Asertado: artista_cubre('%s', '%s').\n", artista.getNombre(),rol);
+		            System.out.printf(Menu.ANSI_YELLOW + "Asertado: " + Menu.ANSI_RESET + "artista_cubre(" + Menu.ANSI_GREEN + "'%s', '%s'" + Menu.ANSI_RESET + ").\n", artista.getNombre(),rol);
 		        } else {
 		            System.err.printf("Error al asertar artista_cubre('%s', '%s').\n", artista.getNombre(),rol);
 	        	}
@@ -108,7 +102,7 @@ public class PrologComando implements Comando{
 	        
 	        new Query(hechoMax).hasSolution();
 
-	        System.out.printf("Asertado: candidato %s con max_canciones %d.\n", candidato.getNombre(), candidato.getMaxCanciones());
+	        System.out.printf(Menu.ANSI_YELLOW + "Asertado: " + Menu.ANSI_RESET + "candidato" + Menu.ANSI_GREEN + "'%s' " + Menu.ANSI_RESET + "con max_canciones " + Menu.ANSI_GREEN + "'%d'" + Menu.ANSI_RESET + ".\n", candidato.getNombre(), candidato.getMaxCanciones());
 	    }
 
 		for (Cancion cancion : recital.getCanciones()) {
@@ -120,7 +114,7 @@ public class PrologComando implements Comando{
 	                                            cancionSanitizado);
 	        new Query(hechoCancion).hasSolution();
 	        
-	        System.out.printf("Asertado: cancion %s con id %d.\n", cancion.getTitulo(), contadorCancion);
+	        System.out.printf(Menu.ANSI_YELLOW + "Asertado: " + Menu.ANSI_RESET + "cancion" + Menu.ANSI_GREEN + "'%s' " + Menu.ANSI_RESET + "con id " + Menu.ANSI_GREEN + "%d" + Menu.ANSI_RESET + ".\n", cancion.getTitulo(), contadorCancion);
 
 	        // 2. Contrataciones Previas
 	        for(Contratacion contrato : recital.getContratosDeCancion(cancion)) {
@@ -129,7 +123,7 @@ public class PrologComando implements Comando{
 	        			contadorCancion);
 	        	new Query(hechoAsignacion).hasSolution();
 	        	
-	        	System.out.printf("Asertado: artista %s en cancion %s.\n", contrato.getArtista().getNombre(), cancion.getTitulo());
+	        	System.out.printf(Menu.ANSI_YELLOW + "Asertado: " + Menu.ANSI_RESET + "artista"  + Menu.ANSI_GREEN + "'%s' " + Menu.ANSI_RESET + "en cancion " + Menu.ANSI_GREEN + "'%s' " + Menu.ANSI_RESET + ".\n", contrato.getArtista().getNombre(), cancion.getTitulo());
 	        }
 
 	        // 3. Iterar sobre el Map<Rol, Cantidad>
@@ -146,7 +140,7 @@ public class PrologComando implements Comando{
 		                                            rolSanitizado); 
 		            new Query(hechoRol).hasSolution();
 
-		            System.out.printf("Asertado Rol: cancion %s necesita %s %d vez/veces\n", cancion.getTitulo(), rol, cantidadApariciones);
+		            System.out.printf(Menu.ANSI_YELLOW + "Asertado: " + Menu.ANSI_RESET + "cancion"  + Menu.ANSI_GREEN + "'%s' " + Menu.ANSI_RESET + "necesita "  + Menu.ANSI_GREEN + "%s %d " + Menu.ANSI_RESET + "vez/veces\n", cancion.getTitulo(), rol, cantidadApariciones);
 		            cantidadApariciones--;
 		            contadorRoles++;
 	            }
@@ -155,7 +149,7 @@ public class PrologComando implements Comando{
 	    }
 		String consultaProlog = "entrenamientos_minimos(X, _, _)"; 
 	    Query q = new Query(consultaProlog);
-	    System.out.println("--- Resultados para X en 'entrenamientos_minimos(X, _, _)' ---");
+	    System.out.println(Menu.ANSI_CYAN +"\n--- Resultados para X en 'entrenamientos_minimos(X, _, _)' ---" + Menu.ANSI_RESET);
 
 	    if (q.hasSolution()) {
 	        //guardo la solucion    
@@ -165,10 +159,10 @@ public class PrologComando implements Comando{
 	        Term resultadoX = solucion.get("X");
 
 	        // 2. Imprimo el resultado
-	        System.out.println("Solución X encontrada: " + resultadoX.toString());
+	        System.out.println(Menu.ANSI_GREEN + "Solución X encontrada: " + resultadoX.toString() + Menu.ANSI_RESET);
 	        }
 	    else {
-	       	System.out.println("No se encontraron soluciones para la consulta.");
+	       	System.out.println(Menu.ANSI_RED + "No se encontraron soluciones para la consulta." + Menu.ANSI_RESET);
 	    }
 	    q.close();
 		
