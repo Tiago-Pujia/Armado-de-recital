@@ -3,8 +3,10 @@ package com.grupobeta.ArmadoDeRecital;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class SalirComando implements Comando{
 		
@@ -21,11 +23,18 @@ public class SalirComando implements Comando{
 		menu.setEstaCorriendo(false);
 		System.out.println("\nGuardando estado antes de salir...");
 		JSONArray contenidoArchSalida = new JSONArray();
-		JSONArray contrataciones = new JSONArray(recital.getContrataciones());
-	
-		contenidoArchSalida.putAll(contrataciones);
+		ArrayList<Contratacion> contrataciones = recital.getContrataciones();
 		
-		File archivoSalida = new File(CargadorDeArchivos.NOM_ARCH_SALIDA);
+		for(Contratacion contrato : contrataciones) {
+			JSONObject contratoJSON = new JSONObject();
+			contratoJSON.put(CargadorDeArchivos.CLAVE_CONTRATO_CANCION, contrato.getCancion().getTitulo());
+			contratoJSON.put(CargadorDeArchivos.CLAVE_CONTRATO_ARTISTA, contrato.getArtista().getNombre());
+			contratoJSON.put(CargadorDeArchivos.CLAVE_CONTRATO_ROL, contrato.getRol());
+			contratoJSON.put(CargadorDeArchivos.CLAVE_CONTRATO_COSTO, contrato.getCosto());
+			contenidoArchSalida.put(contratoJSON);
+		}
+		
+		File archivoSalida = new File(CargadorDeArchivos.ARCHIVO_SALIDA);
 		try (FileWriter file = new FileWriter(archivoSalida)) {
 	        file.write(contenidoArchSalida.toString());
 	        file.flush();

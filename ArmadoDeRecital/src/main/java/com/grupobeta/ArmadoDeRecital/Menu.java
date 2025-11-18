@@ -47,7 +47,7 @@ public class Menu {
     	opciones.put(6, new ListarArtistasComando(recital));
     	opciones.put(7, new ListarCancionesComando(recital));
     	opciones.put(8, new PrologComando(this.recital));
-    	opciones.put(9, new QuitarUnArtista(this.recital, scanner));
+    	opciones.put(9, new QuitarUnArtistaComando(this.recital, scanner));
     	opciones.put(10, new CargarEstadoPrevio(this,this.recital, this.cargadorDeArchivos));
     	opciones.put(11, new SalirComando(this,this.recital));
     }
@@ -92,7 +92,7 @@ public class Menu {
 		System.out.println("|| " + ANSI_CYAN + "10." + ANSI_RESET + "Cargar estado Previo\t\t\t\t\t\t" + "||");
 		System.out.println("|| " + ANSI_CYAN + "11." + ANSI_RESET + "Salir\t\t\t\t\t\t\t\t" + "||");
 		System.out.println("|| " + "\t\t\t\t\t\t\t\t\t" + "||");
-		System.out.println("|| " + "Seleccione una opcion\t\t\t\t\t\t\t" + "||");
+		System.out.println("|| " + "Seleccione una opcion\t\t\t\t\t\t" + "||");
 		System.out.println("|| " + "\t\t\t\t\t\t\t\t\t" + "||");
 		System.out.println("==========================================================================");
 	}

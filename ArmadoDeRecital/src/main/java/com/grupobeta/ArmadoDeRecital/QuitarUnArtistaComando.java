@@ -3,12 +3,12 @@ package com.grupobeta.ArmadoDeRecital;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-public class QuitarUnArtista implements Comando {
+public class QuitarUnArtistaComando implements Comando {
 	
 	private Scanner scanner;
 	private Recital recital;
 	
-	public QuitarUnArtista(Recital recital, Scanner scanner) {
+	public QuitarUnArtistaComando(Recital recital, Scanner scanner) {
 		this.recital = recital;
 		this.scanner = scanner;
 	}

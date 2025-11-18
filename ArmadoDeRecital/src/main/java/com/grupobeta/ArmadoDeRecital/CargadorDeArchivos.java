@@ -12,7 +12,7 @@ import org.json.JSONObject;
 
 public class CargadorDeArchivos {
 	
-	public static final String NOM_ARCH_SALIDA = "recital-out.json";
+	public static final String ARCHIVO_SALIDA = "recital-out.json";
 	public static final String ARCHIVO_RECITAL = "recital.json";
 	public static final String ARCHIVO_ARTISTAS = "artistas.json";
 	public static final String ARCHIVO_ARTISTAS_BASE = "artistas-base.json";
@@ -25,6 +25,11 @@ public class CargadorDeArchivos {
 	public static final String CLAVE_ARTISTA_COSTO = "costo";
 	public static final String CLAVE_ARTISTA_MAX = "maxCanciones";
 	public static final String CLAVE_ARTISTA_BANDAS = "bandas";
+	
+	public static final String CLAVE_CONTRATO_CANCION = "cancion";
+	public static final String CLAVE_CONTRATO_ARTISTA = "artista";
+	public static final String CLAVE_CONTRATO_ROL = "rol";
+	public static final String CLAVE_CONTRATO_COSTO = "costo";
 	
 	public JSONArray parsearJSONArray(String nomArch) throws IOException {
 		String contenido = new String(Files.readAllBytes(Paths.get(nomArch)));
@@ -127,14 +132,22 @@ public class CargadorDeArchivos {
 		return artistasBase;		
 	}
 	
-	///lo dejo en stand-by hasta terminar "remover-contrato"
 	public ArrayList<Contratacion> cargarArchivoEstadoPrevio(){
 		
 		ArrayList<Contratacion> contratosPrevios = new ArrayList<Contratacion>();
 		
 		try {
 			
-			JSONArray contratosArray = this.parsearJSONArray(NOM_ARCH_SALIDA);
+			JSONArray contratosArray = this.parsearJSONArray(ARCHIVO_SALIDA);
+//			ArrayList<Artista> repertorio = new ArrayList<Artista>(menu.getRecital().getArtistasBase()); //recital.unificarArtistas()
+//			repertorio.addAll(menu.getRecital().artistasContratables);
+//			
+//			for(int i = 0; i< contratosArray.length() ; i++) {
+//				
+//				JSONObject contratoJSON = contratosArray.getJSONObject(i);
+//				//acá parseo todos los contratos and shit
+//				
+//			}
 			
 		} catch (IOException e) {
 			e.printStackTrace();

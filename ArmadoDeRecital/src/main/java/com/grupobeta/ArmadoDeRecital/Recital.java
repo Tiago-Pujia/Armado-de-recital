@@ -19,7 +19,7 @@ public class Recital {
 		this.artistasBase = cargador.cargarArchivoArtistasBase(artistasContratables);
 		this.contrataciones = new ArrayList<Contratacion>();
 		this.contratador = new Contratador();
-		this.agregarArtistasBase();
+		//this.agregarArtistasBase(); //lo quito temporal o indefinidamente, creo que es mejor NO agregarlos al principio para no tener que des-contratarlos para cargar un estado previo (agarramos el recital vacío, so to speak)
 	}
 	
 	private void agregarArtistasBase() {
