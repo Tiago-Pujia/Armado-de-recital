@@ -14,7 +14,7 @@ public class CargadorDeArchivos {
 	
 	public static final String ARCHIVO_SALIDA = "recital-out.json";
 	public static final String ARCHIVO_RECITAL = "recital.json";
-	public static final String ARCHIVO_ARTISTAS = "artistas.json";
+	public static final String ARCHIVO_ARTISTAS = "artistas.json"; //"artistas.json" es el OG (completo)
 	public static final String ARCHIVO_ARTISTAS_BASE = "artistas-base.json";
 	
 	public static final String CLAVE_CANCION_TITULO = "titulo";

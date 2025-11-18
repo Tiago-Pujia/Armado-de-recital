@@ -22,19 +22,19 @@ public class Recital {
 		//this.agregarArtistasBase(); //lo quito temporal o indefinidamente, creo que es mejor NO agregarlos al principio para no tener que des-contratarlos para cargar un estado previo (agarramos el recital vacío, so to speak)
 	}
 	
-	private void agregarArtistasBase() {
-		
-		for(Cancion cancion : canciones) { 
-			
-			for(ArtistaBase artista : artistasBase) {
-				if(contratador.artistaEsContratableParaCancion(this.contrataciones, artista, cancion)) {
-					Contratacion contratacion = this.contratador.contratarArtistaParaUnRolCualquieraEnCancion(artista, cancion);
-					this.contrataciones.add(contratacion);
-					this.aumentarCostoTotal(contratacion.getCosto());
-				}
-			}
-		}
-	}
+//	private void agregarArtistasBase() {
+//		
+//		for(Cancion cancion : canciones) { 
+//			
+//			for(ArtistaBase artista : artistasBase) {
+//				if(contratador.artistaEsContratableParaCancion(this.contrataciones, artista, cancion)) {
+//					Contratacion contratacion = this.contratador.contratarArtistaParaUnRolCualquieraEnCancion(artista, cancion);
+//					this.contrataciones.add(contratacion);
+//					this.aumentarCostoTotal(contratacion.getCosto());
+//				}
+//			}
+//		}
+//	}
 	
 	///punto 1
 	public HashMap<String, Integer> consultarRolesFaltantesParaCancion(Cancion cancion) {		
@@ -56,10 +56,11 @@ public class Recital {
 		}
 		
 		for(Map.Entry<String, Integer> rol : copia.entrySet()) {
-			primerContratable = true;
+			
 			while(rol.getValue() != 0) {
+				primerContratable = true;
 				rolVacio = true;
-				Artista artistaMin = repertorio.iterator().next();
+				Artista artistaMin = null;
 				for(Artista artista : repertorio) {
 					
 					if(contratador.artistaEsContratableParaCancionRol(contrataciones, artista, cancion, rol.getKey())) {
