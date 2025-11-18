@@ -12,41 +12,16 @@ import java.util.List;
  * Muestra las relaciones entre artistas según bandas compartidas
  */
 public class GrafoColaboraciones {
-    private Map<String, Set<String>> grafo;
+    //private Map<String, Set<String>> grafo;
     private Set<Artista> artistas;
     
+    //Solo quiero Artistas activos, entonces busco los artistas de las contrataciones
     public GrafoColaboraciones(List<Contratacion> contrataciones) {
         this.artistas = new HashSet<>();
         for(Contratacion contrato : contrataciones) {
         	this.artistas.add(contrato.getArtista());
         }
-        this.grafo = new HashMap<>();
-        construirGrafo();
     }
-    
-    private void construirGrafo() {
-        // Crear nodos para cada artista
-        for (Artista artista : artistas) {
-            grafo.put(artista.getNombre(), new HashSet<>());
-        }
-        
-        // Crear aristas entre artistas que comparten bandas
-        for (Artista artista1 : artistas) {
-            for (Artista artista2 : artistas) {
-                if (artista1.compartioBandaCon(artista2) && !artista1.equals(artista2)) {
-                    grafo.get(artista1.getNombre()).add(artista2.getNombre());
-                    grafo.get(artista2.getNombre()).add(artista1.getNombre());
-                }
-            }
-        }
-    }
-    
-    
-    public Set<String> getColaboraciones(String nombreArtista) {
-        return new HashSet<>(grafo.getOrDefault(nombreArtista, new HashSet<>()));
-    }
-    
-     //Muestra el grafo 
      
     public String mostrarGrafoDetallado() {
         StringBuilder sb = new StringBuilder();
