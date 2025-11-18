@@ -31,6 +31,7 @@ public class SalirComando implements Comando{
 			contratoJSON.put(CargadorDeArchivos.CLAVE_CONTRATO_ARTISTA, contrato.getArtista().getNombre());
 			contratoJSON.put(CargadorDeArchivos.CLAVE_CONTRATO_ROL, contrato.getRol());
 			contratoJSON.put(CargadorDeArchivos.CLAVE_CONTRATO_COSTO, contrato.getCosto());
+			contratoJSON.put(CargadorDeArchivos.CLAVE_CONTRATO_DESCUENTO, contrato.getDescuento());
 			contenidoArchSalida.put(contratoJSON);
 		}
 		

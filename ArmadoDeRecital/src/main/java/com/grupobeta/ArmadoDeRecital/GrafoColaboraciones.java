@@ -1,0 +1,94 @@
+package com.grupobeta.ArmadoDeRecital;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.List;
+
+/**
+ * Bonus: Grafo de colaboraciones entre artistas
+ * Muestra las relaciones entre artistas según bandas compartidas
+ */
+public class GrafoColaboraciones {
+    private Map<String, Set<String>> grafo;
+    private List<Artista> artistas;
+    
+    public GrafoColaboraciones(List<Artista> artistas) {
+        this.artistas = new ArrayList<>(artistas);
+        this.grafo = new HashMap<>();
+        construirGrafo();
+    }
+    
+    private void construirGrafo() {
+        // Crear nodos para cada artista
+        for (Artista artista : artistas) {
+            grafo.put(artista.getNombre(), new HashSet<>());
+        }
+        
+        // Crear aristas entre artistas que comparten bandas
+        for (int i = 0; i < artistas.size(); i++) {
+            Artista artista1 = artistas.get(i);
+            for (int j = i + 1; j < artistas.size(); j++) {
+                Artista artista2 = artistas.get(j);
+                if (artista1.compartioBandaCon(artista2)) {
+                    grafo.get(artista1.getNombre()).add(artista2.getNombre());
+                    grafo.get(artista2.getNombre()).add(artista1.getNombre());
+                }
+            }
+        }
+    }
+    
+    
+    public Set<String> getColaboraciones(String nombreArtista) {
+        return new HashSet<>(grafo.getOrDefault(nombreArtista, new HashSet<>()));
+    }
+    
+     //Muestra el grafo 
+     
+    public String mostrarGrafoDetallado() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== GRAFO DETALLADO DE COLABORACIONES ===\n\n");
+        
+        Map<String, Map<String, List<String>>> detalle = new HashMap<>();
+        
+        // Construir mapa detallado
+        for (int i = 0; i < artistas.size(); i++) {
+            Artista artista1 = artistas.get(i);
+            for (int j = i + 1; j < artistas.size(); j++) {
+                Artista artista2 = artistas.get(j);
+                
+                // Encontrar bandas compartidas
+                List<String> bandasCompartidas = new ArrayList<>();
+                for (String banda : artista1.getHistorial()) {
+                    if (artista2.getHistorial().contains(banda)) {
+                        bandasCompartidas.add(Menu.ANSI_GREEN + banda + Menu.ANSI_RESET );
+                    }
+                }
+                
+                if (!bandasCompartidas.isEmpty()) {
+                    String key =  Menu.ANSI_CYAN + artista1.getNombre() + Menu.ANSI_RESET + " ↔ " +  Menu.ANSI_YELLOW + artista2.getNombre() + Menu.ANSI_RESET;
+                    detalle.put(key, new HashMap<>());
+                    detalle.get(key).put("bandas", bandasCompartidas);
+                }
+            }
+        }
+        
+        // Mostrar
+        for (Map.Entry<String, Map<String, List<String>>> entry : detalle.entrySet()) {
+            sb.append(entry.getKey()).append("\n");
+            sb.append("  Bandas compartidas: ");
+            List<String> bandas = entry.getValue().get("bandas");
+            for (int i = 0; i < bandas.size(); i++) {
+                sb.append(bandas.get(i));
+                if (i < bandas.size() - 1) {
+                    sb.append(", ");
+                }
+            }
+            sb.append("\n\n");
+        }
+        
+        return sb.toString();
+    }
+}

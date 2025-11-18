@@ -30,6 +30,7 @@ public class CargadorDeArchivos {
 	public static final String CLAVE_CONTRATO_ARTISTA = "artista";
 	public static final String CLAVE_CONTRATO_ROL = "rol";
 	public static final String CLAVE_CONTRATO_COSTO = "costo";
+	public static final String CLAVE_CONTRATO_DESCUENTO = "descuento";
 	
 	public JSONArray parsearJSONArray(String nomArch) throws IOException {
 		String contenido = new String(Files.readAllBytes(Paths.get(nomArch)));
@@ -132,27 +133,25 @@ public class CargadorDeArchivos {
 		return artistasBase;		
 	}
 	
-	public ArrayList<Contratacion> cargarArchivoEstadoPrevio(){
-		
-		ArrayList<Contratacion> contratosPrevios = new ArrayList<Contratacion>();
-		
-		try {
-			
-			JSONArray contratosArray = this.parsearJSONArray(ARCHIVO_SALIDA);
-//			ArrayList<Artista> repertorio = new ArrayList<Artista>(menu.getRecital().getArtistasBase()); //recital.unificarArtistas()
-//			repertorio.addAll(menu.getRecital().artistasContratables);
-//			
-//			for(int i = 0; i< contratosArray.length() ; i++) {
-//				
-//				JSONObject contratoJSON = contratosArray.getJSONObject(i);
-//				//acá parseo todos los contratos and shit
-//				
-//			}
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}		
-		
-		return contratosPrevios;
-	}
+	/*
+	 * @SuppressWarnings("unused") public ArrayList<Contratacion>
+	 * cargarArchivoEstadoPrevio(){
+	 * 
+	 * ArrayList<Contratacion> contratosPrevios = new ArrayList<Contratacion>();
+	 * 
+	 * try {
+	 * 
+	 * JSONArray contratosArray = this.parsearJSONArray(ARCHIVO_SALIDA); //
+	 * ArrayList<Artista> repertorio = new
+	 * ArrayList<Artista>(menu.getRecital().getArtistasBase());
+	 * //recital.unificarArtistas() //
+	 * repertorio.addAll(menu.getRecital().artistasContratables); // // for(int i =
+	 * 0; i< contratosArray.length() ; i++) { // // JSONObject contratoJSON =
+	 * contratosArray.getJSONObject(i); // //acá parseo todos los contratos and shit
+	 * // // }
+	 * 
+	 * } catch (IOException e) { e.printStackTrace(); }
+	 * 
+	 * return contratosPrevios; }
+	 */
 }

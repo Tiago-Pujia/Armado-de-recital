@@ -36,6 +36,10 @@ public class Recital {
 //		}
 //	}
 	
+	public Contratador getContratador() {
+		return this.contratador;
+	}
+	
 	///punto 1
 	public HashMap<String, Integer> consultarRolesFaltantesParaCancion(Cancion cancion) {		
 		return cancion.getRolesRequeridos();
@@ -113,7 +117,7 @@ public class Recital {
 		return costoCancion;
 	}
 	
-	private void aumentarCostoTotal(double monto){
+	public void aumentarCostoTotal(double monto){
 		this.costoTotal += monto;
 	}
 
@@ -175,7 +179,7 @@ public ArrayList<Contratacion> getContratosDeCancion(Cancion cancion) {
 	public ArrayList<ArtistaBase> getArtistasBase() { return artistasBase; }	
 	
 	public ArrayList<Cancion> getCanciones() { return this.canciones; }
-
+	
 	public Artista buscarArtistaAll(String nombre) {
 		
 		ArrayList<Artista> todos = new ArrayList<Artista>(this.getArtistasBase());

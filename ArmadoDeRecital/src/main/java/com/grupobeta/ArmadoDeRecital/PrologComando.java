@@ -39,7 +39,7 @@ public class PrologComando implements Comando{
 	    } catch (UnsatisfiedLinkError ule) {
 	        System.err.println("ERROR DE ENLACE NATIVO: No se encontró la biblioteca de SWI-Prolog.");
 	        System.err.println("Asegúrate de que -Djava.library.path apunta a la carpeta 'bin' de SWI-Prolog.");
-	        ule.printStackTrace();
+	        ule.printStackTrace(); 
 	        return;
 	    }
 		

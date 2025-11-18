@@ -1,5 +1,6 @@
 package com.grupobeta.ArmadoDeRecital;
 
+//import java.util.Collection;
 import java.util.Objects;
 
 public class Contratacion implements Comparable<Contratacion>{
@@ -8,11 +9,13 @@ public class Contratacion implements Comparable<Contratacion>{
 	private Artista artista; /// 1 contrato contempla 1 artista con 1 cancion en 1 rol
 	private String rol;
 	private double costo = 0;
+	private boolean descuento;
 	
 	private Contratacion(Cancion c, Artista a, String r, boolean hayDescuento) {
 		this.cancion = c;
 		this.artista = a;
 		this.rol = r;
+		this.descuento = hayDescuento;
 		if(hayDescuento) {
 			this.costo = a.getCosto()*ArtistaContratable.DESCUENTO_POR_COMPARTIR_BANDA;
 		}
@@ -66,5 +69,10 @@ public class Contratacion implements Comparable<Contratacion>{
 	@Override
 	public int compareTo(Contratacion o) {
 		return this.artista.compareTo(o.getArtista());
+	}
+
+	public boolean getDescuento() {
+		// TODO Auto-generated method stub
+		return this.descuento;
 	}
 }
