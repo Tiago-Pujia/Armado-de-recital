@@ -13,10 +13,13 @@ import java.util.List;
  */
 public class GrafoColaboraciones {
     private Map<String, Set<String>> grafo;
-    private List<Artista> artistas;
+    private Set<Artista> artistas;
     
-    public GrafoColaboraciones(List<Artista> artistas) {
-        this.artistas = new ArrayList<>(artistas);
+    public GrafoColaboraciones(List<Contratacion> contrataciones) {
+        this.artistas = new HashSet<>();
+        for(Contratacion contrato : contrataciones) {
+        	this.artistas.add(contrato.getArtista());
+        }
         this.grafo = new HashMap<>();
         construirGrafo();
     }
@@ -28,11 +31,9 @@ public class GrafoColaboraciones {
         }
         
         // Crear aristas entre artistas que comparten bandas
-        for (int i = 0; i < artistas.size(); i++) {
-            Artista artista1 = artistas.get(i);
-            for (int j = i + 1; j < artistas.size(); j++) {
-                Artista artista2 = artistas.get(j);
-                if (artista1.compartioBandaCon(artista2)) {
+        for (Artista artista1 : artistas) {
+            for (Artista artista2 : artistas) {
+                if (artista1.compartioBandaCon(artista2) && !artista1.equals(artista2)) {
                     grafo.get(artista1.getNombre()).add(artista2.getNombre());
                     grafo.get(artista2.getNombre()).add(artista1.getNombre());
                 }
@@ -54,11 +55,11 @@ public class GrafoColaboraciones {
         Map<String, Map<String, List<String>>> detalle = new HashMap<>();
         
         // Construir mapa detallado
-        for (int i = 0; i < artistas.size(); i++) {
-            Artista artista1 = artistas.get(i);
-            for (int j = i + 1; j < artistas.size(); j++) {
-                Artista artista2 = artistas.get(j);
-                
+        for (Artista artista1 : artistas) {
+            for (Artista artista2 : artistas) {
+            	if (artista1.getNombre().compareTo(artista2.getNombre()) >= 0) {
+                    continue; 
+                }
                 // Encontrar bandas compartidas
                 List<String> bandasCompartidas = new ArrayList<>();
                 for (String banda : artista1.getHistorial()) {

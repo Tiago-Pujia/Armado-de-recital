@@ -12,7 +12,7 @@ public class GrafoComando implements Comando{
 	public void ejecutar() {
 		ArrayList<Artista> repertorio = new ArrayList<Artista>(this.recital.getArtistasBase());
 		repertorio.addAll(this.recital.getArtistasContratables());
-		GrafoColaboraciones grafo = new GrafoColaboraciones(repertorio);
+		GrafoColaboraciones grafo = new GrafoColaboraciones(recital.getContrataciones());
 		System.out.println(grafo.mostrarGrafoDetallado());
 	}
 }

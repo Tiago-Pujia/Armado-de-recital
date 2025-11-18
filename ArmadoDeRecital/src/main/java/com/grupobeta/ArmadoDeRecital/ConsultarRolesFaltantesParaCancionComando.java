@@ -18,7 +18,7 @@ public class ConsultarRolesFaltantesParaCancionComando implements Comando{
 	public void ejecutar() {
 		System.out.printf("Ingrese el nombre de la canción: ");
 		scanner.nextLine();
-		String nombreCancion = scanner.nextLine();
+		String nombreCancion = scanner.nextLine().trim().toLowerCase();
 		
 		try {
 			Cancion cancion = recital.buscarCancion(nombreCancion);
