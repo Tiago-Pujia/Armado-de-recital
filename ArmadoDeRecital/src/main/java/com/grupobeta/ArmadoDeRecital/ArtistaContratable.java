@@ -15,13 +15,9 @@ public class ArtistaContratable extends Artista{
 		this.cantContratos = 0;
 		this.maxCanciones = maxCanciones;
 	}
-		
-	public void reducirCostoContratacion(double descuento) {
-		this.costoContratacion = this.costoContratacion * descuento;
-	}
 	
-	public void aumentarCostoContratacion(double aumento) {
-		this.costoContratacion = this.costoContratacion * aumento;
+	public void aumentarCostoContratacion() {
+		this.costoContratacion = this.costoContratacion * AUMENTO_POR_ENTRENAMIENTO;
 	}
 
 	public void entrenar(String rol) {
@@ -30,12 +26,12 @@ public class ArtistaContratable extends Artista{
 			throw new IllegalArgumentException("Estas intentando ingresar un valor nulo");
 		}
 		
-		if(this.esContratable() || this.tieneRol(rol)) {
+		if(!this.esContratable() || this.tieneRol(rol)) {
 			return;
 		}
 		
 		this.roles.add(rol);
-		this.aumentarCostoContratacion(AUMENTO_POR_ENTRENAMIENTO);
+		this.aumentarCostoContratacion();
 	}
 
 	public int getMaxCanciones() {

@@ -9,19 +9,24 @@ public class Contratacion implements Comparable<Contratacion>{
 	private String rol;
 	private double costo = 0;
 	
-	private Contratacion(Cancion c, Artista a, String r) {
+	private Contratacion(Cancion c, Artista a, String r, boolean hayDescuento) {
 		this.cancion = c;
 		this.artista = a;
 		this.rol = r;
-		this.costo = a.getCosto();
+		if(hayDescuento) {
+			this.costo = a.getCosto()*ArtistaContratable.DESCUENTO_POR_COMPARTIR_BANDA;
+		}
+		else {
+			this.costo = a.getCosto();
+		}
 	}
 	
-	public static Contratacion contratarArtistaRol(Cancion cancion, Artista artista, String rol) {
+	public static Contratacion contratarArtistaRol(Cancion cancion, Artista artista, String rol, boolean hayDescuento) {
 		
 		if(!artista.getRoles().contains(rol)) {
 			throw new IllegalArgumentException("El artista" + artista.getNombre() + " no cuenta con el rol " + rol + " que estás intentando asignarle para la cancion " + cancion.getTitulo());
 		}
-		return new Contratacion(cancion, artista, rol);
+		return new Contratacion(cancion, artista, rol, hayDescuento);
 	}
 	
 	public double getCosto() {

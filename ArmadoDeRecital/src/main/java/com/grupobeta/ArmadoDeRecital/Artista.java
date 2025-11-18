@@ -83,8 +83,4 @@ public abstract class Artista implements Comparable<Artista> {
 	public int compareTo(Artista o) {
 		return this.nombre.compareTo(o.getNombre());
 	}
-
-	protected abstract void aumentarCostoContratacion(double aUMENTO_ARREGLO);
-
-	public abstract void reducirCostoContratacion(double dESCUENTO_POR_COMPARTIR_BANDA);
 }

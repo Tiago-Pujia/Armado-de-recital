@@ -78,15 +78,11 @@ public class Recital {
 					}
 				}
 				if(!rolVacio) {
-					boolean huboDescuento = contratador.aplicarDescuento(artistaMin, cancion, artistasBase, contrataciones);
-					Contratacion contratacion = contratador.contratarArtistaParaUnRolEnCancion(artistaMin, cancion, rol.getKey());
+					Contratacion contratacion = contratador.contratarArtistaParaUnRolEnCancion(artistaMin, cancion, rol.getKey(), contratador.evaluarDescuento(artistaMin, cancion, artistasBase, contrataciones));
 					this.contrataciones.add(contratacion);
 					this.aumentarCostoTotal(contratacion.getCosto());
 					contratosRealizados.add(contratacion);
 					rol.setValue(rol.getValue()-1);
-					if(huboDescuento) {
-						artistaMin.aumentarCostoContratacion(ArtistaContratable.AUMENTO_ARREGLO);
-					}
 				}
 				else {
 					break;

@@ -6,22 +6,22 @@ import java.util.HashSet;
 public class Contratador {
 	
 	//extraemos el primer rol que tengan en comun artista.roles y cancion.roles
-	public Contratacion contratarArtistaParaUnRolCualquieraEnCancion(Artista artista, Cancion cancion) {
+	public Contratacion contratarArtistaParaUnRolCualquieraEnCancion(Artista artista, Cancion cancion, boolean hayDescuento) {
 		
-		return this.crearContrato(artista, cancion, this.rolesQuePuedeTomarArtistaParaCancion(artista, cancion).iterator().next()); 
+		return this.crearContrato(artista, cancion, this.rolesQuePuedeTomarArtistaParaCancion(artista, cancion).iterator().next(), hayDescuento); 
 	}
 	
-	public Contratacion contratarArtistaParaUnRolEnCancion(Artista artista, Cancion cancion, String rol) {
+	public Contratacion contratarArtistaParaUnRolEnCancion(Artista artista, Cancion cancion, String rol, boolean hayDescuento) {
 		
-		return this.crearContrato(artista, cancion, rol); 
+		return this.crearContrato(artista, cancion, rol, hayDescuento); 
 	}
 	
 	/// crea el contrato y lo devuelve, no sin antes quitarle a la cancion 1 unidad de ese rol de sus roles faltantes por cubrir
-	private Contratacion crearContrato(Artista artista, Cancion cancion, String rol) {
+	private Contratacion crearContrato(Artista artista, Cancion cancion, String rol, boolean hayDescuento) {
 		
 		//aplicarDescuentos(artista,contrataciones,cancion); //chequea que haya algún artista base contratado y le 
 		
-		Contratacion contrato = Contratacion.contratarArtistaRol(cancion, artista, rol);
+		Contratacion contrato = Contratacion.contratarArtistaRol(cancion, artista, rol, hayDescuento);
 		artista.contratar();
 		cancion.removerUnRol(rol);		
 		return contrato;
@@ -95,7 +95,7 @@ public class Contratador {
 		return artistasBaseEnEsaCancion;
 	}	
 	
-	public boolean aplicarDescuento(Artista artista, Cancion cancion, ArrayList<ArtistaBase> artistasBase, ArrayList<Contratacion> contrataciones ) {
+	public boolean evaluarDescuento(Artista artista, Cancion cancion, ArrayList<ArtistaBase> artistasBase, ArrayList<Contratacion> contrataciones ) {
 		
 		ArrayList<Artista> artistasBaseEnEsaCancion = cancionTieneContratadoArtistasBase(cancion, artistasBase, contrataciones);
 		
@@ -105,7 +105,6 @@ public class Contratador {
 		
 		for(Artista baseEnCancion : artistasBaseEnEsaCancion) {
 			if(artista.compartioBandaCon(baseEnCancion)) {
-				artista.reducirCostoContratacion(ArtistaContratable.DESCUENTO_POR_COMPARTIR_BANDA);
 				return true;
 			}
 		}
