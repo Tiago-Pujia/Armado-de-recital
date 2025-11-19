@@ -1,6 +1,7 @@
 package com.grupobeta.ArmadoDeRecital;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.HashSet;
 
 public class Contratador {
@@ -43,7 +44,7 @@ public class Contratador {
 			return artista.esContratable();
 	}
 	
-	public boolean artistaEsContratableParaCancionRol(ArrayList<Contratacion> contrataciones, Artista artista, Cancion cancion, String rol) {
+	public boolean artistaEsContratableParaCancionRol(List<Contratacion> contrataciones, Artista artista, Cancion cancion, String rol) {
 		
 		///chequeo que el artista no esté ya contratado para esa cancion
 		if(yaHayContratoParaEseArtistaYCancion(contrataciones, artista, cancion)) {
@@ -59,7 +60,7 @@ public class Contratador {
 		return artista.esContratable();
 	}
 	
-	public boolean yaHayContratoParaEseArtistaYCancion(ArrayList<Contratacion> contrataciones, Artista artista, Cancion cancion) {
+	public boolean yaHayContratoParaEseArtistaYCancion(List<Contratacion> contrataciones, Artista artista, Cancion cancion) {
 		
 		for(Contratacion contratacion : contrataciones) {
 			if(contratacion.getArtista().equals(artista) && contratacion.getCancion().equals(cancion)) {
@@ -83,7 +84,7 @@ public class Contratador {
 		return interseccion;
 	}
 
-	public ArrayList<Artista> cancionTieneContratadoArtistasBase(Cancion cancion, ArrayList<ArtistaBase> artistasBase, ArrayList<Contratacion> contrataciones) {
+	public ArrayList<Artista> cancionTieneContratadoArtistasBase(Cancion cancion, List<ArtistaBase> artistasBase, List<Contratacion> contrataciones) {
 		
 		ArrayList<Artista> artistasBaseEnEsaCancion = new ArrayList<Artista>();
 		
@@ -95,7 +96,7 @@ public class Contratador {
 		return artistasBaseEnEsaCancion;
 	}	
 	
-	public boolean evaluarDescuento(Artista artista, Cancion cancion, ArrayList<ArtistaBase> artistasBase, ArrayList<Contratacion> contrataciones ) {
+	public boolean evaluarDescuento(Artista artista, Cancion cancion, List<ArtistaBase> artistasBase, List<Contratacion> contrataciones ) {
 		
 		ArrayList<Artista> artistasBaseEnEsaCancion = cancionTieneContratadoArtistasBase(cancion, artistasBase, contrataciones);
 		

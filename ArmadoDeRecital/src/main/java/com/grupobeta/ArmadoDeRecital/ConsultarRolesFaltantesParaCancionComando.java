@@ -1,6 +1,6 @@
 package com.grupobeta.ArmadoDeRecital;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class ConsultarRolesFaltantesParaCancionComando implements Comando{
@@ -22,7 +22,7 @@ public class ConsultarRolesFaltantesParaCancionComando implements Comando{
 		
 		try {
 			Cancion cancion = recital.buscarCancion(nombreCancion);
-			HashMap<String, Integer> rolesFaltantes = recital.consultarRolesFaltantesParaCancion(cancion);
+			Map<String, Integer> rolesFaltantes = recital.consultarRolesFaltantesParaCancion(cancion);
 			
 			if(rolesFaltantes == null) {
 				System.out.println("El nombre ingresado" + Menu.ANSI_RED + " no coincide " + Menu.ANSI_RESET + "con ninguna canción registrada para el recital. Intente nuevamente.");

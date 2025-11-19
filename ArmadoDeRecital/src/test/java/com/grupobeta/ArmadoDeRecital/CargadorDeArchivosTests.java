@@ -3,7 +3,8 @@ package com.grupobeta.ArmadoDeRecital;
 //import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +35,7 @@ class CargadorDeArchivosTests {
 	void cargadoDeArchivoArtistas() {
 			
 		CargadorDeArchivos cargador = new CargadorDeArchivos();
-		ArrayList<ArtistaContratable> repertorio = cargador.cargarArchivoArtistas();
+		List<ArtistaContratable> repertorio = cargador.cargarArchivoArtistas();
 		
 		for(Artista a : repertorio) {
 			System.out.println(a.toString());
@@ -45,7 +46,7 @@ class CargadorDeArchivosTests {
 	void cargadoDeArchivoRecital() {
 		
 		CargadorDeArchivos cargador = new CargadorDeArchivos();
-		ArrayList<Cancion> canciones = cargador.cargarArchivoRecital();
+		List<Cancion> canciones = cargador.cargarArchivoRecital();
 		
 		for(Cancion c : canciones) {
 			System.out.println(c.toString());
@@ -56,8 +57,8 @@ class CargadorDeArchivosTests {
 	void cargadoDeArtistasBase() {
 		
 		CargadorDeArchivos cargador = new CargadorDeArchivos();
-		ArrayList<ArtistaContratable> repertorio = cargador.cargarArchivoArtistas();
-		ArrayList<ArtistaBase> artBase = cargador.cargarArchivoArtistasBase(repertorio);
+		List<ArtistaContratable> repertorio = cargador.cargarArchivoArtistas();
+		List<ArtistaBase> artBase = cargador.cargarArchivoArtistasBase(repertorio);
 		
 		for(ArtistaBase ab : artBase) {
 			System.out.println(ab);

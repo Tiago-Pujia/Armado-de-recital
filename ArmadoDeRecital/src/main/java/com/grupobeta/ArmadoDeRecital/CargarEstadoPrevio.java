@@ -1,9 +1,8 @@
 package com.grupobeta.ArmadoDeRecital;
 
 import java.io.IOException;
-//import java.nio.file.Files;
-//import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -26,7 +25,7 @@ public class CargarEstadoPrevio implements Comando {
 		System.out.print(Menu.ANSI_CYAN + "=== Cargar Estado Previo ===" + Menu.ANSI_RESET + "\n");
 		
 		try {
-			ArrayList<Contratacion> contratacionesCargadas = cargarContratacionesDesdeArchivo("recital-out.json");
+			List<Contratacion> contratacionesCargadas = cargarContratacionesDesdeArchivo("recital-out.json");
 			
 			if(contratacionesCargadas.isEmpty()) {
 				System.out.println(Menu.ANSI_YELLOW + "El archivo está vacío o no contiene contrataciones válidas." + Menu.ANSI_RESET);
@@ -43,7 +42,7 @@ public class CargarEstadoPrevio implements Comando {
 					Cancion cancion = recital.buscarCancion(contrato.getCancion().getTitulo());
 					Artista artista = recital.buscarArtistaAll(contrato.getArtista().getNombre());
 					
-					ArrayList<Contratacion> contratosExistentes = recital.getContratosDeCancion(cancion);
+					List<Contratacion> contratosExistentes = recital.getContratosDeCancion(cancion);
 					boolean yaExiste = false;
 					for(Contratacion existente : contratosExistentes) {
 						if(existente.getArtista().equals(artista) && 
@@ -92,7 +91,7 @@ public class CargarEstadoPrevio implements Comando {
 		}
 	}
 	
-	private ArrayList<Contratacion> cargarContratacionesDesdeArchivo(String nombreArchivo) throws IOException {
+	private List<Contratacion> cargarContratacionesDesdeArchivo(String nombreArchivo) throws IOException {
 		ArrayList<Contratacion> contrataciones = new ArrayList<Contratacion>();
 		
 		JSONArray contratosArray = cargador.parsearJSONArray(nombreArchivo);

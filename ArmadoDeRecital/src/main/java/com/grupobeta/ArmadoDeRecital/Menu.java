@@ -1,6 +1,7 @@
 package com.grupobeta.ArmadoDeRecital;
 
-import java.util.ArrayList;
+
+import java.util.List;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -104,7 +105,7 @@ public class Menu {
         comando.ejecutar();		
 	}
 	
-	public static void mostrarContratosRealizados(ArrayList<Contratacion> contratosRealizados) {
+	public static void mostrarContratosRealizados(List<Contratacion> contratosRealizados) {
 		for(Contratacion contrato : contratosRealizados) {
 			System.out.println("Se contrató al artista " + Menu.ANSI_CYAN + contrato.getArtista().getNombre() +
 					Menu.ANSI_RESET + " para el rol: " + Menu.ANSI_RED + contrato.getRol() + Menu.ANSI_RESET +

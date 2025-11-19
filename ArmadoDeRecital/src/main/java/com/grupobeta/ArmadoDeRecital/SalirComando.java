@@ -3,7 +3,7 @@ package com.grupobeta.ArmadoDeRecital;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,7 +23,7 @@ public class SalirComando implements Comando{
 		menu.setEstaCorriendo(false);
 		System.out.println("\nGuardando estado antes de salir...");
 		JSONArray contenidoArchSalida = new JSONArray();
-		ArrayList<Contratacion> contrataciones = recital.getContrataciones();
+		List<Contratacion> contrataciones = recital.getContrataciones();
 		
 		for(Contratacion contrato : contrataciones) {
 			JSONObject contratoJSON = new JSONObject();

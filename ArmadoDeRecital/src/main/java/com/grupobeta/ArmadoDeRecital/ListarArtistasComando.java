@@ -1,6 +1,7 @@
 package com.grupobeta.ArmadoDeRecital;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListarArtistasComando implements Comando{
 	
@@ -21,7 +22,7 @@ public class ListarArtistasComando implements Comando{
 		
 		for(Artista artista : repertorio) {
 			
-			ArrayList<Contratacion> contratosArtista = recital.getContratosDeArtista(artista);
+			List<Contratacion> contratosArtista = recital.getContratosDeArtista(artista);
 			if(!contratosArtista.isEmpty()) {
 				System.out.println(Menu.ANSI_CYAN + artista.getNombre() + Menu.ANSI_GREEN + "\nCosto: " 
 			+ artista.getCosto() + Menu.ANSI_RESET + "\nRoles: " + Menu.ANSI_RED + artista.getRoles() + Menu.ANSI_RESET + "\nContrataciones para este artista: ");

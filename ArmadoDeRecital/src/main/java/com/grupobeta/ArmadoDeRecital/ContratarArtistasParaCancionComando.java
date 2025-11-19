@@ -1,6 +1,6 @@
 package com.grupobeta.ArmadoDeRecital;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class ContratarArtistasParaCancionComando implements Comando{
@@ -25,7 +25,7 @@ public class ContratarArtistasParaCancionComando implements Comando{
 			
 			Cancion cancion = recital.buscarCancion(nombreCancion);
 						
-			ArrayList<Contratacion> contratosRealizados = recital.contratarArtistasParaCancion(cancion);
+			List<Contratacion> contratosRealizados = recital.contratarArtistasParaCancion(cancion);
 			if(contratosRealizados.isEmpty()) {
 				System.out.println(Menu.ANSI_CYAN + "La cancion ya tiene todos sus roles cubiertos." + Menu.ANSI_RESET);
 			}

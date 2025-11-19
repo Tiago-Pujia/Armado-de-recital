@@ -7,8 +7,8 @@ import java.util.Set;
 public abstract class Artista implements Comparable<Artista> {
 	
 	protected String nombre;	
-	protected HashSet<String> roles = null;
-	protected HashSet<String> bandasHistoricas = null;
+	protected Set<String> roles = null;
+	protected Set<String> bandasHistoricas = null;
 	protected int cantContratos = 0;
 	protected double costoContratacion;
 	
@@ -43,7 +43,7 @@ public abstract class Artista implements Comparable<Artista> {
 		return this.costoContratacion;
 	}
 	
-	public HashSet<String> getRoles() {
+	public Set<String> getRoles() {
 		return roles;
 	}
 	
@@ -51,7 +51,7 @@ public abstract class Artista implements Comparable<Artista> {
 		return this.cantContratos;
 	}
 	
-	public HashSet<String> getHistorial() {
+	public Set<String> getHistorial() {
 		return this.bandasHistoricas;
 	}
 	

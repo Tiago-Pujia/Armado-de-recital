@@ -1,6 +1,6 @@
 package com.grupobeta.ArmadoDeRecital;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ContratarArtistasAllComando implements Comando{
 	
@@ -16,7 +16,7 @@ public class ContratarArtistasAllComando implements Comando{
 
 		for(Cancion cancion : recital.getCanciones()) {
 			
-			ArrayList<Contratacion> contratosRealizados = recital.contratarArtistasParaCancion(cancion);
+			List<Contratacion> contratosRealizados = recital.contratarArtistasParaCancion(cancion);
 	
 			Menu.mostrarContratosRealizados(contratosRealizados);
 			if(!cancion.getRolesRequeridos().isEmpty()) {

@@ -12,7 +12,6 @@ import java.util.List;
  * Muestra las relaciones entre artistas según bandas compartidas
  */
 public class GrafoColaboraciones {
-    //private Map<String, Set<String>> grafo;
     private Set<Artista> artistas;
     
     //Solo quiero Artistas activos, entonces busco los artistas de las contrataciones

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -37,7 +38,7 @@ public class CargadorDeArchivos {
 		return new JSONArray(contenido);		
 	}
 	
-	public ArrayList<Cancion> cargarArchivoRecital() {
+	public List<Cancion> cargarArchivoRecital() {
 		
 		ArrayList<Cancion> canciones = new ArrayList<Cancion>();
 		
@@ -67,7 +68,7 @@ public class CargadorDeArchivos {
 		return canciones;
 	}
 	
-	public ArrayList<ArtistaContratable> cargarArchivoArtistas() {
+	public List<ArtistaContratable> cargarArchivoArtistas() {
 		
 			ArrayList<ArtistaContratable> repertorio = new ArrayList<ArtistaContratable>();
 			
@@ -103,7 +104,7 @@ public class CargadorDeArchivos {
 			return repertorio;
 	}
 	
-	public ArrayList<ArtistaBase> cargarArchivoArtistasBase(ArrayList<ArtistaContratable> repertorio){
+	public List<ArtistaBase> cargarArchivoArtistasBase(List<ArtistaContratable> repertorio){
 		
 		ArrayList<String> nombresArtistasBase = new ArrayList<String>();
 		ArrayList<ArtistaBase> artistasBase = new ArrayList<ArtistaBase>();		
@@ -132,26 +133,5 @@ public class CargadorDeArchivos {
 		
 		return artistasBase;		
 	}
-	
-	/*
-	 * @SuppressWarnings("unused") public ArrayList<Contratacion>
-	 * cargarArchivoEstadoPrevio(){
-	 * 
-	 * ArrayList<Contratacion> contratosPrevios = new ArrayList<Contratacion>();
-	 * 
-	 * try {
-	 * 
-	 * JSONArray contratosArray = this.parsearJSONArray(ARCHIVO_SALIDA); //
-	 * ArrayList<Artista> repertorio = new
-	 * ArrayList<Artista>(menu.getRecital().getArtistasBase());
-	 * //recital.unificarArtistas() //
-	 * repertorio.addAll(menu.getRecital().artistasContratables); // // for(int i =
-	 * 0; i< contratosArray.length() ; i++) { // // JSONObject contratoJSON =
-	 * contratosArray.getJSONObject(i); // //acá parseo todos los contratos and shit
-	 * // // }
-	 * 
-	 * } catch (IOException e) { e.printStackTrace(); }
-	 * 
-	 * return contratosPrevios; }
-	 */
+
 }

@@ -1,15 +1,16 @@
 package com.grupobeta.ArmadoDeRecital;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Recital {
 	
-	private ArrayList<Cancion> canciones = null; 
-	private ArrayList<Contratacion> contrataciones = null;
-	private ArrayList<ArtistaContratable> artistasContratables = null;
-	private ArrayList<ArtistaBase> artistasBase = null;
+	private List<Cancion> canciones = null; 
+	private List<Contratacion> contrataciones = null;
+	private List<ArtistaContratable> artistasContratables = null;
+	private List<ArtistaBase> artistasBase = null;
 	private Contratador contratador = null;
 	private double costoTotal = 0;
 	
@@ -21,32 +22,18 @@ public class Recital {
 		this.contratador = new Contratador();
 		//this.agregarArtistasBase(); //lo quito temporal o indefinidamente, creo que es mejor NO agregarlos al principio para no tener que des-contratarlos para cargar un estado previo (agarramos el recital vacío, so to speak)
 	}
-	
-//	private void agregarArtistasBase() {
-//		
-//		for(Cancion cancion : canciones) { 
-//			
-//			for(ArtistaBase artista : artistasBase) {
-//				if(contratador.artistaEsContratableParaCancion(this.contrataciones, artista, cancion)) {
-//					Contratacion contratacion = this.contratador.contratarArtistaParaUnRolCualquieraEnCancion(artista, cancion);
-//					this.contrataciones.add(contratacion);
-//					this.aumentarCostoTotal(contratacion.getCosto());
-//				}
-//			}
-//		}
-//	}
-	
+
 	public Contratador getContratador() {
 		return this.contratador;
 	}
 	
 	///punto 1
-	public HashMap<String, Integer> consultarRolesFaltantesParaCancion(Cancion cancion) {		
+	public Map<String, Integer> consultarRolesFaltantesParaCancion(Cancion cancion) {		
 		return cancion.getRolesRequeridos();
 	}
 	
 	//punto 3
-	public ArrayList<Contratacion> contratarArtistasParaCancion(Cancion cancion) {
+	public List<Contratacion> contratarArtistasParaCancion(Cancion cancion) {
 		
 		boolean rolVacio = true, primerContratable = true;
 		HashMap<String, Integer> copia = new HashMap<String, Integer>(cancion.getRolesRequeridos());
@@ -98,12 +85,12 @@ public class Recital {
 	}
 	
 	///punto 6
-	public ArrayList<Contratacion> getContrataciones() {
+	public List<Contratacion> getContrataciones() {
 		this.contrataciones.sort(null);
 		return this.contrataciones;
 	}
 	
-	public double obtenerCostoContratacionesYContratosCancion(Cancion cancion, ArrayList<Contratacion> contrato) {
+	public double obtenerCostoContratacionesYContratosCancion(Cancion cancion, List<Contratacion> contrato) {
 		
 		double costoCancion = 0;
 		
@@ -141,7 +128,7 @@ public class Recital {
 		throw new ArtistaNoEncontradoException("El nombre ingresado no coincide con el de ningún artista. Intente nuevamente");
 	}
 	
-	public ArrayList<Contratacion> getContratosDeArtista(Artista artista) {
+	public List<Contratacion> getContratosDeArtista(Artista artista) {
 		
 		ArrayList<Contratacion>contratosArtista = new ArrayList<Contratacion>();
 		
@@ -153,7 +140,7 @@ public class Recital {
 		return contratosArtista;
 	}
 	
-public ArrayList<Contratacion> getContratosDeCancion(Cancion cancion) {
+public List<Contratacion> getContratosDeCancion(Cancion cancion) {
 	
 		ArrayList<Contratacion>contratosCancion = new ArrayList<Contratacion>();
 		
@@ -174,11 +161,11 @@ public ArrayList<Contratacion> getContratosDeCancion(Cancion cancion) {
 	
 	public double getCostoTotal() { return costoTotal; }
 	
-	public ArrayList<ArtistaContratable> getArtistasContratables() { return artistasContratables; }
+	public List<ArtistaContratable> getArtistasContratables() { return artistasContratables; }
 
-	public ArrayList<ArtistaBase> getArtistasBase() { return artistasBase; }	
+	public List<ArtistaBase> getArtistasBase() { return artistasBase; }	
 	
-	public ArrayList<Cancion> getCanciones() { return this.canciones; }
+	public List<Cancion> getCanciones() { return this.canciones; }
 	
 	public Artista buscarArtistaAll(String nombre) {
 		
