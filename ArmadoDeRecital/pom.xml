@@ -14,6 +14,13 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  
+  <repositories>
+    <repository>
+        <id>local-repo</id>
+        <url>file://${project.basedir}/lib</url>
+    </repository>
+</repositories>  
     
   <dependencies>
     <dependency>
@@ -22,12 +29,10 @@
         <version>5.12.2</version>
         <scope>test</scope>
     </dependency>
-   <dependency>
+	<dependency>
         <groupId>org.swiprolog</groupId>
         <artifactId>jpl</artifactId>
-        <version>local</version>
-        <scope>system</scope>
-        <systemPath>C:/Program Files/swipl/lib/jpl.jar</systemPath>
+        <version>7.0.0</version> 
     </dependency>
     <dependency>
     <groupId>org.json</groupId>
