@@ -34,9 +34,7 @@ public class ArtistaContratable extends Artista{
 		this.aumentarCostoContratacion();
 	}
 
-	public int getMaxCanciones() {
-		return maxCanciones;
-	}
+	public int getMaxCanciones() { return maxCanciones; }
 	
 	@Override
 	public boolean esContratable() {

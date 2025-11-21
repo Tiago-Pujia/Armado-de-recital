@@ -56,7 +56,7 @@ public class CargarEstadoPrevio implements Comando {
 						if(!artista.getRoles().contains(contrato.getRol())) {
 							artista.getRoles().add(contrato.getRol());
 						}
-						recital.getContrataciones().add(Contratador.crearContratoDesdeDatosArchivo(artista, cancion, contrato.getRol(), contrato.getCosto()));
+						recital.getContrataciones().add(Contratador.crearContratoDesdeDatosPrevios(artista, cancion, contrato.getRol(), contrato.getCosto()));
 						contratacionesAplicadas++;
 						recital.aumentarCostoTotal(contrato.getCosto());
 					} else {
@@ -109,7 +109,7 @@ public class CargarEstadoPrevio implements Comando {
 			Cancion cancion = recital.buscarCancion(nombreCancion);
 			Artista artista = recital.buscarArtistaAll(nombreArtista);
 			
-			Contratacion contrato = Contratador.crearContratoDesdeDatosArchivo(artista, cancion, rol, costo);
+			Contratacion contrato = Contratador.crearContratoDesdeDatosPrevios(artista, cancion, rol, costo);
 			contrataciones.add(contrato);
 		}
 		

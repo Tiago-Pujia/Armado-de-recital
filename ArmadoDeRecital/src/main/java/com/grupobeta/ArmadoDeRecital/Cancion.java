@@ -13,11 +13,7 @@ public class Cancion {
 		this.titulo = nombre;
 		this.rolesRequeridos = rr;
 	}
-	
-	public Map<String, Integer> getRolesRequeridos() {
-		return this.rolesRequeridos;
-	}
-	
+		
 	public void removerUnRol(String rol) {
 		if(this.rolesRequeridos.containsKey(rol)) {
 			this.rolesRequeridos.put(rol, this.rolesRequeridos.getOrDefault(rol, 0) -1);
@@ -30,6 +26,8 @@ public class Cancion {
 	public void agregarRol(String rol) {
 		this.getRolesRequeridos().put(rol, this.getRolesRequeridos().getOrDefault(this.getRolesRequeridos().get(rol), 0) + 1);
 	}
+	
+	public Map<String, Integer> getRolesRequeridos() {return this.rolesRequeridos; }
 	
 	public String getTitulo() { return this.titulo;	}
 	

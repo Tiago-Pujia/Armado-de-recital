@@ -20,19 +20,16 @@ public class Recital {
 		this.artistasBase = cargador.cargarArchivoArtistasBase(artistasContratables);
 		this.contrataciones = new ArrayList<Contratacion>();
 		this.contratador = new Contratador();
-		//this.agregarArtistasBase(); //lo quito temporal o indefinidamente, creo que es mejor NO agregarlos al principio para no tener que des-contratarlos para cargar un estado previo (agarramos el recital vacío, so to speak)
 	}
 
 	public Contratador getContratador() {
 		return this.contratador;
 	}
 	
-	///punto 1
 	public Map<String, Integer> consultarRolesFaltantesParaCancion(Cancion cancion) {		
 		return cancion.getRolesRequeridos();
 	}
 	
-	//punto 3
 	public List<Contratacion> contratarArtistasParaCancion(Cancion cancion) {
 		
 		boolean rolVacio = true, primerContratable = true;
@@ -84,7 +81,6 @@ public class Recital {
 		return contratosRealizados;
 	}
 	
-	///punto 6
 	public List<Contratacion> getContrataciones() {
 		this.contrataciones.sort(null);
 		return this.contrataciones;
@@ -111,7 +107,7 @@ public class Recital {
 	public Cancion buscarCancion(String ncanc) {
 		
 		for(Cancion c : this.canciones) {
-			if(c.getTitulo().toLowerCase().equals(ncanc.toLowerCase())) {
+			if(c.getTitulo().toLowerCase().equals(ncanc.toLowerCase().trim())) {
 				return c;
 			}
 		}
@@ -121,7 +117,20 @@ public class Recital {
 	public ArtistaContratable buscarArtistaContratable(String nombre) {
 		
 		for(ArtistaContratable a : this.artistasContratables) {
-			if(a.getNombre().toLowerCase().equals(nombre.toLowerCase())) {
+			if(a.getNombre().toLowerCase().equals(nombre.toLowerCase().trim())) {
+				return a;
+			}
+		}
+		throw new ArtistaNoEncontradoException("El nombre ingresado no coincide con el de ningún artista. Intente nuevamente");
+	}
+	
+	public Artista buscarArtistaAll(String nombre) {
+		
+		ArrayList<Artista> todos = new ArrayList<Artista>(this.getArtistasBase());
+		todos.addAll(artistasContratables);
+		
+		for(Artista a : todos) {
+			if(a.getNombre().toLowerCase().equals(nombre.toLowerCase().trim())) {
 				return a;
 			}
 		}
@@ -140,7 +149,7 @@ public class Recital {
 		return contratosArtista;
 	}
 	
-public List<Contratacion> getContratosDeCancion(Cancion cancion) {
+	public List<Contratacion> getContratosDeCancion(Cancion cancion) {
 	
 		ArrayList<Contratacion>contratosCancion = new ArrayList<Contratacion>();
 		
@@ -166,17 +175,4 @@ public List<Contratacion> getContratosDeCancion(Cancion cancion) {
 	public List<ArtistaBase> getArtistasBase() { return artistasBase; }	
 	
 	public List<Cancion> getCanciones() { return this.canciones; }
-	
-	public Artista buscarArtistaAll(String nombre) {
-		
-		ArrayList<Artista> todos = new ArrayList<Artista>(this.getArtistasBase());
-		todos.addAll(artistasContratables);
-		
-		for(Artista a : todos) {
-			if(a.getNombre().toLowerCase().equals(nombre.toLowerCase())) {
-				return a;
-			}
-		}
-		throw new ArtistaNoEncontradoException("El nombre ingresado no coincide con el de ningún artista. Intente nuevamente");
-	}
 }

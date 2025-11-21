@@ -6,7 +6,7 @@ import java.util.Objects;
 public class Contratacion implements Comparable<Contratacion>{
 	
 	private Cancion cancion;
-	private Artista artista; /// 1 contrato contempla 1 artista con 1 cancion en 1 rol
+	private Artista artista; 
 	private String rol;
 	private double costo = 0;
 	private boolean descuento;
@@ -44,21 +44,13 @@ public class Contratacion implements Comparable<Contratacion>{
 	}
 	
 	
-	public double getCosto() {
-		return this.costo;
-	}
+	public double getCosto() { return this.costo; }
 	
-	public Cancion getCancion() {
-		return cancion;
-	}
+	public Cancion getCancion() { return cancion; }
 
-	public Artista getArtista() {
-		return artista;
-	}
+	public Artista getArtista() { return artista; }
 
-	public String getRol() {
-		return rol;
-	}
+	public String getRol() { return rol; }
 	
 	@Override
 	public int hashCode() {

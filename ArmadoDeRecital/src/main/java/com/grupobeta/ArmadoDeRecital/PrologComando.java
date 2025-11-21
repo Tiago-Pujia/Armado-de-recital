@@ -15,7 +15,6 @@ public class PrologComando implements Comando{
 		this.recital = recital;
 	}
 	
-	//punto 8
 	@Override
 	public void ejecutar() {
 		try {

@@ -16,7 +16,7 @@ public class Contratador {
 		return this.crearContrato(artista, cancion, rol, hayDescuento); 
 	}
 	
-	public static Contratacion crearContratoDesdeDatosArchivo(Artista artista, Cancion cancion, String rol, double costo) {
+	public static Contratacion crearContratoDesdeDatosPrevios(Artista artista, Cancion cancion, String rol, double costo) {
 		artista.contratar();
 		cancion.removerUnRol(rol);	
 		return Contratacion.contratarArtistaRolDirecto(cancion, artista, rol, costo); 
