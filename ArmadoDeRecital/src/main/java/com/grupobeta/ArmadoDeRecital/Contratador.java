@@ -6,7 +6,6 @@ import java.util.HashSet;
 
 public class Contratador {
 	
-	//extraemos el primer rol que tengan en comun artista.roles y cancion.roles
 	public Contratacion contratarArtistaParaUnRolCualquieraEnCancion(Artista artista, Cancion cancion, boolean hayDescuento) {
 		
 		return this.crearContrato(artista, cancion, this.rolesQuePuedeTomarArtistaParaCancion(artista, cancion).iterator().next(), hayDescuento); 
@@ -17,11 +16,13 @@ public class Contratador {
 		return this.crearContrato(artista, cancion, rol, hayDescuento); 
 	}
 	
-	/// crea el contrato y lo devuelve, no sin antes quitarle a la cancion 1 unidad de ese rol de sus roles faltantes por cubrir
+	public static Contratacion crearContratoDesdeDatosArchivo(Artista artista, Cancion cancion, String rol, double costo) {
+		artista.contratar();
+		cancion.removerUnRol(rol);	
+		return Contratacion.contratarArtistaRolDirecto(cancion, artista, rol, costo); 
+	}
+	
 	private Contratacion crearContrato(Artista artista, Cancion cancion, String rol, boolean hayDescuento) {
-		
-		//aplicarDescuentos(artista,contrataciones,cancion); //chequea que haya algún artista base contratado y le 
-		
 		Contratacion contrato = Contratacion.contratarArtistaRol(cancion, artista, rol, hayDescuento);
 		artista.contratar();
 		cancion.removerUnRol(rol);		
@@ -30,33 +31,27 @@ public class Contratador {
 	
 	public boolean artistaEsContratableParaCancion(ArrayList<Contratacion> contrataciones, Artista artista, Cancion cancion) {
 			
-			///chequeo que el artista no esté ya contratado para esa cancion
-			if(yaHayContratoParaEseArtistaYCancion(contrataciones, artista, cancion)) {
-				return false;
-			}
-			
-			///chequeo que el artista tenga algún rol para la cancion
-			if(!artistaTieneAlgunRolCancion(artista, cancion)) {
-				return false;
-			}
-			
-			///chequeo que el artista tenga contratos libres
-			return artista.esContratable();
-	}
-	
-	public boolean artistaEsContratableParaCancionRol(List<Contratacion> contrataciones, Artista artista, Cancion cancion, String rol) {
-		
-		///chequeo que el artista no esté ya contratado para esa cancion
 		if(yaHayContratoParaEseArtistaYCancion(contrataciones, artista, cancion)) {
 			return false;
 		}
 		
-		///chequeo que el artista tenga algún rol para la cancion
+		if(!artistaTieneAlgunRolCancion(artista, cancion)) {
+			return false;
+		}
+			
+		return artista.esContratable();
+	}
+	
+	public boolean artistaEsContratableParaCancionRol(List<Contratacion> contrataciones, Artista artista, Cancion cancion, String rol) {
+		
+		if(yaHayContratoParaEseArtistaYCancion(contrataciones, artista, cancion)) {
+			return false;
+		}
+		
 		if(!artista.tieneRol(rol)) {
 			return false;
 		}
 		
-		///chequeo que el artista tenga contratos libres
 		return artista.esContratable();
 	}
 	

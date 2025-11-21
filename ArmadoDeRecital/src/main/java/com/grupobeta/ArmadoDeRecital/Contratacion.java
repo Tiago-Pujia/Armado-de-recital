@@ -24,6 +24,13 @@ public class Contratacion implements Comparable<Contratacion>{
 		}
 	}
 	
+	private Contratacion(Cancion c, Artista a, String r, double costo) {
+		this.cancion = c;
+		this.artista = a;
+		this.rol = r;
+		this.costo = costo;
+	}
+	
 	public static Contratacion contratarArtistaRol(Cancion cancion, Artista artista, String rol, boolean hayDescuento) {
 		
 		if(!artista.getRoles().contains(rol)) {
@@ -31,6 +38,11 @@ public class Contratacion implements Comparable<Contratacion>{
 		}
 		return new Contratacion(cancion, artista, rol, hayDescuento);
 	}
+	
+	public static Contratacion contratarArtistaRolDirecto(Cancion cancion, Artista artista, String rol, double costo) {
+		return new Contratacion(cancion, artista, rol, costo);
+	}
+	
 	
 	public double getCosto() {
 		return this.costo;

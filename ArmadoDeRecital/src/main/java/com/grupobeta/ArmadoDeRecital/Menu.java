@@ -95,7 +95,7 @@ public class Menu {
 		System.out.println("|| " + ANSI_CYAN + "11." + ANSI_RESET + "Mostrar grafo de asociaciones\t\t\t\t\t" + "||");
 		System.out.println("|| " + ANSI_CYAN + "12." + ANSI_RESET + "Salir\t\t\t\t\t\t\t\t" + "||");
 		System.out.println("|| " + "\t\t\t\t\t\t\t\t\t" + "||");
-		System.out.println("|| " + "Seleccione una opcion\t\t\t\t\t\t\t" + "||");
+		System.out.println("|| " + "Seleccione una opcion\t\t\t\t\t\t" + "||");
 		System.out.println("|| " + "\t\t\t\t\t\t\t\t\t" + "||");
 		System.out.println("==========================================================================");
 	}

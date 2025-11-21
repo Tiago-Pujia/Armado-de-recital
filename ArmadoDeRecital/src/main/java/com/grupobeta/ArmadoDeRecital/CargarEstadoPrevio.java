@@ -35,7 +35,6 @@ public class CargarEstadoPrevio implements Comando {
 			int contratacionesAplicadas = 0;
 			int contratacionesOmitidas = 0;
 			StringBuilder advertencias = new StringBuilder();
-			Contratador contratador = recital.getContratador();
 			
 			for(Contratacion contrato : contratacionesCargadas) {
 				try {
@@ -54,7 +53,10 @@ public class CargarEstadoPrevio implements Comando {
 					}
 					
 					if(!yaExiste) {
-						recital.getContrataciones().add(contratador.contratarArtistaParaUnRolEnCancion(artista, cancion, contrato.getRol(), contrato.getDescuento()));
+						if(!artista.getRoles().contains(contrato.getRol())) {
+							artista.getRoles().add(contrato.getRol());
+						}
+						recital.getContrataciones().add(Contratador.crearContratoDesdeDatosArchivo(artista, cancion, contrato.getRol(), contrato.getCosto()));
 						contratacionesAplicadas++;
 						recital.aumentarCostoTotal(contrato.getCosto());
 					} else {
@@ -107,9 +109,7 @@ public class CargarEstadoPrevio implements Comando {
 			Cancion cancion = recital.buscarCancion(nombreCancion);
 			Artista artista = recital.buscarArtistaAll(nombreArtista);
 			
-			boolean hayDescuento = (costo < artista.getCosto());
-			
-			Contratacion contrato = Contratacion.contratarArtistaRol(cancion, artista, rol, hayDescuento);
+			Contratacion contrato = Contratador.crearContratoDesdeDatosArchivo(artista, cancion, rol, costo);
 			contrataciones.add(contrato);
 		}
 		
