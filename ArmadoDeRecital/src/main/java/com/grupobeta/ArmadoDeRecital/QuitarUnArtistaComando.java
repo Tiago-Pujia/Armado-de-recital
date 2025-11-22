@@ -29,9 +29,10 @@ public class QuitarUnArtistaComando implements Comando {
 			
 			for(Contratacion contrato : contratosDeArtista) {
 				recital.removerContratacion(contrato);
-				System.out.println("Se removió al artista de la canción " + Menu.ANSI_PURPLE +
+				System.out.println("Se removió al artista " + artista.getNombre() + " de la canción " + Menu.ANSI_PURPLE +
 						contrato.getCancion().getTitulo() + Menu.ANSI_RESET + " y del rol " + Menu.ANSI_RED + contrato.getRol() + Menu.ANSI_RESET);
 			}
+			
 		}catch(ArtistaNoEncontradoException e) {
 			System.out.println(e.getMessage());
 		}catch(ArtistaSinContratosException e) {

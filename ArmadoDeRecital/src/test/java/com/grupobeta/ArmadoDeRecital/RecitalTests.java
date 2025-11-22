@@ -27,9 +27,7 @@ class RecitalTests {
 	
 	@Test
 	void queLosRolesRestantesPorCubrirPorCancionSeanLosEsperados() {
-		
-		//List<Cancion> canciones = recital.getCanciones();
-		
+				
 		assertEquals(0, recital.buscarCancion("love will tear us apart").getRolesRequeridos().size());
 		assertEquals(0, recital.buscarCancion("I Wanna Be Sedated").getRolesRequeridos().size());
 		assertEquals(0, recital.buscarCancion("These Are the Days of Our Lives").getRolesRequeridos().size());

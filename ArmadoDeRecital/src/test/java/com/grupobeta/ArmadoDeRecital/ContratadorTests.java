@@ -59,7 +59,7 @@ class ContratadorTests {
 	}
 	
 	@Test
-	void queUnArtistaTieneDescuentoPorCompartirBandaConBaseContratadoYOtroNo() {
+	void queUnArtistaTieneDescuentoPorCompartirBandaConBaseContratadoParaCancionYOtroNo() {
 		
 		ArrayList<Contratacion> contrataciones = new ArrayList<Contratacion>();
 		HashMap<String, Integer> roles = new HashMap<String, Integer>();		
