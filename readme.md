@@ -1,27 +1,3 @@
-- [Documentación Detallada de Cada Clase](#documentación-detallada-de-cada-clase)
-  - [Clase: Cancion](#clase-cancion)
-    - [Responsabilidad](#responsabilidad)
-    - [Atributos](#atributos)
-    - [Métodos](#métodos)
-    - [Uso en la consigna](#uso-en-la-consigna)
-  - [Clase Artista](#clase-artista)
-    - [Responsabilidad](#responsabilidad-1)
-    - [Atributos](#atributos-1)
-    - [Métodos](#métodos-1)
-    - [Restricciones](#restricciones)
-  - [Clase: Contratacion](#clase-contratacion)
-    - [Responsabilidad](#responsabilidad-2)
-    - [Atributos](#atributos-2)
-    - [Métodos](#métodos-2)
-    - [Lógica de Costos](#lógica-de-costos)
-  - [Clase: Recital](#clase-recital)
-    - [Responsabilidad](#responsabilidad-3)
-    - [Atributos](#atributos-3)
-    - [Métodos](#métodos-3)
-  - [Clase: Repertorio](#clase-repertorio)
-    - [Responsabilidad](#responsabilidad-4)
-    - [Atributos](#atributos-4)
-    - [Métodos](#métodos-4)
 - [Documentación de las Funcionalidades del Sistema de Gestión de Recital](#documentación-de-las-funcionalidades-del-sistema-de-gestión-de-recital)
   - [Funcionalidad 1: Roles Faltantes para una Canción Específica](#funcionalidad-1-roles-faltantes-para-una-canción-específica)
   - [Funcionalidad 2: Roles Faltantes para Todo el Recital](#funcionalidad-2-roles-faltantes-para-todo-el-recital)
@@ -31,119 +7,10 @@
   - [Funcionalidad 6: Listar Artistas Contratados](#funcionalidad-6-listar-artistas-contratados)
   - [Funcionalidad 7: Listar Canciones con Estado](#funcionalidad-7-listar-canciones-con-estado)
   - [Funcionalidad 8: Integración con Prolog - Entrenamientos Mínimos](#funcionalidad-8-integración-con-prolog---entrenamientos-mínimos)
-  - [Funcionalidad 9: Salir del Sistema](#funcionalidad-9-salir-del-sistema)
-
-
-# Documentación Detallada de Cada Clase
-
-![](/imgs/UML.png)
-
-## Clase: Cancion
-
-### Responsabilidad
-
-Representa una pieza musical que será interpretada en el recital.
-
-### Atributos
-
-- nombre: String -> Título de la canción
-- rolesRequeridos: List<String> -> Roles necesarios para interpretar la canción (puede contener duplicados para múltiples intérpretes del mismo rol)
-
-### Métodos
-
-- getRolesRequeridos() -> Devuelve la lista completa de roles requeridos
-
-### Uso en la consigna
-
-Base para calcular roles faltantes en los puntos 1 y 2
-
-Define los requisitos para contratación en puntos 3 y 4
-
-## Clase Artista
-
-### Responsabilidad 
-
-Representa a un músico o técnico que puede participar en el recital.
-
-### Atributos
-
-- nombre: String -> Nombre del artista
-- roles: Set<String> -> Conjunto de roles que ha desempeñado históricamente
-- costoContratacion: double -> Costo base por canción (0 = artista base)
-- maxCanciones: int -> Límite de canciones en el recital
-- cantidadContratos: int -> Número de canciones asignadas actualmente
-- bandasHistoricas: Set<String> -> Bandas o colaboraciones históricas
-
-### Métodos
-
-- entrenar(String rol) -> Añade un nuevo rol al artista incrementando su costo en 50%
-- getCosto() -> Devuelve el costo actual de contratación (considera entrenamientos)
-- comparteBandaCon(Artista otro) -> Verifica si comparte bandas históricas
-
-### Restricciones
-
-Artistas base tienen costo 0 y sin límite de canciones
-
-Solo se pueden asignar a roles que estén en su conjunto de roles
-
-No se puede entrenar artistas base ni ya contratados
-
-## Clase: Contratacion
-
-### Responsabilidad
-
-Gestiona las asignaciones de artistas a una canción específica.
-
-### Atributos
-
-- cancion: Cancion -> Canción asociada
-- contratos: Map<Artista, String> -> Asignaciones artista-rol para esta canción
-
-### Métodos
-
-- getCostoTotal() -> Calcula el costo total de la contratación aplicando descuentos por bandas compartidas
-- getRolesFaltantes() -> Identifica roles requeridos no cubiertos (con duplicados)
-- contratarArtistaRol(Artista, String) -> Asigna un artista a un rol específico
-
-### Lógica de Costos
-
-Artistas base: costo 0
-
-Artistas externos: costo base con 50% descuento si comparten banda con algún artista base
-
-Descuento no acumulativo (máximo 50%)
-
-## Clase: Recital
-
-### Responsabilidad
-
- Coordina todo el recital y sus contrataciones.
-
-### Atributos
-
-- contrataciones: List<Contratacion> -> Lista de todas las contrataciones por canción
-
-### Métodos
-
-- obtenerRolesFaltantesPorCancion(int indice) -> Devuelve mapa rol-cantidad faltante para canción específica
-- conseguirRolesFaltantesAll() -> Devuelve mapa agregado de roles faltantes para todo el recital
-- contratarArtistasXCanc(int indice) -> Contrata optimizando costo para una canción
-- contratarArtistasAll() -> Contrata optimizando costo global considerando límites de artistas
-- listarCanciones() -> Muestra estado y costos de todas las canciones
-
-## Clase: Repertorio
-
-### Responsabilidad
-
-Gestiona el conjunto disponible de artistas y asigna roles.
-
-### Atributos
-
-- artistas: List<Artista> -> Todos los artistas disponibles (base y externos)
-
-### Métodos
-
-llenarRoles(Contratacion contratacion) -> Asigna artistas a roles faltantes optimizando costos
+  - [Funcionalidad 9: Quitar un Artista del Recital](#funcionalidad-9-quitar-un-artista-del-recital)
+  - [Funcionalidad 10: Cargar un Estado Previo](#funcionalidad-10-cargar-estado-previo)
+  - [Funcionalidad 11: Mostrar Grafo de Colaboraciones](#funcionalidad-11-mostrar-grafo-de-colaboraciones)
+  - [Funcionalidad 12: Salir del Sistema](#funcionalidad-12-salir-del-sistema)
 
 # Documentación de las Funcionalidades del Sistema de Gestión de Recital
 
@@ -227,7 +94,6 @@ Información Incluida:
 - Nombre del artista
 - Roles asignados en el recital
 - Cantidad de canciones en las que participa
-- Costo individual por canción (con descuentos aplicados)
 - Costo total del artista en el recital
 - Historial de bandas (para verificar posibles descuentos)
 
@@ -237,19 +103,17 @@ Mostrar el estado de preparación de cada canción del recital.
 
 Información por Canción:
 
-Nombre de la canción
+- Nombre de la canción
 
-Estado (COMPLETA/INCOMPLETA) basado en si todos los roles están cubiertos
+- Estado (COMPLETA/INCOMPLETA) basado en si todos los roles están cubiertos
 
-Lista de roles requeridos
+- Lista de roles requeridos
 
-Roles actualmente cubiertos (y por quiénes)
+- Roles actualmente cubiertos (y por quiénes)
 
-Roles faltantes (si aplica)
+- Roles faltantes (si aplica)
 
-Costo total de artistas externos asignados a esa canción
-
-Desglose de costos por artista
+- Costo total de artistas externos asignados a esa canción
 
 Visualización: Proporciona un dashboard rápido del progreso del recital.
 
@@ -263,7 +127,19 @@ Calcular el número mínimo de entrenamientos necesarios para cubrir todos los r
 4. Calcula cuántos entrenamientos se necesitarían para que los artistas base y externos disponibles puedan cubrir todos los roles
 5. Considera que un artista puede ser entrenado en múltiples roles, pero cada entrenamiento tiene un costo incremental
 
-## Funcionalidad 9: Salir del Sistema
+## Funcionalidad 9: Quitar Un Artista del Recital
+
+Para un artista dado, recorre todas sus colaboraciones realizadas y las deshace, devolviéndole a cada canción los roles que ya habían sido tomados y ajustando el costo total.
+
+## Funcionalidad 10: Cargar Estado Previo
+
+Busca un archivo "recital-out.json" y, de encontrarlo, devuelve el Recital a un estado previo, volviendo a cargar todas las contrataciones realizadas, entrenamientos llevados a cabo y actualizando el costo total.
+
+## Funcionalidad 11: Mostrar Grafo de Colaboraciones
+
+Muestra por pantalla un grafo simple de qué artistas ya contratados comparten alguna banda entre sus historiales, de manera tal de poder ver qué artistas tendrán la posibilidad de tener un descuento
+
+## Funcionalidad 12: Salir del Sistema
 
 Finalizar la sesión de manera controlada, preservando el estado del trabajo.
 
